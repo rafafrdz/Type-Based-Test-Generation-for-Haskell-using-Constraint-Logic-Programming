@@ -1,0 +1,4 @@
+#!/bin/bash
+mv .gitignore .tmp-s &&
+mv .svnignore .gitignore &&
+mv .tmp-s .svnignore
