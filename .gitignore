@@ -1,6 +1,7 @@
 ## project
 *--ignore*
 /.svn
+.svnignore
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
