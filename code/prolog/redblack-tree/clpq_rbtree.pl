@@ -20,11 +20,11 @@ isRB(X) :- red(X).
 isRB(X) :- black(X).
 
 %% Definition of red node
-red(t(_,r,L,R)) :- black(L), black(R).
+red(t(r,_,L,R)) :- black(L), black(R).
 
 %% Definition of black node
 black(nil).
-black(t(_,b,L,R)) :- isRB(L), isRB(R).
+black(t(b,_,L,R)) :- isRB(L), isRB(R).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -37,9 +37,9 @@ less(X, nil, X).
 greater(X, nil, X).
 
 %% - Node - %%
-bstree(t(X,_,L,R)) :- greater(X,L,X), less(X, R, X), bstree(L), bstree(R).
-less(X, t(Y,_,_,_), X) :- clpq:{X < Y}.
-greater(X, t(Y,_,_,_), X) :- clpq:{Y < X}.
+bstree(t(_,X,L,R)) :- greater(X,L,X), less(X, R, X), bstree(L), bstree(R).
+less(X, t(_,Y,_,_), X) :- clpq:{X < Y}.
+greater(X, t(_,Y,_,_), X) :- clpq:{Y < X}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Balance of Black Nodes
@@ -47,10 +47,10 @@ greater(X, t(Y,_,_,_), X) :- clpq:{Y < X}.
 
 %% To control the balance (number of black node in every path)
 countblack(nil, 0).
-countblack(t(_,b,L,R), Z) :- clpq:{0 =< N},  clpq:{Z = N + 1}, countblack(L, N), countblack(R,N).
-countblack(t(_,r,L,R), N) :- clpq:{0 =< N}, countblack(L, N), countblack(R,N).
+countblack(t(b,_,L,R), Z) :- clpq:{0 =< N},  clpq:{Z = N + 1}, countblack(L, N), countblack(R,N).
+countblack(t(r,_,L,R), N) :- clpq:{0 =< N}, countblack(L, N), countblack(R,N).
 
-balance(t(_,b,L,R), N) :- countblack(L,N), countblack(R, N).
+balance(t(b,_,L,R), N) :- countblack(L,N), countblack(R, N).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Depth of Trees
