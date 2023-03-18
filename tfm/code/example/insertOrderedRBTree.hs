@@ -1,7 +1,3 @@
-data Color = R | B deriving Show
-
-data Tree a = Nil | T Color a (Tree a) (Tree a) deriving Show
-
 makeBlack :: Tree a -> Tree a
 makeBlack (T _ y a b) = T B y a b
 makeBlack t = t

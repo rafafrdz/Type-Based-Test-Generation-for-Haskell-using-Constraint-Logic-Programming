@@ -1,12 +1,3 @@
-  sealed trait Color
-  case object R extends Color
-  case object B extends Color
-
-  sealed trait Tree[A]
-  case object Nil extends Tree[Nothing]
-  case class T[A](color: Color, node: A, tl: Tree[A], tr: Tree[A]) extends Tree[A]
-
-
   def makeBlack[A]: Tree[A] => Tree[A] = {
     case ttree@T(_, _, _, _) => ttree.copy(color = B)
     case t => t
