@@ -1,0 +1,48 @@
+special     ::=     '(' | ')' | ',' | ';' | '[' | ']' | '`' | '{' | '}'
+reservedop  ::=     '..' | ':' | '::' | '=' | '\' | '|' | '<-' | '->'
+                        | '@' | '~' | '=>'
+ascDigit    ::=     '0' | '1' | ... | '9'
+ascSmall    ::=     'a' | 'b' | ... | 'z'
+ascLarge    ::=     'A' | 'B' | ... | 'Z'
+ascSymbol   ::=     '!' | '# '| '$' | '%' | '&' | '*' | '+' | '.' | '/' | '<'
+                        | '=' | '>' | '?' | '@' | '\' | '^' | '|' | '-' | '~'
+uniDigit    ::=     << any Unicode decimal digit >>
+uniSmall    ::=     << any Unicode lowercase letter >>
+uniLarge    ::=     << any uppercase or titlecase Unicode letter >>
+uniSymbol   ::=     << any Unicode symbol or punctuation >> 
+digit       ::=     ascDigit | uniDigit
+small       ::=     ascSmall | uniSmall | '_'
+large       ::=     ascLarge | uniLarge
+symbol      ::=     ascSymbol | uniSymbol - < special | '_' | ':' | '"' | ''' >
+reserveid   ::=     'case' | 'class' | 'data' | 'default' | 'deriving' | 'do' | 'else'
+                           | 'if' | 'import' | 'in' | 'infix' | 'infixl' | 'infixr' | 'instance'
+                           | 'let' | 'module' | 'newtype' | 'of' | 'then' | 'type' | 'where' | '_'
+varid       ::=     ( small { small | large | digit | ''' } ) - < reserveid >
+conid       ::=     large { small | large | digit | ''' }                                                       (constructors)
+consym      ::=     ( ':' { symbol | ':' } ) - < reservedop >
+tyvar       ::=     varid                                                                                       (type variables)
+tycon       ::=     conid                                                                                       (type constructors)
+tycls       ::=     conid                                                                                       (type classes)
+simpletype  ::=     tycon tyvar1 ... tyvark                                                                     (k>=0)
+modid       ::=     conid                                                                                       (modules)
+qtycls      ::=     [ modid '.' ] tycls
+qtycon      ::=     [ modid '.' ] tycon
+gtycon      ::=     qtycon
+                           | ()                                                                                 (unit type)
+                           | []                                                                                 (list constructor)
+                           | (->)                                                                               (function constructor)
+                           | (,{,})                                                                             (tupling constructor)
+btype       ::=     [ btype ] atype                                                                             (type application)
+type        ::=     btype [ '->' type ]                                                                         (function type)
+atype       ::=     gtycon | tyvar
+                           | (type1, ..., typek)                                                                (tuple type, k>= 2)
+                           | [type]                                                                             (list type)
+                           | (type)                                                                             (parenthesized constructor)
+con         ::=     conid | ( consym )                                                                          (constructor)
+constr      ::=     con [!] atype1 ... [!] atypek                                                               (arity con = k, k>= 0)
+constrs     ::=     constr1 | ... | constrn                                                                     (n>=0)
+class       ::=     qtycls tyvar | qtycls ( tyvar atype1 ... atypen )                                           (n>=0)
+dclass      ::=     qtycls
+context     ::=     class ( class1, ..., classn )                                                               (n>=0)
+deriving    ::=     'deriving' ( dclass | ( dclass1, ..., dclassn ) )                                           (n>=0)
+topdecl     ::=     'data' [ context '=>' ] simpletype '=' constrs [ deriving ]
