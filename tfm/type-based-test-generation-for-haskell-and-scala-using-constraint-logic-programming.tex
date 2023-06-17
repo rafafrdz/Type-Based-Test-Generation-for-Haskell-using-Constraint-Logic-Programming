@@ -117,6 +117,7 @@
 \newcommand{\hookuparrow}{\mathrel{\rotatebox[origin=c]{90}{$\hookrightarrow$}}}
 \newcommand{\hookdownarrow}{\mathrel{\rotatebox[origin=c]{-90}{$\hookrightarrow$}}}
 \newcommand{\SLongdownarrow}{\mathrel{\rotatebox[origin=c]{-90}{$\Longrightarrow$}}}
+\newcommand{\updownsquigarrow}{\mathrel{\rotatebox[origin=c]{-90}{$\leftrightsquigarrow$}}}
 
 
 
@@ -817,9 +818,9 @@ For our first steps, we can deal with the most basic case: those scenarios where
 Let's define the syntax translation function. Let $\mathcal{H}$, $\mathcal{P}$ the set of well-defined expression in Haskell and Prolog, respectively. Following the formal grammar definition for algebra data type expressions in Haskell:
 \begin{flalign*}
 	\ttt{data} \tav simpletype =& \tav constrs && \\
-	& \updownarrow  && \\
+	& \updownsquigarrow  && \\
 	\ttt{data} \tav tycon \tav tyvar_1 \tav tyvar_2 \tav \ldots \tav tyvar_k 	=& \tav constr_1 \tav | \tav constr_2 \tav | \tav \ldots \tav | \tav constr_n && \\
-	& \updownarrow   && \\
+	& \updownsquigarrow    && \\
 	\ttt{data} \tav tycon \tav tyvar_1 \tav tyvar_2 \tav \ldots \tav tyvar_k 	=& \tav con_1 \tav atype_{1,1} \tav atype_{1,2} \tav \ldots \tav atype_{1,k_1} \tav | && \\
 	& \tav con_2 \tav atype_{2,1} \tav atype_{2,2} \tav \ldots \tav atype_{2,k_2} \tav | && \\
 	& \tav \ldots \tav && \\
@@ -904,62 +905,6 @@ In order to clarify this definition, we can introduce some examples:
 \section{Monomorfism Types with Bounded}
 
 \section{Polymorfism Types}
-
-Let's define a syntax translation function. Let $F$ be the function that sends the syntax of Haskell's ADTs to a Prolog program, $$F: \ttt{Haskell}_{\ttt{ADT}} \longrightarrow \ttt{Prolog}$$
-%%
-\begin{flalign*}
-	\ttt{data} \tav simpletype =& \tav constrs && \\
-	\ttt{data} \tav tycon \tav t_1 \tav t_2 \tav \ldots \tav t_k 	=& \tav constr_1 \tav | \tav constr_2 \tav | \tav \ldots \tav | \tav constr_n && \\
-	\ttt{data} \tav tycon \tav t_1 \tav t_2 \tav \ldots \tav t_k 	=& \tav con_1 \tav atype_{1,1} \tav atype_{1,2} \tav \ldots \tav atype_{1,k_1} \tav | && \\
-	& \tav con_2 \tav atype_{2,1} \tav atype_{2,2} \tav \ldots \tav atype_{2,k_2} \tav | && \\
-	& \tav \ldots \tav && \\
-	& \tav con_n \tav atype_{n,1} \tav atype_{n,2} \tav \ldots \tav atype_{n,k_n} \tav | && \\
-\end{flalign*}
-$$\Downarrow \text{ ( Using $F$ )}$$
-\begin{flalign*}
-	\_ tycon (T_1, \tav T_2, \tav \ldots, \tav T_k, \; \_ con_1(X_{1,1}, ..., X_{1,k_1})) :-&
-	\tav pred_{1,1}(T_1, \tav T_2, \tav \ldots, \tav T_k, \tav X_{1,1}), && \\
-	& \tav pred_{1,2}(T_1, \tav T_2, \tav \ldots, \tav T_k, \tav X_{1,2}), && \\
-	& \tav \ldots \tav && \\
-	& \tav pred_{1,k}(T_1, \tav T_2, \tav \ldots, \tav T_k, \tav X_{1,k_1}). && \\
-	\\
-	\_ tycon (T_1, \tav T_2, \tav \ldots, \tav T_k, \; \_ con_2(X_{2,1}, ..., X_{2,k_2})) :-&
-	\tav pred_{2,1}(T_1, \tav T_2, \tav \ldots, \tav T_k, \tav X_{2,1}), && \\
-	& \tav pred_{2,2}(T_1, \tav T_2, \tav \ldots, \tav T_k, \tav X_{2,2}), && \\
-	& \tav \ldots \tav && \\
-	& \tav pred_{2,k}(T_1, \tav T_2, \tav \ldots, \tav T_k, \tav X_{2,k_2}). && \\
-	\\
-	\vdots &&& \\\\
-	\_ tycon (T_1, \tav T_2, \tav \ldots, \tav T_k, \; \_ con_n(X_{n,1}, ..., X_{n,k_n})) :-&
-	\tav pred_{n,1}(T_1, \tav T_2, \tav \ldots, \tav T_k, \tav X_{n,1}), && \\
-	& \tav pred_{n,2}(T_1, \tav T_2, \tav \ldots, \tav T_k, \tav X_{n,2}), && \\
-	& \tav \ldots \tav && \\
-	& \tav pred_{n,k}(T_1, \tav T_2, \tav \ldots, \tav T_k, \tav X_{n,k_n}). && \\
-	\\
-\end{flalign*}
-where:
-%%
-\begin{itemize}
-	\item The expression starting with $\_$ represent the same expression in Haskell but with all their characters in lowecarse. Let's see some examples:
-	      	      
-	      \begin{example}
-	      	Let's suppose the definition of Binary Search Tree in Haskell.
-	      	\lstinputlisting[language=Haskell, label=bstreehaskell]{code/example/bst.hs}
-	      	Here, you can see that $tycon \equiv \ttt{BTree}$, $con_1 \equiv \ttt{Nil}$ and $con_2 \equiv \ttt{T}$, therefore $\_tycon \equiv \ttt{btree}$, $\_con_1 \equiv \ttt{nil}$ and $\_con_2 \equiv \ttt{t}$, respectively.
-	      \end{example}
-	      \begin{example}
-	      	Let's suppose the definition of Either in Haskell.
-	      	\lstinputlisting[language=Haskell, label=bstreehaskell]{code/example/either.hs}
-	      	Here, you can see that $tycon \equiv \ttt{Either}$, $con_1 \equiv \ttt{Left}$ and $con_2 \equiv \ttt{Right}$, therefore $\_tycon \equiv \ttt{either}$, $\_con_1 \equiv \ttt{left}$ and $\_con_2 \equiv \ttt{right}$, respectively.
-	      \end{example}
-	      
-	\item For all $t_i$ with $i \in \{1, \ldots k \}$, there exists a variable in Prolog expression $T_i$ that represents the type that it will generate.
-	\item For all $con_i$ with $i \in \{1, \ldots n \}$, there exists a Prolog expression that holds and generate the derived expression from the Haskell's ADT constructor $i$. For instance, from the definition of the binary search tree , we obtain two Prolog expression that form an \textit{or}-Prolog program.
-	\item For all $atype_{i,j}$ with $(i,j) \in \{1, \ldots n \} \times \{1, \ldots k_i \}$, there exists a variable in Prolog expression $X_{i,j}$ represents the symbolic variable for the generation of the element in the position $j$ from the constructor $i$ which is the Haskell type $atype_{i,j}$ in the Haskell's ADT definition.
-	\item For all $atype_{i,j}$ with $(i,j) \in \{1, \ldots n \} \times \{1, \ldots k_i \}$, there exists a predicate $pred_{i,j}$ that holds the type $atype_{i,j}$ in our Prolog definition.
-	\item For all $atype_{i,j}$ with $(i,j) \in \{1, \ldots n \} \times \{1, \ldots k_i \}$, if $atype_{i,j}$ represents either a primitive type or a polymorphic type, i.e. $atype_{i,j}$ has the Haskell primitive type expression or has the same one of any of these expressions $$t_1 \tav t_2, \tav \ldots, \tav t_k$$ then $pred_{i,j}$ is our defined generator function $gen(T_{i,j}, X_{i,j})$. Otherwhise, it will be our
-\end{itemize}
-
 
 
 \begin{thebibliography}{9}
