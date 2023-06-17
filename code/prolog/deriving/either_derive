@@ -1,0 +1,7 @@
+data Either a b = Left a | Right b
+
+either(A, B, left(X11)) :- pred11(A, B, X11).
+either(A, B, right(X21)) :- pred21(A, B, X21).
+
+Sin emabrgo como tanto X11 como X22 vienen de derirvar de a y b, respectivamente,
+se tiene que: pred11(A,B, X11) se corresponde a types:gen(A, X11) y pred21(A,B, X21) se corresponde a types:gen(B, X21)

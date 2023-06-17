@@ -1,0 +1,20 @@
+simpletype                                      -> _simpletype ## predicado
+constrs  := constr1 | constr2 | ... | constrn   -> _simpletype(C1) | _simpletype(C2) | _simpletype(Cn)
+
+constr1 := con1 atype11 ... atype1k1            -> C1 := _con1(X11, ..., X1k1) :- pred11(X11), ..., pred1k1(X1k1)
+constr2 := con2 atype21 ... atype2k2            -> C2 := _con2(X21, ..., X2k2) :- pred21(X21), ..., pred2k2(X2k2)
+...
+constrn := conn atypen1 ... atypenkn            -> Cn := _conn(Xn1, ..., Xnkn) :- predn1(Xn1), ..., prednkn(Xnkn)
+
+
+ =>
+
+ data D = constr1 | constr2 | ... | constrn ->
+
+    _simpletype(_con1(X11, ..., X1k1)) :- pred11(X11), ..., pred1k1(X1k1)
+    _simpletype(_con2(X21, ..., X2k2)) :- pred21(X21), ..., pred2k2(X2k2)
+    ...
+    _simpletype(_conn(Xn1, ..., Xnkn)) :- predn1(Xn1), ..., prednkn(Xnkn)
+
+if Xij <- a => predij := types:gen(Repra, Rij)
+else 

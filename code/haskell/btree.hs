@@ -1,0 +1,1 @@
+data BTree a = Nil | T a (BTree a) (BTree a) deriving Show

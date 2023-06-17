@@ -20,6 +20,8 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{csquotes}
+\usepackage{ulem}
+%% \usepackage{mathaccents}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -112,6 +114,12 @@
 \newcommand{\alt}{\;\; | \;\;}
 \newcommand{\tab}{\;\;\;}
 \newcommand{\tav}{\;\;}
+\newcommand{\hookuparrow}{\mathrel{\rotatebox[origin=c]{90}{$\hookrightarrow$}}}
+\newcommand{\hookdownarrow}{\mathrel{\rotatebox[origin=c]{-90}{$\hookrightarrow$}}}
+\newcommand{\SLongdownarrow}{\mathrel{\rotatebox[origin=c]{-90}{$\Longrightarrow$}}}
+
+
+
 
 \title{Type-Based Test Generation for Haskell and Scala using Constraint Logic Programming}
 \author{Rafael Fernández Ortiz}
@@ -119,11 +127,12 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-Building \textit{generators} to create test cases that Property-Based Testing use to test software behavior is a hard, quite costly, and error-prone task. Even though most Property-Based Testing frameworks cover simple scenarios, there is some kind of issues with preconditioned generated test cases.\\\\
-%%
-In the context of Property-Based Testing for strong and statically well-typed languages, such as Haskell or Scala, we propose an approach to relieve the programmer from the task of writing generators.\\\\
-%%
-Our approach consists in provide an efficient and automatic generation of input test values that satisfy a given specification. In particular, we consider the case when the input values are algebraic data types satisfying complex constraints. The generation process is performed by writing specification expressions driven by the language' syntax and via symbolic execution using constraint logic programming.
+	Building \textit{generators} to create test cases that Property-Based Testing use to test software behavior is a hard, quite costly, and error-prone task. Even though most Property-Based Testing frameworks cover simple scenarios, there is some kind of issues with preconditioned generated test cases.
+	\\\\
+	%%
+	In the context of Property-Based Testing for strong and statically well-typed languages, such as Haskell or Scala, we propose an approach to relieve the programmer from the task of writing generators.\\\\
+	%%
+	Our approach consists in provide an efficient and automatic generation of input test values that satisfy a given specification. In particular, we consider the case when the input values are algebraic data types satisfying complex constraints. The generation process is performed by writing specification expressions driven by the language' syntax and via symbolic execution using constraint logic programming.
 \end{abstract}
 \tableofcontents
 
@@ -133,9 +142,9 @@ Software is a set of instructions that tell a computer what to do. It can be use
 Software risks can come from various sources, such as bugs, security vulnerabilities, or poor design. These risks can lead to errors, crashes, or even loss of data.\\\\
 For critical systems, such as those used in the medical or aerospace industries, the stakes are even higher. These systems must be thoroughly tested and validated to ensure that they will not cause harm or failure in a critical situation. For example:
 \begin{itemize}
-    \item Medical systems: Medical systems such as electronic health records (EHRs) and medical devices are critical systems that can have serious consequences if they fail. A bug in an EHR system could lead to incorrect patient information being displayed, potentially leading to a misdiagnosis or other medical errors.
-    \item Aerospace systems: Aerospace systems such as aircraft navigation systems and flight control systems are critical systems that must operate reliably at all times. A bug in an aircraft navigation system could cause the plane to fly off course, leading to a crash.
-    \item Industrial control systems: Industrial control systems (ICS) are used to control and monitor industrial processes such as manufacturing, power generation, and oil and gas production. An issue in an ICS could cause a malfunction in a manufacturing process, leading to costly downtime or even physical damage to the equipment, or even a cyber-attack on an ICS could cause a shutdown of the whole process causing a major disruption.
+	\item Medical systems: Medical systems such as electronic health records (EHRs) and medical devices are critical systems that can have serious consequences if they fail. A bug in an EHR system could lead to incorrect patient information being displayed, potentially leading to a misdiagnosis or other medical errors.
+	\item Aerospace systems: Aerospace systems such as aircraft navigation systems and flight control systems are critical systems that must operate reliably at all times. A bug in an aircraft navigation system could cause the plane to fly off course, leading to a crash.
+	\item Industrial control systems: Industrial control systems (ICS) are used to control and monitor industrial processes such as manufacturing, power generation, and oil and gas production. An issue in an ICS could cause a malfunction in a manufacturing process, leading to costly downtime or even physical damage to the equipment, or even a cyber-attack on an ICS could cause a shutdown of the whole process causing a major disruption.
 \end{itemize}
 When we talk about software quality, we are talking about how well a software system or application meets its specified requirements and is fit for its intended use. It is a multi-faceted concept that includes aspects such as whether the software performs the intended tasks, and whether it meets the needs of the end users. That is functionality. Also, it includes other factors such as reliability, usability, performance, and maintainability.\\\\
 Ensuring that software has good functionality, or more generally, ensuring software quality is important because it helps to ensure that the software will be useful, effective and that it will perform as expected and not cause unintended consequences. for its intended purpose.\\\\
@@ -155,9 +164,9 @@ A test has an "incomplete" result if a series of tests produces no errors but th
 There are different types of tests that can be used during the software development process, each with a different purpose and focus. Some of the main types of tests are:
 %%
 \begin{itemize}
-    \item \textbf{Unit testing}: Unit testing is a type of testing that focuses on individual components of the software, such as individual functions or methods. Unit testing aims to ensure that each component behaves as expected. Unit tests are usually automated, and they are run as part of the development process to catch any issues early.
-    \item \textbf{Integration testing}: Integration testing is used to ensure that different software components work together correctly. It tests the interactions between different parts of the software. Integration tests are usually automated, and they are run after the unit tests to ensure that the integrated system behaves as expected.
-    \item \textbf{Acceptance testing}: Acceptance testing is used to ensure that the software meets the needs of the end users. It is typically done by the customer or other stakeholders to ensure that the software meets their needs. Acceptance tests can be automated or manual, and they are run after system tests to ensure that the system is ready to be deployed.
+	\item \textbf{Unit testing}: Unit testing is a type of testing that focuses on individual components of the software, such as individual functions or methods. Unit testing aims to ensure that each component behaves as expected. Unit tests are usually automated, and they are run as part of the development process to catch any issues early.
+	\item \textbf{Integration testing}: Integration testing is used to ensure that different software components work together correctly. It tests the interactions between different parts of the software. Integration tests are usually automated, and they are run after the unit tests to ensure that the integrated system behaves as expected.
+	\item \textbf{Acceptance testing}: Acceptance testing is used to ensure that the software meets the needs of the end users. It is typically done by the customer or other stakeholders to ensure that the software meets their needs. Acceptance tests can be automated or manual, and they are run after system tests to ensure that the system is ready to be deployed.
 \end{itemize}
 %%
 Sadly, trying to find counter-examples by testing that produces bugs a behavior non-expected is most of the time a difficult task. In simpler software, testers could find most of those cases which produce counter-examples, designing test cases one by one. However, the design process reaches those cases that one knows by experience or intuition, leaving aside very interesting and not at all intuitive cases that can hardly be imagined. For this reason and because it can be a very tedious task, it would be ideal to automate the generation of test cases.
@@ -172,10 +181,10 @@ The challenge addressed in this work is to use TDD in applications with non-dete
 %%
 The following factors make it difficult to develop randomized software using TDD: 
 \begin{itemize}
-    \item Results for each execution may be different for the same inputs, which makes it difficult to validate the return value.
-    \item Obtaining a valid return for a test case execution does not mean that valid return will be delivered on the next executions.
-    \item The random decisions and their paths number make it not viable to create Mock Objects that return fixed results for these decisions.
-    \item It is difficult to execute a previous failed test with the same random decisions undertaken in its former execution.
+	\item Results for each execution may be different for the same inputs, which makes it difficult to validate the return value.
+	\item Obtaining a valid return for a test case execution does not mean that valid return will be delivered on the next executions.
+	\item The random decisions and their paths number make it not viable to create Mock Objects that return fixed results for these decisions.
+	\item It is difficult to execute a previous failed test with the same random decisions undertaken in its former execution.
 \end{itemize}
 %%
 In conclusion, \textbf{you have to iterate several times in case of testing fails}. \\\\
@@ -215,70 +224,70 @@ However, stateful properties which would be the most interesting properties to t
 
 Property-Based testing provides a helpful solution to generate random test cases for testing. And it is good enough for most pieces of code that want to test. However, we will put focus on those functions that assume inputs with preconditions.\\
 \begin{example}[Sorted Lists]
-Let $S$ be a set, $\mathtt{xs}$ a list of elements of $S$, and consider the ordering relationship $\preceq$ over elements of $S$. We can say that $xs$ is an \textbf{ordered list} if it holds one of the following invariants:
-%%
-\begin{description}
-    \item[$\mathtt{INV1}$] $xs$ is empty.
-    \item[$\mathtt{INV2}$] $\forall xss$ sublist of $xs$ with $xss \neq \emptyset$, $\exists a \in xss$ such that $\forall x \in xss, a \preceq x$ holds.
-\end{description}
-%%
-Let's suppose we want to test the behavior of our \texttt{insertOrdered} function which its expected behavior should be the following:\\\\
-%%
-$\mathtt{PROP1}$ \textit{Given an ordered list,} \texttt{insertOrdered} \textit{inserts an element and its result is an ordered list}.
-%%
-\lstinputlisting[language=Haskell, label=samplecode, caption=Insert an element in an ordered list]{code/example/insertOrdered.hs} \pagebreak
-%%
-\lstinputlisting[language=Scala, label=samplecode, caption=Insert an element in an ordered list (Scala version)]{code/example/insertOrdered.scala}
-%%
-A Property-Based Testing framework should generate several enough random \textbf{ordered lists} to check if $\mathtt{PROP1}$ holds. This is not as easy as you could think. Let's do our own mental exercise step by step. Let's suppose we have a good PBT framework:
-\begin{enumerate}
-    \item First of all, the framework has to generate randomly a set of lists.
-    \item Then, it has to check which one of them is an \textbf{ordered list}, i.e, it has to check if holds either $\mathtt{INV1}$ or $\mathtt{INV2}$.
-    \item Finally checks if the property $\mathtt{PROP1}$ holds, which means the result has to be an \textbf{ordered list}, i.e. it has to check if holds either $\mathtt{INV1}$ or $\mathtt{INV2}$ too.
-\end{enumerate}
-This process is more complex, but for this moment we can consider this friendly description. We will deeply get ahead in the following chapters.\\\\
-%%
-Therefore, imagine that your PBT framework generates $100$ randomly generated lists in every iteration. Probably, one or, if you have lucky, two lists of them are ordered lists.\\\\
-%%
-On the one hand, it is so difficult to achieve so many scenarios (at least in a shorter time). Also, the framework probably brings you just the same empty list (because it is the easiest generated test case that holds one of the invariants) as the input value for checking the property which would make the results unreliable.\\\\
-%%
-And on the other hand, the property $\mathtt{PROP1}$ is relatively simple but, what happens if we consider a more complex property? For example, we can consider a red-black tree.
+	Let $S$ be a set, $\mathtt{xs}$ a list of elements of $S$, and consider the ordering relationship $\preceq$ over elements of $S$. We can say that $xs$ is an \textbf{ordered list} if it holds one of the following invariants:
+	%%
+	\begin{description}
+		\item[$\mathtt{INV1}$] $xs$ is empty.
+		\item[$\mathtt{INV2}$] $\forall xss$ sublist of $xs$ with $xss \neq \emptyset$, $\exists a \in xss$ such that $\forall x \in xss, a \preceq x$ holds.
+	\end{description}
+	%%
+	Let's suppose we want to test the behavior of our \texttt{insertOrdered} function which its expected behavior should be the following:\\\\
+	%%
+	$\mathtt{PROP1}$ \textit{Given an ordered list,} \texttt{insertOrdered} \textit{inserts an element and its result is an ordered list}.
+	%%
+	\lstinputlisting[language=Haskell, label=samplecode, caption=Insert an element in an ordered list]{code/example/insertOrdered.hs} \pagebreak
+	%%
+	\lstinputlisting[language=Scala, label=samplecode, caption=Insert an element in an ordered list (Scala version)]{code/example/insertOrdered.scala}
+	%%
+	A Property-Based Testing framework should generate several enough random \textbf{ordered lists} to check if $\mathtt{PROP1}$ holds. This is not as easy as you could think. Let's do our own mental exercise step by step. Let's suppose we have a good PBT framework:
+	\begin{enumerate}
+		\item First of all, the framework has to generate randomly a set of lists.
+		\item Then, it has to check which one of them is an \textbf{ordered list}, i.e, it has to check if holds either $\mathtt{INV1}$ or $\mathtt{INV2}$.
+		\item Finally checks if the property $\mathtt{PROP1}$ holds, which means the result has to be an \textbf{ordered list}, i.e. it has to check if holds either $\mathtt{INV1}$ or $\mathtt{INV2}$ too.
+	\end{enumerate}
+	This process is more complex, but for this moment we can consider this friendly description. We will deeply get ahead in the following chapters.\\\\
+	%%
+	Therefore, imagine that your PBT framework generates $100$ randomly generated lists in every iteration. Probably, one or, if you have lucky, two lists of them are ordered lists.\\\\
+	%%
+	On the one hand, it is so difficult to achieve so many scenarios (at least in a shorter time). Also, the framework probably brings you just the same empty list (because it is the easiest generated test case that holds one of the invariants) as the input value for checking the property which would make the results unreliable.\\\\
+	%%
+	And on the other hand, the property $\mathtt{PROP1}$ is relatively simple but, what happens if we consider a more complex property? For example, we can consider a red-black tree.
 \end{example}
 %%
 \begin{example}[Red-Black Tree]
-A \textbf{Red-Black Tree} is a binary search tree where each node has two labels: a color $\mathtt{C}$, which is either $\mathtt{red}$ ($\mathtt{R}$) or $\mathtt{black}$ ($\mathtt{B}$), and an integer $\mathtt{N}$. For the purpose of test generation, node values are abstracted away in the definition of the data structure:
-\begin{equation*}
-    \begin{array}{rll}
-      \mathtt{C} & ::= & \mathtt{R} \texttt{ | } \mathtt{B} \\
-      \mathtt{N} & ::= & \ldots \texttt{ | -1 | 0 | 1 | } \ldots \\
-      \mathtt{Tree} & ::= & \mathtt{nil} \texttt{ | } \mathtt{C \; N \; Tree \; Tree}
-\end{array}
-\end{equation*}
-A Red-Black Tree must also satisfy the following three invariants:
-%%
-\begin{description}
-    \item[$\mathtt{INV1}$] Every path from the root to a leaf has the same number of black nodes
-    \item[$\mathtt{INV2}$] No red node has a red child and
-    \item[$\mathtt{INV3}$] For every node $n$, all the nodes in the left (respectively, right) subtree of $n$, if
-any, have keys that are smaller (respectively, bigger) than the key labeling $n$.
-\end{description}
-%%
-Since red-black trees enjoy a weak form of balancing, operations such as inserting, deleting, and finding values are more efficient, in the worst case, than in ordinary binary search trees.\\\\
-%%
-Let's suppose we want to test the behavior of our \texttt{insertOrderedRBTree} function which its expected behavior should be the following:\\\\
-%%
-$\mathtt{PROP2}$ \textit{Given a red-black tree,} \texttt{insertOrderedRBTree} \textit{inserts an element and its result is a new tree which is a red-black tree}. \pagebreak \\
-%%
-The following code is inspired by the Haskell ADT definition of red-black trees in \cite{rbtreehaskell}.
-%%
-\lstinputlisting[language=Haskell, label=samplecode, caption=Definition of Red-Black Tree ADT]{code/example/rbtree.hs}
-%%
-\lstinputlisting[language=Haskell, label=samplecode, caption=Insert an element in an Red-Black Tree]{code/example/insertOrderedRBTree.hs}
-%%
-\lstinputlisting[language=Scala, label=samplecode, caption=Definition of Red-Black Tree ADT (Scala version)]{code/example/rbtree.scala}
-%%
-\lstinputlisting[language=Scala, label=samplecode, caption=Insert an element in an Red-Black Tree (Scala version)]{code/example/insertOrderedRBTree.scala}
-%%
+	A \textbf{Red-Black Tree} is a binary search tree where each node has two labels: a color $\mathtt{C}$, which is either $\mathtt{red}$ ($\mathtt{R}$) or $\mathtt{black}$ ($\mathtt{B}$), and an integer $\mathtt{N}$. For the purpose of test generation, node values are abstracted away in the definition of the data structure:
+	\begin{equation*}
+		\begin{array}{rll}
+			\mathtt{C}    & ::= & \mathtt{R} \texttt{ | } \mathtt{B}                        \\
+			\mathtt{N}    & ::= & \ldots \texttt{ | -1 | 0 | 1 | } \ldots                   \\
+			\mathtt{Tree} & ::= & \mathtt{nil} \texttt{ | } \mathtt{C \; N \; Tree \; Tree} 
+		\end{array}
+	\end{equation*}
+	A Red-Black Tree must also satisfy the following three invariants:
+	%%
+	\begin{description}
+		\item[$\mathtt{INV1}$] Every path from the root to a leaf has the same number of black nodes
+		\item[$\mathtt{INV2}$] No red node has a red child and
+		\item[$\mathtt{INV3}$] For every node $n$, all the nodes in the left (respectively, right) subtree of $n$, if
+		any, have keys that are smaller (respectively, bigger) than the key labeling $n$.
+	\end{description}
+	%%
+	Since red-black trees enjoy a weak form of balancing, operations such as inserting, deleting, and finding values are more efficient, in the worst case, than in ordinary binary search trees.\\\\
+	%%
+	Let's suppose we want to test the behavior of our \texttt{insertOrderedRBTree} function which its expected behavior should be the following:\\\\
+	%%
+	$\mathtt{PROP2}$ \textit{Given a red-black tree,} \texttt{insertOrderedRBTree} \textit{inserts an element and its result is a new tree which is a red-black tree}. \pagebreak \\
+	%%
+	The following code is inspired by the Haskell ADT definition of red-black trees in \cite{rbtreehaskell}.
+	%%
+	\lstinputlisting[language=Haskell, label=samplecode, caption=Definition of Red-Black Tree ADT]{code/example/rbtree.hs}
+	%%
+	\lstinputlisting[language=Haskell, label=samplecode, caption=Insert an element in an Red-Black Tree]{code/example/insertOrderedRBTree.hs}
+	%%
+	\lstinputlisting[language=Scala, label=samplecode, caption=Definition of Red-Black Tree ADT (Scala version)]{code/example/rbtree.scala}
+	%%
+	\lstinputlisting[language=Scala, label=samplecode, caption=Insert an element in an Red-Black Tree (Scala version)]{code/example/insertOrderedRBTree.scala}
+	%%
 \end{example}
 %%
 Following the same reasoning that we did before, the reader can deduce how complex is the task.\\\\
@@ -308,8 +317,8 @@ The use of dynamic language could provocate non-safety in its type checking, and
 There seems to be some controversy about the advantages of static vs dynamic typing. Type-checking provides another barrier against nonsensical programs. Moreover, whereas in a dynamically typed language,   type mismatches would be discovered at runtime, in strongly typed statically checked languages type mismatches are discovered at compile time, eliminating lots of incorrect programs before they have a chance to run.
 %%
 \begin{displayquote}
-Languages without type systems or even safe, dynamically checked languages, tend to offer features or encourage programming idioms that make type-checking difficult or infeasible. \\ ... \\
-The assertion that types should be an integral part of a programming language is separate from the question of where the programmer must physically write down type annotations and where they can instead be inferred by the compiler. A well-designed statically typed language will never require huge amounts of type information to be explicitly and tediously maintained by the programmer. \cite{cpierce}
+	Languages without type systems or even safe, dynamically checked languages, tend to offer features or encourage programming idioms that make type-checking difficult or infeasible. \\ ... \\
+	The assertion that types should be an integral part of a programming language is separate from the question of where the programmer must physically write down type annotations and where they can instead be inferred by the compiler. A well-designed statically typed language will never require huge amounts of type information to be explicitly and tediously maintained by the programmer. \cite{cpierce}
 \end{displayquote}
 %%
 In Haskell, the definition of the ADT expression is itself the declaration of the type to which it belongs. That means, we cannot type two ADT with the same expression and try belonging on different types. There is a univocal relationship between the ADT's expression and the its type. \\\\
@@ -317,22 +326,22 @@ In Haskell, the definition of the ADT expression is itself the declaration of th
 Finally, for the purpose of this work, we will illustrate all these concepts and ideas by applying them while writing a generator for Red-Black Trees. As we defined before:
 %%
 \begin{definition*}[Red-Black Tree]
-A \textbf{Red-Black Tree} is a binary search tree where each node has two labels: a color $\mathtt{C}$, which is either $\mathtt{red}$ ($\mathtt{R}$) or $\mathtt{black}$ ($\mathtt{B}$), and an integer $\mathtt{N}$. For the purpose of test generation, node values are abstracted away in the definition of the data structure:
-\begin{equation*}
-    \begin{array}{rll}
-      \mathtt{C} & ::= & \mathtt{R} \texttt{ | } \mathtt{B} \\
-      \mathtt{N} & ::= & \ldots \texttt{ | -1 | 0 | 1 | } \ldots \\
-      \mathtt{Tree} & ::= & \mathtt{nil} \texttt{ | } \mathtt{C \; N \; Tree \; Tree}
-\end{array}
-\end{equation*}
-A Red-Black Tree must also satisfy the following three invariants:
-%%
-\begin{description}
-    \item[$\mathtt{INV1}$] Every path from the root to a leaf has the same number of black nodes
-    \item[$\mathtt{INV2}$] No red node has a red child and
-    \item[$\mathtt{INV3}$] For every node $n$, all the nodes in the left (respectively, right) subtree of $n$, if
-any, have keys that are smaller (respectively, bigger) than the key labeling $n$.
-\end{description}
+	A \textbf{Red-Black Tree} is a binary search tree where each node has two labels: a color $\mathtt{C}$, which is either $\mathtt{red}$ ($\mathtt{R}$) or $\mathtt{black}$ ($\mathtt{B}$), and an integer $\mathtt{N}$. For the purpose of test generation, node values are abstracted away in the definition of the data structure:
+	\begin{equation*}
+		\begin{array}{rll}
+			\mathtt{C}    & ::= & \mathtt{R} \texttt{ | } \mathtt{B}                        \\
+			\mathtt{N}    & ::= & \ldots \texttt{ | -1 | 0 | 1 | } \ldots                   \\
+			\mathtt{Tree} & ::= & \mathtt{nil} \texttt{ | } \mathtt{C \; N \; Tree \; Tree} 
+		\end{array}
+	\end{equation*}
+	A Red-Black Tree must also satisfy the following three invariants:
+	%%
+	\begin{description}
+		\item[$\mathtt{INV1}$] Every path from the root to a leaf has the same number of black nodes
+		\item[$\mathtt{INV2}$] No red node has a red child and
+		\item[$\mathtt{INV3}$] For every node $n$, all the nodes in the left (respectively, right) subtree of $n$, if
+		any, have keys that are smaller (respectively, bigger) than the key labeling $n$.
+	\end{description}
 \end{definition*}
 %%
 The definition of this structure, which holds a set of complex invariants, can be defined as an algebraic data type in Haskell as follow:
@@ -341,13 +350,13 @@ The definition of this structure, which holds a set of complex invariants, can b
 %%
 We can deduce that the expression \texttt{Nil} and \texttt{T Color a (Tree a) (Tree a)} in Haskell can be mapped to the expressions \texttt{nil} and \texttt{t(C,X,L,R)} in Prolog, respectively; where \texttt{C} is the color (either \texttt{red} or \texttt{black}), and both \texttt{L}, \texttt{R} are red-black trees too, i.e., they can be expressed as \texttt{nil} or \texttt{t(C',X',L',R')}. \textbf{This brings us light on our hard way, don't you?}. Let's see an example before starting this work.
 \begin{definition*}[Sorted Lists]
-Let $S$ be a set, $\mathtt{xs}$ a list of elements of $S$, and consider the ordering relationship $\preceq$ over elements of $S$. We can say that $xs$ is an \textbf{ordered list} if it holds one of the following invariants:
-%%
-\begin{description}
-    \item[$\mathtt{INV1}$] $xs$ is empty.
-    \item[$\mathtt{INV2}$] $\forall xss$ sublist of $xs$ with $xss \neq \emptyset$, $\exists a \in xss$ such that $\forall x \in xss, a \preceq x$ holds.
-\end{description}
-First of all, we have to identify the Haskell lists' syntax expression, that is:
+	Let $S$ be a set, $\mathtt{xs}$ a list of elements of $S$, and consider the ordering relationship $\preceq$ over elements of $S$. We can say that $xs$ is an \textbf{ordered list} if it holds one of the following invariants:
+	%%
+	\begin{description}
+		\item[$\mathtt{INV1}$] $xs$ is empty.
+		\item[$\mathtt{INV2}$] $\forall xss$ sublist of $xs$ with $xss \neq \emptyset$, $\exists a \in xss$ such that $\forall x \in xss, a \preceq x$ holds.
+	\end{description}
+	First of all, we have to identify the Haskell lists' syntax expression, that is:
 \end{definition*}
 %%
 A list expression in Haskell could be either $\texttt{[]}$ or $\texttt{x:xs}$ syntax.
@@ -356,9 +365,9 @@ Therefore, the list ADT could be expressed in Prolog as follows $\texttt{[]}$ or
 Then, in order to provide the invariants $\mathtt{INV1}$ and $\mathtt{INV2}$ and get a definition of a sorted list in Prolog, we should translate in someway these two (written in Haskell or, more precisely written in Liquid Haskell) or type directly in scratch the restrictions in Prolog to get the following expressions or similar:
 %%
 \begin{description}
-    \item[$\mathtt{INV1}$] $\texttt{sorted\_list([])}$ which holds that an empty list is a sorted list.
-    \item[$\mathtt{INV2}$] $\texttt{sorted\_list(\_:[])}$ which holds that a one-element list is a sorted list.
-    \item[$\mathtt{INV2}$] $\texttt{sorted\_list(X1:X2:Xs) :- X1 \#=< X2, sorted\_list(X2:Xs)}$ which means that a list is a sorted list if it holds that every two elements hold an ordering relationship and the tail of the list is a sorted list too.
+	\item[$\mathtt{INV1}$] $\texttt{sorted\_list([])}$ which holds that an empty list is a sorted list.
+	\item[$\mathtt{INV2}$] $\texttt{sorted\_list(\_:[])}$ which holds that a one-element list is a sorted list.
+	\item[$\mathtt{INV2}$] $\texttt{sorted\_list(X1:X2:Xs) :- X1 \#=< X2, sorted\_list(X2:Xs)}$ which means that a list is a sorted list if it holds that every two elements hold an ordering relationship and the tail of the list is a sorted list too.
 \end{description}
 %%
 In resume, we should map the Haskell definition of a sorter list to some Prolog definition like this:
@@ -372,17 +381,17 @@ With this implementation, we can get the following test cases using, for instanc
 However, readers can think that modeling list adt and the invariants for sorted list could be a little bit easy. Let's see a final challenge that shows interest in this approach.
 %% Preguntar a Julio sobre una definicion más formal
 \begin{definition*}[Binary Search Tree]
-    A Binary Search Tree (BST) is a tree in which all the nodes follow the below-mentioned properties.
-    \begin{itemize}
-        \item The left sub-tree of a node has a key less than or equal to its parent node's key.
-        \item The right sub-tree of a node has a key greater than or equal to its parent node's key.
-    \end{itemize}
-    A Binary Search Tree must also satisfy the following invariants:
-    \begin{description}
-        \item[$\mathtt{INV1}$] An empty tree is a binary search tree.
-        \item[$\mathtt{INV2.1}$] The left sub-tree is a binary search tree.
-        \item[$\mathtt{INV2.2}$] The right sub-tree is a binary search tree.
-    \end{description}
+	A Binary Search Tree (BST) is a tree in which all the nodes follow the below-mentioned properties.
+	\begin{itemize}
+		\item The left sub-tree of a node has a key less than or equal to its parent node's key.
+		\item The right sub-tree of a node has a key greater than or equal to its parent node's key.
+	\end{itemize}
+	A Binary Search Tree must also satisfy the following invariants:
+	\begin{description}
+		\item[$\mathtt{INV1}$] An empty tree is a binary search tree.
+		\item[$\mathtt{INV2.1}$] The left sub-tree is a binary search tree.
+		\item[$\mathtt{INV2.2}$] The right sub-tree is a binary search tree.
+	\end{description}
 \end{definition*}
 Here we can see that invariants not only are more complex than the sorted list example but also it holds recursively onto their inner structures. Therefore, getting a test case for this example is a hard task. But we can do as before. First of all, we have to identify the Haskell bst' syntax expression, that is:\\
 %%
@@ -392,16 +401,16 @@ Therefore, the bst ADT could be expressed in Prolog as follows $\texttt{nil}$ or
 Then, in order to provide the invariants $\mathtt{INV1}$, $\mathtt{INV2.1}$ and $\mathtt{INV2.2}$ and get a definition of a bst in Prolog, we do as similar as before to get the following expressions or similar:
 %%
 \begin{description}
-    \item[$\mathtt{INV1}$] $\texttt{bst(nil)}$ which holds that an empty tree is a binary search tree.
-    \item[$\mathtt{INV2.1}$ and $\mathtt{INV2.2}$] $\texttt{bst(t(\_,nil,nil))}$ defines a non-empty tree with no left or right subtrees, which holds that a one-element tree is a binary search tree.
-    \item[$\mathtt{INV2.1}$] $\texttt{bst(t(N,L,nil)) :- L = t(LN,\_,\_), LN \#< N, bst(L)}$ defines a non-empty tree with a left subtree and no right subtree.
-    \item[$\mathtt{INV2.2}$] $\texttt{bst(t(N,nil,R)) :- R = t(RN,\_,\_), RN \#> N, bst(R)}$ defines a non-empty tree with a right subtree and no left subtree.
-    \item[$\mathtt{INV2.1}$ and $\mathtt{INV2.2}$]
-    \begin{flalign*}
-    \texttt{bst(t(N,L,R))} \texttt{:-} & \texttt{L = t(LN,\_,\_), LN \#< N, bst(L)} && \\
-      & \texttt{R = t(RN,\_,\_), RN \#> N, bst(R)} &&
-\end{flalign*}
-defines a non-empty tree with both left and right subtrees.
+	\item[$\mathtt{INV1}$] $\texttt{bst(nil)}$ which holds that an empty tree is a binary search tree.
+	\item[$\mathtt{INV2.1}$ and $\mathtt{INV2.2}$] $\texttt{bst(t(\_,nil,nil))}$ defines a non-empty tree with no left or right subtrees, which holds that a one-element tree is a binary search tree.
+	\item[$\mathtt{INV2.1}$] $\texttt{bst(t(N,L,nil)) :- L = t(LN,\_,\_), LN \#< N, bst(L)}$ defines a non-empty tree with a left subtree and no right subtree.
+	\item[$\mathtt{INV2.2}$] $\texttt{bst(t(N,nil,R)) :- R = t(RN,\_,\_), RN \#> N, bst(R)}$ defines a non-empty tree with a right subtree and no left subtree.
+	\item[$\mathtt{INV2.1}$ and $\mathtt{INV2.2}$]
+	\begin{flalign*}
+		\texttt{bst(t(N,L,R))} \texttt{:-} & \texttt{L = t(LN,\_,\_), LN \#< N, bst(L)} && \\
+		& \texttt{R = t(RN,\_,\_), RN \#> N, bst(R)} &&
+	\end{flalign*}
+	defines a non-empty tree with both left and right subtrees.
 \end{description}
 %%
 In resume, we should map the following Haskell definition of a binary search tree:
@@ -418,7 +427,7 @@ to some Prolog definitions like this:
 
 \bhref{https://hackage.haskell.org/package/QuickCheck}{QuickCheck} \cite{quickcheck} is a library for random testing of program properties. The programmer provides a specification of the program, in the form of properties that functions should satisfy, and QuickCheck then tests that the properties hold in a large number of randomly generated cases. Specifications are expressed in Haskell, using combinators provided by QuickCheck. QuickCheck provides combinators to define properties, observe the distribution of test data, and define test data generators. \\\\
 %%
- QuickCheck is one of the original property-based testing frameworks. It was developed in 1999 as a tool for Haskell, and it has since been ported to other languages such as Erlang, Scala, and Clojure. QuickCheck uses random input generation and shrinking to automatically generate test cases for a given property.
+QuickCheck is one of the original property-based testing frameworks. It was developed in 1999 as a tool for Haskell, and it has since been ported to other languages such as Erlang, Scala, and Clojure. QuickCheck uses random input generation and shrinking to automatically generate test cases for a given property.
 \repo{https://github.com/nick8325/quickcheck}
 
 \subsection{ScalaCheck: Automatic testing of Scala and Java programs}
@@ -445,7 +454,7 @@ Finally, in \cite{effgenttransf}, they bring us some kinds of best-performances 
 %%
 They adopt a declarative approach too following the so-called \textit{constrain-and-generate} approach. However, they focus on the \textbf{dynamically typed} functional programming language Erlang and refer to how arduous is the task of writing a generator that satisfies all constraints defined by a filter for the PropEr framework.\\\\
 %%
-Ricardo Peña et al. research works in \cite{smtbased} propose a system that can automatically generate an exhaustive set of black box test cases, up to a given size, for programs under test requiring complex preconditions. The key of this research is how they translate a formal precondition into a set of constraints belonging to the decidable logic of SMT solvers. They use an \textb{SMT solver as a test case generator} to directly generate test cases satisfying a complex precondition. Also, they describe both black-box and white-box approaches to fit searching strategies for those test cases.
+Ricardo Peña et al. research works in \cite{smtbased} propose a system that can automatically generate an exhaustive set of black box test cases, up to a given size, for programs under test requiring complex preconditions. The key of this research is how they translate a formal precondition into a set of constraints belonging to the decidable logic of SMT solvers. They use an \textbf{SMT solver as a test case generator} to directly generate test cases satisfying a complex precondition. Also, they describe both black-box and white-box approaches to fit searching strategies for those test cases.
 %%
 \pagebreak
 \chapter{Preliminaries}
@@ -540,51 +549,51 @@ For our purpose, it is necessary to identify which is the specification of Haske
 Let's suppose we want to formally define an algebraic data type. Regarding \cite{hasksynt} and \cite{haskdat}, we can consider a subset of the grammar specification (expressed in BNF-Like syntax) for defining an ADT expression in Haskell. In our case, we won't consider either \texttt{context} or \texttt{deriving} words because we want just an approach to simple algebraic data type expressions. Therefore, for our purpose and for simplicity, we have considered the following subset.\\
 %%
 \begin{flalign*}
-special &::=\tav \ttt{(} \alt \ttt{)} \alt \ttt{,} \alt \ttt{;} \alt \ttt{[} \alt \ttt{]} \alt \ttt{`} \alt \ttt{\{} \alt \ttt{\}}\\
-reservedop  &::=\tav \ttt{..} \alt \ttt{:} \alt \ttt{::} \alt \ttt{=} \alt \backslash \alt \ttt{|} \alt \ttt{<-} \alt \ttt{->} \\
-                        &\tab \alt \ttt{@} \alt \sim \alt \ttt{=>}\\
-ascDigit    &::=\tav     \ttt{0} \alt \ttt{1} \alt \ldots \alt \ttt{9}\\
-ascSmall    &::=\tav     \ttt{a} \alt \ttt{b} \alt \ldots \alt \ttt{z}\\
-ascLarge    &::=\tav     \ttt{A} \alt \ttt{B} \alt \ldots \alt \ttt{Z}\\
-ascSymbol   &::=\tav     \ttt{!} \alt \ttt{\#} \alt \ttt{\$} \alt \ttt{\%} \alt \ttt{\&} \alt \ttt{*} \alt \ttt{+} \alt \ttt{.} \alt \ttt{/} \alt \ttt{<} \\
-                        &\tab \alt \ttt{=} \alt \ttt{>} \alt \ttt{?} \alt \ttt{@} \alt \backslash \alt \^{} \alt \ttt{|} \alt \ttt{-} \alt \sim \\
-uniDigit    &::=\tav     \text{Any Unicode decimal digit}\\
-uniSmall    &::=\tav     \text{Any Unicode lowercase letter}\\
-uniLarge    &::=\tav     \text{Any uppercase or titlecase Unicode letter}\\
-uniSymbol   &::=\tav     \text{Any Unicode symbol or punctuation}\\
-digit       &::=\tav     ascDigit \alt uniDigit\\
-small       &::=\tav     ascSmall \alt uniSmall \alt \ttt{\_}\\
-large       &::=\tav ascLarge \alt uniLarge \\
-symbol      &::=\tav ascSymbol \alt uniSymbol_{< special \alt \ttt{\_} \alt \ttt{:} \alt \ttt{"} \alt \ttt{'} >} \\
-reserveid   &::= \tav \ttt{case} \alt \ttt{class} \alt \ttt{data} \alt \ttt{default} \alt \ttt{deriving} \alt \ttt{do} \alt \ttt{else} \\
-                &\tab \alt \ttt{if} \alt \ttt{import} \alt \ttt{in} \alt \ttt{infix} \alt \ttt{infixl} \alt \ttt{infixr} \alt \ttt{instance} \\
-                &\tab \alt \ttt{let} \alt \ttt{module} \alt \ttt{newtype} \alt \ttt{of} \alt \ttt{then} \alt \ttt{type} \alt \ttt{where} \alt \ttt{\_} \\
-varid       &::= \tav ( \; small \tav \{ \; small \alt large \alt digit \alt \textbf{'} \; \} )_{< reserveid >}\\
-conid       &::= \tav large \tav \{ \; small \alt large \alt digit \alt \ttt{'} \; \} && \text{(constructors)} \\
-consym      &::= \tav ( \; \ttt{:} \tav \{ \; symbol \alt \ttt{:} \; \} \; )_{< reservedop >} \\
-tyvar       &::= \tav varid && \text{(type variables)} \\
-tycon       &::= \tav conid && \text{(type constructors)} \\
-simpletype  &::=\tav tycon \tav tyvar_1 \tav \ldots \tav tyvar_k && \text{($k \geq 0$)} \\
-modid   &::=\tav conid  && \text{(modules)}\\
-qtycon  &::= \tav [ \; modid \ttt{.} \; ] \tav tycon \\
-gtycon  &::=\tav gtycon \\
-        &\tab \alt \ttt{()} &&\text{(unit type)}\\
-        &\tab \alt \ttt{[]} &&\text{(list constructor)}\\
-        &\tab \alt \ttt{->} &&\text{(function constructor)}\\
-        &\tab \alt \ttt{( ,}\tav \{ \; \ttt{,} \; \}\ttt{)} &&\text{(tupling constructor)}\\
+	special &::=\tav \ttt{(} \alt \ttt{)} \alt \ttt{,} \alt \ttt{;} \alt \ttt{[} \alt \ttt{]} \alt \ttt{`} \alt \ttt{\{} \alt \ttt{\}}\\
+	reservedop  &::=\tav \ttt{..} \alt \ttt{:} \alt \ttt{::} \alt \ttt{=} \alt \backslash \alt \ttt{|} \alt \ttt{<-} \alt \ttt{->} \\
+	&\tab \alt \ttt{@} \alt \sim \alt \ttt{=>}\\
+	ascDigit    &::=\tav     \ttt{0} \alt \ttt{1} \alt \ldots \alt \ttt{9}\\
+	ascSmall    &::=\tav     \ttt{a} \alt \ttt{b} \alt \ldots \alt \ttt{z}\\
+	ascLarge    &::=\tav     \ttt{A} \alt \ttt{B} \alt \ldots \alt \ttt{Z}\\
+	ascSymbol   &::=\tav     \ttt{!} \alt \ttt{\#} \alt \ttt{\$} \alt \ttt{\%} \alt \ttt{\&} \alt \ttt{*} \alt \ttt{+} \alt \ttt{.} \alt \ttt{/} \alt \ttt{<} \\
+	&\tab \alt \ttt{=} \alt \ttt{>} \alt \ttt{?} \alt \ttt{@} \alt \backslash \alt \hat{} \alt \ttt{|} \alt \ttt{-} \alt \sim \\
+	uniDigit    &::=\tav     \text{Any Unicode decimal digit}\\
+	uniSmall    &::=\tav     \text{Any Unicode lowercase letter}\\
+	uniLarge    &::=\tav     \text{Any uppercase or titlecase Unicode letter}\\
+	uniSymbol   &::=\tav     \text{Any Unicode symbol or punctuation}\\
+	digit       &::=\tav     ascDigit \alt uniDigit\\
+	small       &::=\tav     ascSmall \alt uniSmall \alt \ttt{\_}\\
+	large       &::=\tav ascLarge \alt uniLarge \\
+	symbol      &::=\tav ascSymbol \alt uniSymbol_{< special \alt \ttt{\_} \alt \ttt{:} \alt \ttt{"} \alt \ttt{'} >} \\
+	reserveid   &::= \tav \ttt{case} \alt \ttt{class} \alt \ttt{data} \alt \ttt{default} \alt \ttt{deriving} \alt \ttt{do} \alt \ttt{else} \\
+	&\tab \alt \ttt{if} \alt \ttt{import} \alt \ttt{in} \alt \ttt{infix} \alt \ttt{infixl} \alt \ttt{infixr} \alt \ttt{instance} \\
+	&\tab \alt \ttt{let} \alt \ttt{module} \alt \ttt{newtype} \alt \ttt{of} \alt \ttt{then} \alt \ttt{type} \alt \ttt{where} \alt \ttt{\_} \\
+	varid       &::= \tav ( \; small \tav \{ \; small \alt large \alt digit \alt \textbf{'} \; \} )_{< reserveid >}\\
+	conid       &::= \tav large \tav \{ \; small \alt large \alt digit \alt \ttt{'} \; \} && \text{(constructors)} \\
+	consym      &::= \tav ( \; \ttt{:} \tav \{ \; symbol \alt \ttt{:} \; \} \; )_{< reservedop >} \\
+	tyvar       &::= \tav varid && \text{(type variables)} \\
+	tycon       &::= \tav conid && \text{(type constructors)} \\
+	simpletype  &::=\tav tycon \tav tyvar_1 \tav \ldots \tav tyvar_k && \text{($k \geq 0$)} \\
+	modid   &::=\tav conid  && \text{(modules)}\\
+	qtycon  &::= \tav [ \; modid \ttt{.} \; ] \tav tycon \\
+	gtycon  &::=\tav gtycon \\
+	&\tab \alt \ttt{()} &&\text{(unit type)}\\
+	&\tab \alt \ttt{[]} &&\text{(list constructor)}\\
+	&\tab \alt \ttt{->} &&\text{(function constructor)}\\
+	&\tab \alt \ttt{( ,}\tav \{ \; \ttt{,} \; \}\ttt{)} &&\text{(tupling constructor)}\\
 \end{flalign*}
 \begin{flalign*}
-btype   &::=\tav [\; btype \;] \tav atype &&\text{(type application)}\\
-type    &::=\tav btype \tav [\; \ttt{->} \tav type ] &&\text{(function type)}\\
-atype   &::=\tav gtycon &&\\
-        &\tab \alt tyvar &&\\
-        &\tab \alt \ttt{(}type_1, ..., type_k\ttt{)} &&\text{(tuple type, $k\geq 2$)}\\
-        &\tab \alt \ttt{[} type \ttt{]} &&\text{(list type)}\\
-        &\tab \alt \ttt{(} type \ttt{)} &&\text{(parenthesized constructor)}\\
-con     &::=\tav conid \alt ( consym ) && \text{(constructor)}\\
-constr  &::=\tav con \tav [\ttt{!}] \tav atype_1 \ldots \tav [\ttt{!}] \tav atype_k &&\text{(arity $con = k$, $k \geq 0$)}\\
-constrs &::=\tav constr_1 \alt \ldots \alt constr_n &&\text{($n \geq 0$)}\\
-topdecl &::=\tav \ttt{data} \tav simpletype \tav \ttt{=} \tav constrs &&
+	btype   &::=\tav [\; btype \;] \tav atype &&\text{(type application)}\\
+	type    &::=\tav btype \tav [\; \ttt{->} \tav type ] &&\text{(function type)}\\
+	atype   &::=\tav gtycon &&\\
+	&\tab \alt tyvar &&\\
+	&\tab \alt \ttt{(}type_1, ..., type_k\ttt{)} &&\text{(tuple type, $k\geq 2$)}\\
+	&\tab \alt \ttt{[} type \ttt{]} &&\text{(list type)}\\
+	&\tab \alt \ttt{(} type \ttt{)} &&\text{(parenthesized constructor)}\\
+	con     &::=\tav conid \alt ( consym ) && \text{(constructor)}\\
+	constr  &::=\tav con \tav [\ttt{!}] \tav atype_1 \ldots \tav [\ttt{!}] \tav atype_k &&\text{(arity $con = k$, $k \geq 0$)}\\
+	constrs &::=\tav constr_1 \alt \ldots \alt constr_n &&\text{($n \geq 0$)}\\
+	topdecl &::=\tav \ttt{data} \tav simpletype \tav \ttt{=} \tav constrs &&
 \end{flalign*}
 %%
 
@@ -605,9 +614,9 @@ Let's show the essential elements of the Prolog in real programs, but without be
 %%
 Computer programming in Prolog consists of:
 \begin{itemize}
-    \item Specifying some \textit{facts} about object and their relationships
-    \item Defining some \textit{rules} about objects and their relationships
-    \item Asking \textit{questions} about objects and their relationships
+	\item Specifying some \textit{facts} about object and their relationships
+	\item Defining some \textit{rules} about objects and their relationships
+	\item Asking \textit{questions} about objects and their relationships
 \end{itemize}
 %%
 
@@ -644,24 +653,24 @@ A logical variable stands for an unspecified individual and is used accordingly.
 A variable allows a better way of expressing the query as \ttt{father(X, luke)?} to which the answer is \ttt{X=anakin}. Used in this way, \textit{variables are a means of summarizing many queries}. A query containing a variable asks whether there is a value for the variable that makes the query a logical consequence of the program.
 %%
 \begin{definition*}[Variable]
-    \textit{Variables} in logic programs behave differently from variables in conventional programming languages. They stand for an unspecified but single entity rather than for a store location in memory.
+	\textit{Variables} in logic programs behave differently from variables in conventional programming languages. They stand for an unspecified but single entity rather than for a store location in memory.
 \end{definition*}
 When Prolog uses a variable, the variable can be either \textit{instantiated} or \textit{not instantiated}
 %%
 \begin{definition*}[Instantiation]
-    A variable is \textit{instantiated} when there is an object that the variable stands for. A variable is not instantiated when what the variable stands for is not yet known.
+	A variable is \textit{instantiated} when there is an object that the variable stands for. A variable is not instantiated when what the variable stands for is not yet known.
 \end{definition*}
 Having introduced variables, we can define a \textit{term}.
 %%
 \begin{definition*}[Term]
-    A \textit{term} is the single data structure in logic programs. The definition is inductive. Constants and variables are terms. Also, compound terms or structures are terms.
+	A \textit{term} is the single data structure in logic programs. The definition is inductive. Constants and variables are terms. Also, compound terms or structures are terms.
 \end{definition*}
 Prolog can distinguish variables from terms because any term beginning with a capital letter is taken to be a variable.
 %%
 \begin{definition*}[Compound Term]
-    A \textit{compound term} comprises a \textbf{functor} (called the principal functor of the term) and a sequence of one or more arguments, which are terms. A \textit{functor} is characterized by its name, which is an atom, and its arity or number of arguments.\\\\
-    %%
-    Sintatically, compound terms have the form $f(t_1, t_2, \ldots, t_n)$, where the functor has name $f$ and is of arity $n$ and the $t_i$ with $1 \leq i \leq n$, are the arguments.
+	A \textit{compound term} comprises a \textbf{functor} (called the principal functor of the term) and a sequence of one or more arguments, which are terms. A \textit{functor} is characterized by its name, which is an atom, and its arity or number of arguments.\\\\
+	%%
+	Sintatically, compound terms have the form $f(t_1, t_2, \ldots, t_n)$, where the functor has name $f$ and is of arity $n$ and the $t_i$ with $1 \leq i \leq n$, are the arguments.
 \end{definition*}
 %%
 Examples of compound terms include \ttt{s(0)}, \ttt{hot(milk)}, \ttt{name(john,doe)}, \ttt{list(a,list(b,nil))}, \ttt{foo(X)}, and \ttt{tree(tree(nil,3,nil) ,5,R)}.\\\\
@@ -669,7 +678,7 @@ Examples of compound terms include \ttt{s(0)}, \ttt{hot(milk)}, \ttt{name(john,d
 Queries, goals, and more general terms where variables do not occur are called \textit{ground}. Where variables do occur, they are called \textit{nonground}. For example, \ttt{foo(a, b)} is \textit{ground}, whereas \ttt{bar(X)} is \textit{nonground}.
 %%
 \begin{definition*}[Substitution]
-    A \textit{substitution} is a finite set (possibly empty) of pairs of the form $X_i = t_i$, where $X_i$ is a variable and $t_i$ is a \textit{term}, and $X_i \neq X_j$, for every $i \neq j$, and $X_i$ does not occur in $t_j$, for any $i$ and $j$.
+	A \textit{substitution} is a finite set (possibly empty) of pairs of the form $X_i = t_i$, where $X_i$ is a variable and $t_i$ is a \textit{term}, and $X_i \neq X_j$, for every $i \neq j$, and $X_i$ does not occur in $t_j$, for any $i$ and $j$.
 \end{definition*}
 %%
 An example of a substitution consisting of a single pair is \ttt{X=anakin}. Substitution can be applied to terms. The result of applying a substitution $\sigma$  to a term $W$, denoted by $W \sigma$, is the term obtained by replacing every occurrence of $X$ by $t$ in $W$, for every pair $X=t$ in $\sigma$.\\\\
@@ -677,7 +686,7 @@ An example of a substitution consisting of a single pair is \ttt{X=anakin}. Subs
 The result of applying \ttt{X=anakin} to the term \ttt{father(X, luke)} is the term \ttt{anakin, luke)}.
 %%
 \begin{definition*}[Instance]
-    $X$ is an \textit{instance} of $W$ if there is a substitution $\sigma$ such that $X = W \sigma$
+	$X$ is an \textit{instance} of $W$ if there is a substitution $\sigma$ such that $X = W \sigma$
 \end{definition*}
 %%
 The goal \ttt{father(anakin, luke)} is an instance of \ttt{father(X, luke)} by definition. Similarly, \ttt{plus(1,0,1)} is an (one of them) instance of \ttt{plus(1,Y,X)}.\\\\
@@ -700,9 +709,9 @@ This brings us to the third and most important statement in logic programming, a
 %%
 \pagebreak
 \begin{definition*}[Rules]
-    \textit{Rules} are statements of the form $$A \leftarrow B_1, B_2, \ldots B_n$$ where $n \geq 0$.\\\\
-    %%
-    The goal $A$ is the \textit{head} of the rule, and the conjunction of goals $B_1, B_2, \ldots B_n$ is the body of the rule.
+	\textit{Rules} are statements of the form $$A \leftarrow B_1, B_2, \ldots B_n$$ where $n \geq 0$.\\\\
+	%%
+	The goal $A$ is the \textit{head} of the rule, and the conjunction of goals $B_1, B_2, \ldots B_n$ is the body of the rule.
 \end{definition*}
 %%
 Rules, fats, and queries are also called \textit{Horn clauses} or \textit{clauses} for short. Note that a fact is just a special case of a rule when $n = 0$. Facts are also called \textit{unit clauses}. We also have a special name for clauses with one goal in the body, namely, when $n = 1$. Such a clause is called an \textit{iterative clause}. As for facts variables appearing in rules are universally quantified, and their scope is the whole rule.\\\\
@@ -710,12 +719,12 @@ Rules, fats, and queries are also called \textit{Horn clauses} or \textit{clause
 A rule expressing the \textit{enemy} relationship could be
 %%
 \begin{equation*}
-    \ttt{enemy(X,Y)} \leftarrow \ttt{jedi(X),sith(Y).}
+	\ttt{enemy(X,Y)} \leftarrow \ttt{jedi(X),sith(Y).}
 \end{equation*}
 %%
 Similarly one can define a rule expressing the \textit{master} relationship
 \begin{equation*}
-    \ttt{master(X,Y)} \leftarrow \ttt{sith(X),sith(Y).}
+	\ttt{master(X,Y)} \leftarrow \ttt{sith(X),sith(Y).}
 \end{equation*}
 %%
 Rules can be viewed in two ways. First, they are a means of expressing new or complex queries in terms of simple queries. A query \ttt{enemy(luke,Y)?} to the program that contains the preceding rule for \ttt{enemy} is translated to the query \ttt{jedi(luke),sith(Y)?} according to the rule. A new query about the \ttt{enemy} relationship has been built from simple queries involving \ttt{jedi} and \ttt{sith} relationships. Interpreting rules in this way is their \textit{procedural} reading.\\\\
@@ -728,15 +737,15 @@ Although formally all variables in a clause are universally quantified, we will 
 For example, the \ttt{enemy} rule can be read: "For all $X$ and $Y$, $X$ is an enemy of $Y$ if there exists a couple of $X$ and $Y$, such that $X$ is a Jedi and $Y$ is a Sith". The formal justification for this verbal transformation will not be given, and we treat it just as a convenience.
 %%
 \begin{definition*}
-    The law of \textit{universal modus ponens} says that from the rule $$R = (A \leftarrow B_1, B_2, \dots B_n)$$ and the facts $B'_1$, $B'_2$, $\dots$ $B'_n$, $A'$ can be deduced if  $$A' \leftarrow B'_1, B'_2, \dots B'_n$$ is an instace of $R$.
+	The law of \textit{universal modus ponens} says that from the rule $$R = (A \leftarrow B_1, B_2, \dots B_n)$$ and the facts $B'_1$, $B'_2$, $\dots$ $B'_n$, $A'$ can be deduced if  $$A' \leftarrow B'_1, B'_2, \dots B'_n$$ is an instace of $R$.
 \end{definition*}
 %%
 \begin{definition*}
-    A \textit{logical program} is a finite set of rules.
+	A \textit{logical program} is a finite set of rules.
 \end{definition*}
 %%
 \begin{definition*}
-    An existentially quantified goal $G$ is a logical consequence of a program $P$ if there is a clause in $P$ with a ground instance $A \leftarrow B_1, B_2, \cdot B_n$ with $n \geq 0$ such that $B_1, B_2, \cdot B_n$ are logical consequences of $P$, and $A$ is an instance of $G$.
+	An existentially quantified goal $G$ is a logical consequence of a program $P$ if there is a clause in $P$ with a ground instance $A \leftarrow B_1, B_2, \cdot B_n$ with $n \geq 0$ such that $B_1, B_2, \cdot B_n$ are logical consequences of $P$, and $A$ is an instance of $G$.
 \end{definition*}
 \pagebreak
 %%
@@ -784,38 +793,207 @@ In the next chapter, we will see step by step how we should define the primitive
 
 \chapter{Syntax-Translation Mechanism}
 
+In this chapter, we will see how the syntax-translation mechanism which maps Haskell expression to Prolog expression should looks like. In order to do that, we will see so many examples of what kind of changes we need to make. They will give us a basic guide of how we must define the mechanism. First of all, we will see how to translate primitive types. That is, what we need to translate the syntax of the type expression \ttt{Int}, \ttt{String}, or \ttt{Bool} usually used in the Haskell functions or ADTs declaration to a Prolog program. Then, we will see what is the equivalent expression for some trivial algebra data types like \textit{lists}, \textit{binary trees}, and \textit{rose trees}; that is, how to define a predicate that holds if some given expression matches the equivalent Prolog structure of those Haskell's ADTs without keeping in mind any value or the type of the values that contain them. Thank to that, we will be able to formalized a Prolog library or tool for some general primitive types generations. We will talk about what kind of problems those generations carry on and how to deal with. At this point we've mentioned only monotypes case, but we will talk about polymorfism and the way for generating a value related to the equivalent Prolog \textit{type} for a given Haskell's algebra data type declaration with a polymorphic type. Finally, we will generalize those changes based on the translation of the Haskell's formal grammar.
+
+\section*{TODO. Cosas que faltan de este capitulo}
+
+Esto esta aun en borrador. Fataria:
+\begin{itemize}
+	\item \sout{Crear una pequeña introduccion de que vamos a hacer en esta seccion}
+	\item Explicar el codigo Prolog que se ha desarrollado para la generacion de los tipos primitivos (archivos all.pl, char.pl, etc.)
+	\item Poner ejemplos de como funciona ese codigo Prolog
+	\item Introducir la siguiente funcion de traduccion de la sintaxis
+	\item Definirla correcta y formalmente
+	\item Hacer un par de ejemplos que aclaren
+	\item No tengo muy claro donde colocar el codigo que he hecho sobre list, bt, bst, rose tree, etc. Preguntar a Julio.
+\end{itemize}
+\pagebreak
+
+\section{Monomorfism Types}
+
+For our first steps, we can deal with the most basic case: those scenarios where adts expressions are defined with one concrete monotype. To do that, we can avoid keeping in mind the type or fixing the type expression in the formal grammar definition and simply try to generate their structure with it.\\
+%%
+
+Let's define the syntax translation function. Let $\mathcal{H}$, $\mathcal{P}$ the set of well-defined expression in Haskell and Prolog, respectively. Following the formal grammar definition for algebra data type expressions in Haskell:
+\begin{flalign*}
+	\ttt{data} \tav simpletype =& \tav constrs && \\
+	& \updownarrow  && \\
+	\ttt{data} \tav tycon \tav tyvar_1 \tav tyvar_2 \tav \ldots \tav tyvar_k 	=& \tav constr_1 \tav | \tav constr_2 \tav | \tav \ldots \tav | \tav constr_n && \\
+	& \updownarrow   && \\
+	\ttt{data} \tav tycon \tav tyvar_1 \tav tyvar_2 \tav \ldots \tav tyvar_k 	=& \tav con_1 \tav atype_{1,1} \tav atype_{1,2} \tav \ldots \tav atype_{1,k_1} \tav | && \\
+	& \tav con_2 \tav atype_{2,1} \tav atype_{2,2} \tav \ldots \tav atype_{2,k_2} \tav | && \\
+	& \tav \ldots \tav && \\
+	& \tav con_n \tav atype_{n,1} \tav atype_{n,2} \tav \ldots \tav atype_{n,k_n} \tav | && \\
+\end{flalign*}
+%%
+We can define $\psi$ the function that sends $\mathcal{H}_{\ttt{ADT}} \subsetneq \mathcal{H}$, the subset of well-defined algebra data types expressions in Haskell, to Prolog expressions as follow: $$\psi: \mathcal{H}_{\ttt{ADT}} \longrightarrow \mathcal{P} $$
+%%
+\begin{flalign*}
+	\ttt{data} \tav tycon \tav \tau_1 \tav \tau_2 \tav \ldots \tav \tau_k 	=& \tav con_1 \tav \alpha_{1,1} \tav \alpha_{1,2} \tav \ldots \tav \alpha_{1,k_1} \tav | && \\
+	& \tav con_2 \tav \alpha_{2,1} \tav \alpha_{2,2} \tav \ldots \tav \alpha_{2,k_2} \tav | && \\
+	& \tav \ldots \tav && \\
+	& \tav con_n \tav \alpha_{n,1} \tav \alpha_{n,2} \tav \ldots \tav \alpha_{n,k_n} \tav | && \\
+\end{flalign*}
+$$\SLongdownarrow \psi$$
+\begin{flalign*}
+	\ttt{rule}_1: \tav \_ tycon (T_1, \tav T_2, \tav \ldots, \tav T_k, \; \_ con_1(X_{1,1}, ..., X_{1,k_1})) :-&
+	\tav pred_{1, 1}(\Omega_{1,1}, \tav X_{1,1}), && \\
+	& \tav pred_{1, 2}(\Omega_{1,2}, \tav X_{1,2}), && \\
+	& \tav \ldots \tav && \\
+	& \tav pred_{1, k_1}(\Omega_{1,k_1}, \tav X_{1,k_1}). && \\
+	\\
+	\ttt{rule}_2: \tav \_ tycon (T_1, \tav T_2, \tav \ldots, \tav T_k, \; \_ con_2(X_{2,1}, ..., X_{2,k_2})) :-&
+	\tav pred_{2, 1}(\Omega_{2,1}, \tav X_{2,1}), && \\
+	& \tav pred_{2, 2}(\Omega_{2,2}, \tav X_{2,2}), && \\
+	& \tav \ldots \tav && \\
+	& \tav pred_{2, k_2}(\Omega_{2,k_2}, \tav X_{2,k_2}). && \\
+	\vdots &&& \\
+	\ttt{rule}_n: \tav \_ tycon (T_1, \tav T_2, \tav \ldots, \tav T_k, \; \_ con_n(X_{n,1}, ..., X_{n,k_n})) :-&
+	\tav pred_{n, 1}(\Omega_{n,1}, \tav X_{n,1}), && \\
+	& \tav pred_{n, 2}(\Omega_{n,2}, \tav X_{n,2}), && \\
+	& \tav \ldots \tav && \\
+	& \tav pred_{n, k_n}(\Omega_{n,k_n}, \tav X_{n,k_n}). && \\
+	\\\\
+\end{flalign*}
+%%
+where:
+%%
+\begin{itemize}
+	\item The expression starting with $\_$ represent the same expression in Haskell with all their characters in lowecarse. Let's see some examples:
+	      	      
+	      \begin{example}
+	      	Let's suppose the definition of Binary Search Tree in Haskell for \ttt{Int} type:
+	      	\lstinputlisting[language=Haskell, label=bstree-haskell-monotype]{code/chapter3/bst-monotype.hs}
+	      	Here, you can see that $tycon \equiv \ttt{BTree}$, $con_1 \equiv \ttt{Nil}$ and $con_2 \equiv \ttt{T}$, therefore $\_tycon \equiv \ttt{btree}$, $\_con_1 \equiv \ttt{nil}$ and $\_con_2 \equiv \ttt{t}$, respectively.
+	      \end{example}
+	      \begin{example}
+	      	Let's suppose the definition of Either in Haskell for both \ttt{String} and \ttt{Int} types:
+	      	\lstinputlisting[language=Haskell, label=bstreehaskell]{code/chapter3/either-monotype.hs}
+	      	Here, you can see that $tycon \equiv \ttt{Either}$, $con_1 \equiv \ttt{Left}$ and $con_2 \equiv \ttt{Right}$, therefore $\_tycon \equiv \ttt{either}$, $\_con_1 \equiv \ttt{left}$ and $\_con_2 \equiv \ttt{right}$, respectively.
+	      \end{example}
+	      
+	\item For all $\tau_i$ with $i \in \{1, \ldots k \}$, there exists a variable in Prolog expression $T_i$ that represents the type that it will generate.
+	\begin{example}
+		Using againg the definition of Either showed before:
+		\lstinputlisting[language=Haskell, label=bstreehaskell]{code/chapter3/either-monotype.hs}
+		Here, you can see that $\tau_1 = \ttt{String}$, $\tau_2 = \ttt{Int}$, therefore $T_1 = \ttt{string}$ and $T_2 = \ttt{int}$, respectively. It is representative, in fact, you could have defined $T_1 = \ttt{str\_type}$, $T_2 = \ttt{int\_type}$ instead.
+	\end{example}
+	\item For all $con_i$ with $i \in \{1, \ldots n \}$, there exists a $\ttt{rule}_i$ Prolog rule that holds and generates the correspond translated expression from the Haskell's ADT constructor $i$. For instance, from the definition of the binary search tree , we obtain two Prolog rules that form a Prolog program.
+	\item For all $\alpha_{i,j}$ with $(i,j) \in \{1, \ldots n \} \times \{1, \ldots k_i \}$, there exists a variable in Prolog expression $X_{i,j}$ represents the symbolic variable for the generation of the element in the position $j$ from the constructor $i$ which is the Haskell type $\alpha_{i,j}$ in the Haskell's ADT definition.
+	\item For all $\alpha_{i,j}$ with $(i,j) \in \{1, \ldots n \} \times \{1, \ldots k_i \}$, there exists $\Omega_{i,j} \in P(\{ T_1 , T_2, \ldots T_k \}) $ a set of our types expressions in Prolog that correspond those types which the definition of $\alpha_{i,j}$ depends on at the Haskell's algebra data type definition.
+	%%
+	\begin{example}
+		Let's suppose the definition of the \ttt{SomethingWeird} for \ttt{Int}, \ttt{String} and \ttt{Bool} types:
+		\lstinputlisting[language=Haskell, label=somethingweird-haskell-monotype]{code/chapter3/somethingweird-monotype.hs}
+		Here, $\tau_1 = \ttt{Int}, \tav \tau_2=\ttt{String} \tav \tau_3=\ttt{Bool}$, we can define $T_1 = \ttt{int}, \tav T_2=\ttt{string} \tav T_3=\ttt{bool}$
+		\begin{itemize}
+			\item As \ttt{None} constructor doesn't require any type to be defined, therefore $\Omega_{1,1} = \emptyset$.
+			\item As \ttt{Something} constructor requires \ttt{Int}, that is, $a_{2,1} = \ttt{Int}$ and it needs $\ttt{Int}$ to be defined, therefore $\Omega_{2,1} = \{\ttt{int}\} \subset \{ \ttt{int}, \ttt{string}, \ttt{bool} \}$.
+			\item As $\; \ttt{Weird} \;$ constructor requires both types \ttt{SomethingWeird Int String Bool} and  \ttt{String}, that is, $a_{3,1} = \ttt{SomethingWeird Int String Bool}$ and $a_{3,2} = \ttt{String}$, therefore $\Omega_{3,1} = \{\ttt{int}, \ttt{string}, \ttt{bool}\} \subseteq \{\ttt{int}, \ttt{string}, \ttt{bool}\}$ and $\Omega_{3,2} = \{\ttt{string}\} \subset \{\ttt{int}, \ttt{string}, \ttt{bool}\}$.
+		\end{itemize}
+	\end{example}
+	\item For all $\alpha_{i,j}$ with $(i,j) \in \{1, \ldots n \} \times \{1, \ldots k_i \}$, there exists a predicate $pred_{i,j}$ that resolve $X_{i,j}$ using $\Omega_{i,j}$.\\\\
+	%%
+	When $\alpha_{i,j}$ is an Haskell's primitive type, that means $\Omega_{i,j} = \{T_{\omega_{i,j}}\}$ with $T_{\omega_{i,j}} \in \{ T_1 , T_2, \ldots T_k \}$, the predicate $pred_{i,j}$ can be defined as the $gen$ generation function. That is, $pred_{i,j}(\Omega_{i,j}, X_{i,j}) \equiv gen(T_{\omega_{i,j}}, X_{i,j})$, where the $gen$ generation function is a Prolog program that generate a value of type $\tau_{\omega_{i,j}} \in \{ \tau_1 , \tau_2, \ldots \tau_k \}$ .
+
+\end{itemize}
+%%
+In order to clarify this definition, we can introduce some examples:
+
+
+\section{Monomorfism Types with Bounded}
+
+\section{Polymorfism Types}
+
+Let's define a syntax translation function. Let $F$ be the function that sends the syntax of Haskell's ADTs to a Prolog program, $$F: \ttt{Haskell}_{\ttt{ADT}} \longrightarrow \ttt{Prolog}$$
+%%
+\begin{flalign*}
+	\ttt{data} \tav simpletype =& \tav constrs && \\
+	\ttt{data} \tav tycon \tav t_1 \tav t_2 \tav \ldots \tav t_k 	=& \tav constr_1 \tav | \tav constr_2 \tav | \tav \ldots \tav | \tav constr_n && \\
+	\ttt{data} \tav tycon \tav t_1 \tav t_2 \tav \ldots \tav t_k 	=& \tav con_1 \tav atype_{1,1} \tav atype_{1,2} \tav \ldots \tav atype_{1,k_1} \tav | && \\
+	& \tav con_2 \tav atype_{2,1} \tav atype_{2,2} \tav \ldots \tav atype_{2,k_2} \tav | && \\
+	& \tav \ldots \tav && \\
+	& \tav con_n \tav atype_{n,1} \tav atype_{n,2} \tav \ldots \tav atype_{n,k_n} \tav | && \\
+\end{flalign*}
+$$\Downarrow \text{ ( Using $F$ )}$$
+\begin{flalign*}
+	\_ tycon (T_1, \tav T_2, \tav \ldots, \tav T_k, \; \_ con_1(X_{1,1}, ..., X_{1,k_1})) :-&
+	\tav pred_{1,1}(T_1, \tav T_2, \tav \ldots, \tav T_k, \tav X_{1,1}), && \\
+	& \tav pred_{1,2}(T_1, \tav T_2, \tav \ldots, \tav T_k, \tav X_{1,2}), && \\
+	& \tav \ldots \tav && \\
+	& \tav pred_{1,k}(T_1, \tav T_2, \tav \ldots, \tav T_k, \tav X_{1,k_1}). && \\
+	\\
+	\_ tycon (T_1, \tav T_2, \tav \ldots, \tav T_k, \; \_ con_2(X_{2,1}, ..., X_{2,k_2})) :-&
+	\tav pred_{2,1}(T_1, \tav T_2, \tav \ldots, \tav T_k, \tav X_{2,1}), && \\
+	& \tav pred_{2,2}(T_1, \tav T_2, \tav \ldots, \tav T_k, \tav X_{2,2}), && \\
+	& \tav \ldots \tav && \\
+	& \tav pred_{2,k}(T_1, \tav T_2, \tav \ldots, \tav T_k, \tav X_{2,k_2}). && \\
+	\\
+	\vdots &&& \\\\
+	\_ tycon (T_1, \tav T_2, \tav \ldots, \tav T_k, \; \_ con_n(X_{n,1}, ..., X_{n,k_n})) :-&
+	\tav pred_{n,1}(T_1, \tav T_2, \tav \ldots, \tav T_k, \tav X_{n,1}), && \\
+	& \tav pred_{n,2}(T_1, \tav T_2, \tav \ldots, \tav T_k, \tav X_{n,2}), && \\
+	& \tav \ldots \tav && \\
+	& \tav pred_{n,k}(T_1, \tav T_2, \tav \ldots, \tav T_k, \tav X_{n,k_n}). && \\
+	\\
+\end{flalign*}
+where:
+%%
+\begin{itemize}
+	\item The expression starting with $\_$ represent the same expression in Haskell but with all their characters in lowecarse. Let's see some examples:
+	      	      
+	      \begin{example}
+	      	Let's suppose the definition of Binary Search Tree in Haskell.
+	      	\lstinputlisting[language=Haskell, label=bstreehaskell]{code/example/bst.hs}
+	      	Here, you can see that $tycon \equiv \ttt{BTree}$, $con_1 \equiv \ttt{Nil}$ and $con_2 \equiv \ttt{T}$, therefore $\_tycon \equiv \ttt{btree}$, $\_con_1 \equiv \ttt{nil}$ and $\_con_2 \equiv \ttt{t}$, respectively.
+	      \end{example}
+	      \begin{example}
+	      	Let's suppose the definition of Either in Haskell.
+	      	\lstinputlisting[language=Haskell, label=bstreehaskell]{code/example/either.hs}
+	      	Here, you can see that $tycon \equiv \ttt{Either}$, $con_1 \equiv \ttt{Left}$ and $con_2 \equiv \ttt{Right}$, therefore $\_tycon \equiv \ttt{either}$, $\_con_1 \equiv \ttt{left}$ and $\_con_2 \equiv \ttt{right}$, respectively.
+	      \end{example}
+	      
+	\item For all $t_i$ with $i \in \{1, \ldots k \}$, there exists a variable in Prolog expression $T_i$ that represents the type that it will generate.
+	\item For all $con_i$ with $i \in \{1, \ldots n \}$, there exists a Prolog expression that holds and generate the derived expression from the Haskell's ADT constructor $i$. For instance, from the definition of the binary search tree , we obtain two Prolog expression that form an \textit{or}-Prolog program.
+	\item For all $atype_{i,j}$ with $(i,j) \in \{1, \ldots n \} \times \{1, \ldots k_i \}$, there exists a variable in Prolog expression $X_{i,j}$ represents the symbolic variable for the generation of the element in the position $j$ from the constructor $i$ which is the Haskell type $atype_{i,j}$ in the Haskell's ADT definition.
+	\item For all $atype_{i,j}$ with $(i,j) \in \{1, \ldots n \} \times \{1, \ldots k_i \}$, there exists a predicate $pred_{i,j}$ that holds the type $atype_{i,j}$ in our Prolog definition.
+	\item For all $atype_{i,j}$ with $(i,j) \in \{1, \ldots n \} \times \{1, \ldots k_i \}$, if $atype_{i,j}$ represents either a primitive type or a polymorphic type, i.e. $atype_{i,j}$ has the Haskell primitive type expression or has the same one of any of these expressions $$t_1 \tav t_2, \tav \ldots, \tav t_k$$ then $pred_{i,j}$ is our defined generator function $gen(T_{i,j}, X_{i,j})$. Otherwhise, it will be our
+\end{itemize}
+
+
+
 \begin{thebibliography}{9}
-\bibitem{pbtfree}
-E. De Angelis, F. Fioravanti, A. Palacios, A. Pettorossi and M. Proietti. (2019). Property-Based Test Case Generators for Free. 10.1007/978-3-030-31157-5\_12. 
-
-\bibitem{genclp}
-V. Senni and F. Fioravanti. (2012). Generation of Test Data Structures Using Constraint Logic Programming. 7305. 115-131. 10.1007/978-3-642-30473-6\_10.
-
-\bibitem{effgenttransf}
-F. Fioravanti, M. Proietti and V. Senni. (2015). Efficient generation of test data structures using constraint logic programming and program transformation. Journal of Logic and Computation, vol. 25, no. 6, pp. 1263-1283, doi: 10.1093/logcom/ext071.
-
-\bibitem{smtbased}
-R. Peña, J. Sánchez-Hernández, M. Garrido and J. Sagredo. (2019) SMT-based Test-Case Generation with Complex Preconditions. Actas de las XIX Jornadas de Programación y Lenguajes (PROLE 219).
-
-\bibitem{intertypeoleg}
-O. Kiselyov and C. Shan. (2008). Interpreting types as abstract values. Formosan Summer School on Logic, Language, and Computation.
-
-\bibitem{rbtreehaskell}
-C. Okasaki. (1999). Red-black trees in a functional setting. Journal of Functional Programming, 9(4), 471-477. doi:10.1017/S0956796899003494
-
-\bibitem{cpierce}
-Benjamin C. Pierce. (2002). Introduction. Types and Programming Languages, MIT Press, 2002, pp.1-13.
-
-\bibitem{quickcheck}
-K. Claessen and J. Hughes. (2000). QuickCheck: a lightweight tool for random testing of Haskell programs. SIGPLAN Not. 35, 9, 268–279. https://doi.org/10.1145/357766.351266
-
-\bibitem{hasksynt}
-Haskell. Haskell 98. Syntax. https://www.haskell.org/onlinereport/syntax-iso.html
-
-\bibitem{haskdat}
-Haskell. Haskell 98. User-Defined Datatypes. https://www.haskell.org/onlinereport/decls.html
-
-
+	\bibitem{pbtfree}
+	E. De Angelis, F. Fioravanti, A. Palacios, A. Pettorossi and M. Proietti. (2019). Property-Based Test Case Generators for Free. 10.1007/978-3-030-31157-5\_12. 
+						
+	\bibitem{genclp}
+	V. Senni and F. Fioravanti. (2012). Generation of Test Data Structures Using Constraint Logic Programming. 7305. 115-131. 10.1007/978-3-642-30473-6\_10.
+						
+	\bibitem{effgenttransf}
+	F. Fioravanti, M. Proietti and V. Senni. (2015). Efficient generation of test data structures using constraint logic programming and program transformation. Journal of Logic and Computation, vol. 25, no. 6, pp. 1263-1283, doi: 10.1093/logcom/ext071.
+						
+	\bibitem{smtbased}
+	R. Peña, J. Sánchez-Hernández, M. Garrido and J. Sagredo. (2019) SMT-based Test-Case Generation with Complex Preconditions. Actas de las XIX Jornadas de Programación y Lenguajes (PROLE 219).
+						
+	\bibitem{intertypeoleg}
+	O. Kiselyov and C. Shan. (2008). Interpreting types as abstract values. Formosan Summer School on Logic, Language, and Computation.
+						
+	\bibitem{rbtreehaskell}
+	C. Okasaki. (1999). Red-black trees in a functional setting. Journal of Functional Programming, 9(4), 471-477. doi:10.1017/S0956796899003494
+						
+	\bibitem{cpierce}
+	Benjamin C. Pierce. (2002). Introduction. Types and Programming Languages, MIT Press, 2002, pp.1-13.
+						
+	\bibitem{quickcheck}
+	K. Claessen and J. Hughes. (2000). QuickCheck: a lightweight tool for random testing of Haskell programs. SIGPLAN Not. 35, 9, 268–279. https://doi.org/10.1145/357766.351266
+						
+	\bibitem{hasksynt}
+	Haskell. Haskell 98. Syntax. https://www.haskell.org/onlinereport/syntax-iso.html
+						
+	\bibitem{haskdat}
+	Haskell. Haskell 98. User-Defined Datatypes. https://www.haskell.org/onlinereport/decls.html
+						
+						
 \end{thebibliography}
 
 \end{document}

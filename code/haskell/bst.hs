@@ -1,1 +1,1 @@
-data BSTree a = Nil | T (BSTree a) (BSTree a) deriving Show
+data BSTree a = Nil | T a (BSTree a) (BSTree a) deriving Show
