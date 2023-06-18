@@ -1,0 +1,1 @@
+data BSTree = Nil | T Int BSTree BSTree

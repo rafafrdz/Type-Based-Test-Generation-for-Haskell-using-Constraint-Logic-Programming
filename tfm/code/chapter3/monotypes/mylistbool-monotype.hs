@@ -1,0 +1,1 @@
+data MyListBool = Nil | Cons Bool MyListBool

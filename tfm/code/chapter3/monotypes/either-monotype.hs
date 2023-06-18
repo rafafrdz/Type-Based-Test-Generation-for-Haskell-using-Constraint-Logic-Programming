@@ -1,0 +1,1 @@
+data Either = Left String | Right Int

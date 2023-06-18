@@ -1,0 +1,1 @@
+data MaybeInt = None | Some Int
