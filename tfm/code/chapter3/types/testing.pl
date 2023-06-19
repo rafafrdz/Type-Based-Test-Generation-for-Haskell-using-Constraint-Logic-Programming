@@ -25,3 +25,13 @@ either(right(X21)) 	:- gen_int(X21).				%% rule 2
 
 mylistbool(nil).																										%% rule 1
 mylistbool(cons(X21, X22)) 	:- gen_bool(X21), mylistbool(X22).	
+
+rstlist([]).
+rstlist([X|Xs]) :- rstlist(Xs), rst(X).
+
+rst(r(_,[])).
+rst(r(X11, X12)) :- gen_int(X11), rstlist(X12).
+
+
+bstree(nil).																														%% rule 1
+bstree(t(X21, X22, X23)) :- gen_int(X21), bstree(X22), bstree(X23).

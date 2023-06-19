@@ -1004,22 +1004,80 @@ Now, if you type \ttt{mylistbool(X)} in the Prolog's CLI, you will get a valid \
 \end{example}
 %%
 %%
-
-\begin{example}[Monotype Binary Search Tree]
-	Let's suppose the following definition:
-	\lstinputlisting[language=Haskell, label=bstree-haskell-monotype]{code/chapter3/monotypes/bst-monotype.hs}
-	Here:
+\begin{example}[Binary Search Tree]
+	Here we go again... Let's suppose the following Haskell ADT definition:
+	\lstinputlisting[language=Haskell, label=bst-haskell-monotype]{code/chapter3/monotypes/bst-monotype.hs}
+	We can observe it is a recursive definition, so here:
 	\begin{itemize}
-		\item $tycon \equiv \ttt{BTree}$, $con_1 \equiv \ttt{Nil}$ and $con_2 \equiv \ttt{T}$, therefore $\_tycon \equiv \ttt{btree}$, $\_con_1 \equiv \ttt{nil}$ and $\_con_2 \equiv \ttt{t}$, respectively.
-		\item 
+		\item $tycon \equiv \ttt{BSTree}$, $con_1 \equiv \ttt{Nil}$ and $con_2 \equiv \ttt{T}$, therefore $\_tycon \equiv \ttt{bstree}$, $\_con_1 \equiv \ttt{nil}$ and $\_con_2 \equiv \ttt{t}$, respectively.
+		\item As we have two consutrctor $con_1$ and $con_2$, therefore we have two rules, $\ttt{rule}_1$ and $\ttt{rule}_2$, respectively.
+		\item As \ttt{Nil} doesn't have any type in its definition, there is not any $a_{1,j}$ in its Haskell definition, so the $\ttt{rule}_1$ is the fact \ttt{mylistbool(nil)}.\\\\
+		%%
+		For the second constructor, there exists three $a_{2,1}$, $a_{2,2}$ and $a_{2,2}$ related to the expression \ttt{T Int BSTree BSTree}, that is $a_{2,1} = \ttt{Int}$, $a_{2,2} = \ttt{BSTree}$ and $a_{2,3} = \ttt{BSTree}$, so there exists three variables $X_{2,1}$, $X_{2,2}$, $X_{2,3}$ and three predicates $pred_{2,1}$, $pred_{2,2}$, $pred_{2,3}$ such that the rule $\ttt{rule}_2$ is defined as \\ \ttt{bstree(t(X21, X22, X23)) :- pred21(X21), pred22(X22), pred23(X23).}
 	\end{itemize}
+	%%
+	So finally, we can translate the Haskell definition showed above to the following Prolog program:\\
+\begin{lstlisting}[language=Prolog]
+bstree(nil).																														%% rule 1
+bstree(t(X21, X22, X23)) :- pred21(X21), pred22(X22), pred23(X23).			%% rule 2
+\end{lstlisting}
+On the otherhand, as we are dealing with monomorphic types, in this case with \ttt{Int} type, we can use the \ttt{Int} function generator introduced before:\\
+\begin{lstlisting}[language=Prolog]
+bstree(nil).																														%% rule 1
+bstree(t(X21, X22, X23)) :- gen_int(X21), pred22(X22), pred23(X23).			%% rule 2
+\end{lstlisting}
+Again, as $a_{2,2} = \ttt{BSTree}$, $a_{2,3} = \ttt{BSTree}$ and \ttt{BSTree}, we can define the Prolog rule as a recursive rule:\\
+\begin{lstlisting}[language=Prolog]
+bstree(nil).																														%% rule 1
+bstree(t(X21, X22, X23)) :- gen_int(X21), bstree(X22), bstree(X23).			%% rule 2
+\end{lstlisting}
+Now, if you type \ttt{bstree(X)} in the Prolog's CLI, you will get a valid \ttt{BSTree} generated value. Again, what happens here? Did you see? Okay, let's take a look one last example.
+\end{example}
+%%
+%%
+\begin{example}[Rose Tree]
+	Last dance! Let's suppose the following Haskell ADT definition:
+	\lstinputlisting[language=Haskell, label=rstree-haskell-monotype]{code/chapter3/monotypes/rstree-monotype.hs}
+	Here we can observe two things: Again, it is a recursive definition and it is defined using Haskell's list type constructor which we have not yet discussed. \\
+	%%
 	
+	Haskell lists are not really neither an algebra data type nor primitive type. It is a kind of algebra structure which is not formal defined as a \ttt{data}-Haskell expression. Therefore, its implementation in Prolog is different. For now, we will implement a particular generator of lists of Rose Trees, but when we talk about polymorphism, I will provide a generic generator of lists of any type. So, here:
+	\begin{itemize}
+		\item $tycon \equiv \ttt{RSTree}$ and $con_1 \equiv \ttt{R}$, therefore $\_tycon \equiv \ttt{rstree}$ and $\_con_1 \equiv \ttt{R}$, respectively.
+		\item As we have one consutrctor $con_1$, therefore we have only one rule, $\ttt{rule}_1$.
+		\item There exists two $a_{1,1}$ and $a_{1,2}$ related to the expression \ttt{R Int [RSTree]}, that is $a_{1,1} = \ttt{Int}$ and $a_{1,2} = \ttt{[RSTree]}$, so there exists two variables $X_{1,1}$, $X_{1,2}$, and two predicates $pred_{1,1}$, $pred_{1,2}$ such that the rule $\ttt{rule}_1$ is defined as \\ \ttt{rstree(r(X11, X12)) :- pred11(X11), pred12(X12).}
+	\end{itemize}
+	%%
+	So finally, we can translate the Haskell definition showed above to the following Prolog program:\\
+\begin{lstlisting}[language=Prolog]
+rstree(r(X11, X12)) :- pred11(X11), pred12(X12).					%% rule 1
+\end{lstlisting}
+On the otherhand, as we are dealing with monomorphic types, in this case with \ttt{Int} type, we can use the \ttt{Int} function generator introduced before:\\
+\begin{lstlisting}[language=Prolog]
+rstree(r(X11, X12)) :- gen_int(X11), pred12(X12).					%% rule 1
+\end{lstlisting}
+Here, for the predicate $pred_{1,2}$ which holds that $X_{1,2}$ is a list of Rose Trees, we will implement a generator of list of elements that hold our $\ttt{rule}_1$ \ttt{rstree}:
+\begin{lstlisting}[language=Prolog]
+rstreelist([]).
+rstreelist([X|Xs]) 	:- rstreelist(Xs), rstree(X).
+
+rstree(r(X11, X12)) :- gen_int(X11), rstreelist(X12).			%% rule 1
+\end{lstlisting}
+Now, if you type \ttt{rstree(X)} in the Prolog's CLI, you will get a valid \ttt{RSTree} generated value. Again, what happens here? Did you see? No? Okay, let's talk.
 \end{example}
 
+\section{Monomorphic Types with Bound}
 
-
-\section{Monomorphic Types with Bounded}
-
+When we try to generate recursively a structure in Prolog, it try to get all the space that the symbolics variables holds with respect the rules that participate in the resolution process. Moreover, Prolog has default resolution strategies that implie directly in the returned solutions. We won't deep in those details, if you are interested in how to implement more efficient resolution strategies, you can check \cite{effgenttransf}. What we want to get is completeness, a good enougth space of generated values for our purpose.\\\\
+%%
+To be more precise:
+\begin{itemize}
+	\item In case of the \ttt{MyListBool} algebra data type, we are just getting those values with \ttt{true}. We never get either \ttt{Cons(false, Nil)} or \ttt{Cons(false, Cons(true, Cons(false, Nil)))}.
+	\item In case of \ttt{BSTree}, we are resolving in a deep way the right-branch side, getting always \ttt{nil} in the left-branch side, for example. Our Binary Search Tree Prolog program returns us: $$\ttt{T(-483997780, Nil, T(349868009, Nil, T(-265947283, Nil, Nil)))}$$ and never $$\ttt{T(-483997780, T(-265947283, Nil, Nil), T(349868009, Nil, Nil))}$$
+	\item In case of \ttt{RSTree}, we are resolving in a deep way the inner-list side instead of getting another Rose Tree value in the most out list. Our Rose Tree Prolog program returns us: $$\ttt{R(-193684758, [R(-178049475, [R(186461544, [])])])}$$ and never $$\ttt{R(-193684758, [R(-178049475, []), R(186461544, [])])}$$
+\end{itemize}
+%%
+An approach that fits very good could be to define bouderies in the infinite or recursive structures. For instance, we can define the limit of elements in a list, or the depth in the branch of a binary search tree.
 \section{Polymorfism Types}
 
 We can define $\psi$ the function that sends $\mathcal{H}_{\ttt{ADT}} \subsetneq \mathcal{H}$, the subset of well-defined algebra data types expressions in Haskell, to Prolog expressions as follow: $$\psi: \mathcal{H}_{\ttt{ADT}} \longrightarrow \mathcal{P} $$
