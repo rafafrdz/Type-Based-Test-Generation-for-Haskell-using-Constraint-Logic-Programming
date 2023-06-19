@@ -794,23 +794,13 @@ In the next chapter, we will see step by step how we should define the primitive
 
 \chapter{Syntax-Translation Mechanism}
 
-In this chapter, we will see how the syntax-translation mechanism which maps Haskell expression to Prolog expression should looks like. In order to do that, we will see so many examples of what kind of changes we need to make. They will give us a basic guide of how we must define the mechanism. First of all, we will see how to translate primitive types. That is, what we need to translate the syntax of the type expression \ttt{Int}, \ttt{String}, or \ttt{Bool} usually used in the Haskell functions or ADTs declaration to a Prolog program. Then, we will see what is the equivalent expression for some trivial algebra data types like \textit{lists}, \textit{binary trees}, and \textit{rose trees}; that is, how to define a predicate that holds if some given expression matches the equivalent Prolog structure of those Haskell's ADTs without keeping in mind any value or the type of the values that contain them. Thank to that, we will be able to formalized a Prolog library or tool for some general primitive types generations. We will talk about what kind of problems those generations carry on and how to deal with. At this point we've mentioned only monotypes case, but we will talk about polymorfism and the way for generating a value related to the equivalent Prolog \textit{type} for a given Haskell's algebra data type declaration with a polymorphic type. Finally, we will generalize those changes based on the translation of the Haskell's formal grammar.
+In this chapter, we will define our syntax-translation function which maps Haskell expression to Prolog expression. In order to do that, I will introduce you a first approach to it and then, we will see so many examples of what kind of changes it does and how to do that.\\\\
+%%
+First of all, we will see a basic scenario where algebra data types are defined with fixed types, i.e., the monomorphic type cases. We will see how to translate primitive types and I will provide so many functions that help us to get those primitive types values guided by the syntax of Haskell's types. That is, what we need to translate the syntax of the type expression \ttt{Int}, \ttt{String}, or \ttt{Bool} usually used in the Haskell functions or ADTs declaration to a Prolog program. Then, we will see what is the equivalent expression for some trivial algebra data types like \textit{Maybe}, \textit{Either}, \textit{Binary Tree}, and so on.\\\\
+%%
+We will talk about what kind of problems those generations carry on and how to deal with. And finally, we will talk about polymorphism and the way for generating a value related to the equivalent Prolog \textit{type} for a given Haskell's algebra data type declaration with polymorphic types. The purpose is to generalize those changes based on the translation of Haskell's formal grammar step by step doing refinements from the step back to the next one in a progressive improvement process.
 
-\section*{TODO. Cosas que faltan de este capitulo}
-
-Esto esta aun en borrador. Fataria:
-\begin{itemize}
-	\item \sout{Crear una pequeña introduccion de que vamos a hacer en esta seccion}
-	\item Explicar el codigo Prolog que se ha desarrollado para la generacion de los tipos primitivos (archivos all.pl, char.pl, etc.)
-	\item Poner ejemplos de como funciona ese codigo Prolog
-	\item Introducir la siguiente funcion de traduccion de la sintaxis
-	\item Definirla correcta y formalmente
-	\item Hacer un par de ejemplos que aclaren
-	\item No tengo muy claro donde colocar el codigo que he hecho sobre list, bt, bst, rose tree, etc. Preguntar a Julio.
-\end{itemize}
-\pagebreak
-
-\section{Monomorphic Types}
+\section{Monomorphic Types} \label{ch:monomorphic-types}
 
 For our first steps, we can deal with the most basic case: those scenarios where adts expressions are defined with monomorphic types. To do that, we can avoid keeping in mind the type or fixing the type expression in the formal grammar definition and simply try to generate their structure with it.\\
 %%
@@ -1011,7 +1001,7 @@ Now, if you type \ttt{mylistbool(X)} in the Prolog's CLI, you will get a valid \
 	\begin{itemize}
 		\item $tycon \equiv \ttt{BSTree}$, $con_1 \equiv \ttt{Nil}$ and $con_2 \equiv \ttt{T}$, therefore $\_tycon \equiv \ttt{bstree}$, $\_con_1 \equiv \ttt{nil}$ and $\_con_2 \equiv \ttt{t}$, respectively.
 		\item As we have two consutrctor $con_1$ and $con_2$, therefore we have two rules, $\ttt{rule}_1$ and $\ttt{rule}_2$, respectively.
-		\item As \ttt{Nil} doesn't have any type in its definition, there is not any $a_{1,j}$ in its Haskell definition, so the $\ttt{rule}_1$ is the fact \ttt{mylistbool(nil)}.\\\\
+		\item As \ttt{Nil} doesn't have any type in its definition, there is not any $a_{1,j}$ in its Haskell definition, so the $\ttt{rule}_1$ is the fact \ttt{bstree(nil)}.\\\\
 		%%
 		For the second constructor, there exists three $a_{2,1}$, $a_{2,2}$ and $a_{2,2}$ related to the expression \ttt{T Int BSTree BSTree}, that is $a_{2,1} = \ttt{Int}$, $a_{2,2} = \ttt{BSTree}$ and $a_{2,3} = \ttt{BSTree}$, so there exists three variables $X_{2,1}$, $X_{2,2}$, $X_{2,3}$ and three predicates $pred_{2,1}$, $pred_{2,2}$, $pred_{2,3}$ such that the rule $\ttt{rule}_2$ is defined as \\ \ttt{bstree(t(X21, X22, X23)) :- pred21(X21), pred22(X22), pred23(X23).}
 	\end{itemize}
@@ -1066,7 +1056,7 @@ rstree(r(X11, X12)) :- gen_int(X11), rstreelist(X12).			%% rule 1
 Now, if you type \ttt{rstree(X)} in the Prolog's CLI, you will get a valid \ttt{RSTree} generated value. Again, what happens here? Did you see? No? Okay, let's talk.
 \end{example}
 
-\section{Monomorphic Types with Bound}
+\section{Monomorphic Types with Bounderies}
 
 When we try to generate recursively a structure in Prolog, it try to get all the space that the symbolics variables holds with respect the rules that participate in the resolution process. Moreover, Prolog has default resolution strategies that implie directly in the returned solutions. We won't deep in those details, if you are interested in how to implement more efficient resolution strategies, you can check \cite{effgenttransf}. What we want to get is completeness, a good enougth space of generated values for our purpose.\\\\
 %%
@@ -1077,9 +1067,61 @@ To be more precise:
 	\item In case of \ttt{RSTree}, we are resolving in a deep way the inner-list side instead of getting another Rose Tree value in the most out list. Our Rose Tree Prolog program returns us: $$\ttt{R(-193684758, [R(-178049475, [R(186461544, [])])])}$$ and never $$\ttt{R(-193684758, [R(-178049475, []), R(186461544, [])])}$$
 \end{itemize}
 %%
-An approach that fits very good could be to define bouderies in the infinite or recursive structures. For instance, we can define the limit of elements in a list, or the depth in the branch of a binary search tree.
+An approach that fits very good is to define bouderies for recursive structures. We can define the limit of elements in a list, or the depth in the branch of a binary search tree. For instance:\\\\
+%%
+Let's suppose the following Haskell ADT definition showed before:
+\lstinputlisting[language=Haskell, label=mylistbool-haskell-monotype]{code/chapter3/monotypes/mylistbool-monotype.hs}
+We know that using the syntax-translate mechanism $\psi$ defined in \ref{ch:monomorphic-types}, we obtaing the following Prolog program:
+\begin{lstlisting}[language=Prolog]
+	mylistbool(nil).																									%% rule 1
+	mylistbool(cons(X21, X22)) :- gen_bool(X21), mylistbool(X22).			%% rule 2
+\end{lstlisting}
+Let's consider a new variable \ttt{Length} that represents the length of \ttt{MyListBool}. We can refine our last program into this new one
+\begin{lstlisting}[language=Prolog]
+	mylistbool(0, nil).																								%% rule 1
+	mylistbool(Length, cons(X21, X22)) :-															%% rule 2
+		gen_bool(X21),
+		Length > 0,
+		N1 is Length - 1,
+		mylistbool(N1, X22).			
+	\end{lstlisting}
+For the base case when $\ttt{Length} = 0$, our program returns $Nil$. Otherwise, it returns  $$Cons(b_1, Cons(b2, ... Cons(b_n, Nil)))$$ Now,if you type \ttt{mylistbool(N, X)} in the Prolog's CLI, you will get a valid \ttt{MyListBool} generated value:
+\begin{itemize}
+	\item Let $\ttt{N} = 1$, our program returns:
+	\begin{eqnarray*}
+		&&\ttt{cons(true, nil)}\\
+		&&\ttt{cons(false, nil)}
+	\end{eqnarray*}
+	\item Let $\ttt{N} = 2$, our program returns:
+	\begin{eqnarray*}
+		&&\ttt{cons(true, cons(true, nil))}\\
+		&&\ttt{cons(true, cons(false, nil))}\\
+		&&\ttt{cons(false, cons(true, nil))}\\
+		&&\ttt{cons(false, cons(false, nil))}
+	\end{eqnarray*}
+\end{itemize}
+We have just seen that just adding an additional variable allow us getting more control about the space of solution. So, we need in someway to include this new feature in our syntax-translate mechanism as a refinement of the old one.\\\\
+%%
+Let $\mathcal{H}$, $\mathcal{P}$ the set of well-defined expression in Haskell and Prolog, respectively. Let $\psi$ be our syntax-translate mechanism function defined before. We can define $\phi$ a refinment of the function $\psi$ that sends $\mathcal{H}_{\ttt{ADT}} \subsetneq \mathcal{H}$, the subset of well-defined algebra data types expressions in Haskell, to Prolog expressions as follow: $$\phi: \mathcal{H}_{\ttt{ADT}} \longrightarrow \mathcal{P} $$
+%%
+\begin{flalign*}
+	\ttt{data} \tav tycon \tav \tau_1 \tav \tau_2 \tav \ldots \tav \tau_k 	=& \tav con_1 \tav \alpha_{1,1} \tav \alpha_{1,2} \tav \ldots \tav \alpha_{1,k_1} \tav | && \\
+	& \tav con_2 \tav \alpha_{2,1} \tav \alpha_{2,2} \tav \ldots \tav \alpha_{2,k_2} \tav | && \\
+	& \tav \ldots \tav && \\
+	& \tav con_n \tav \alpha_{n,1} \tav \alpha_{n,2} \tav \ldots \tav \alpha_{n,k_n} \tav | && \\
+\end{flalign*}
+$$\SLongdownarrow \phi$$
+\pagebreak
+%%
+%%
+%%
+%%
+%%
+%%
+%%
+%%
 \section{Polymorfism Types}
-
+\textbf{ESTA PARTE ESTA AUN EN BORRADOR} \\\\
 We can define $\psi$ the function that sends $\mathcal{H}_{\ttt{ADT}} \subsetneq \mathcal{H}$, the subset of well-defined algebra data types expressions in Haskell, to Prolog expressions as follow: $$\psi: \mathcal{H}_{\ttt{ADT}} \longrightarrow \mathcal{P} $$
 %%
 \begin{flalign*}
