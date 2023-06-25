@@ -859,12 +859,12 @@ where:
 	      	      
 		\begin{example}
 			Let's suppose a monotype Binary Search Tree definition in Haskell with \ttt{Int} type:
-			\lstinputlisting[language=Haskell, label=bstree-haskell-monotype]{code/chapter3/monotypes/bst-monotype.hs}
+			\lstinputlisting[language=Haskell, label=bstree-haskell-monotype]{code/chapter3/monotypes/haskell/bst-monotype.hs}
 			Here, you can see that $tycon \equiv \ttt{BTree}$, $con_1 \equiv \ttt{Nil}$ and $con_2 \equiv \ttt{T}$, therefore $\_tycon \equiv \ttt{btree}$, $\_con_1 \equiv \ttt{nil}$ and $\_con_2 \equiv \ttt{t}$, respectively.
 		\end{example}
 		\begin{example}
-			Let's suppose a non-polimorphic version of the definition of Either in Haskell for both \ttt{String} and \ttt{Int} types:
-			\lstinputlisting[language=Haskell, label=bstreehaskell]{code/chapter3/monotypes/either-monotype.hs}
+			Let's suppose a non-polymorphic version of the definition of Either in Haskell for both \ttt{String} and \ttt{Int} types:
+			\lstinputlisting[language=Haskell, label=bstreehaskell]{code/chapter3/monotypes/haskell/either-monotype.hs}
 			Here, you can see that $tycon \equiv \ttt{Either}$, $con_1 \equiv \ttt{Left}$ and $con_2 \equiv \ttt{Right}$, therefore $\_tycon \equiv \ttt{either}$, $\_con_1 \equiv \ttt{left}$ and $\_con_2 \equiv \ttt{right}$, respectively.
 		\end{example}
 	      
@@ -917,7 +917,7 @@ In Prolog, \ttt{float} predicate is a \textit{representation type}. You can have
 %%
 \begin{example}[MaybeInt]
 	Let's suppose the following Haskell ADT definition:
-	\lstinputlisting[language=Haskell, label=maybeint-haskell-monotype]{code/chapter3/monotypes/maybeint-monotype.hs}
+	\lstinputlisting[language=Haskell, label=maybeint-haskell-monotype]{code/chapter3/monotypes/haskell/maybeint-monotype.hs}
 	Here:
 	\begin{itemize}
 		\item $tycon \equiv \ttt{MaybeInt}$, $con_1 \equiv \ttt{Nil}$ and $con_2 \equiv \ttt{Some}$, therefore $\_tycon \equiv \ttt{maybeint}$, $\_con_1 \equiv \ttt{nil}$ and $\_con_2 \equiv \ttt{some}$, respectively.
@@ -933,17 +933,14 @@ maybeint(nil).													%% rule 1
 maybeint(some(X21)) :- pred21(X21).			%% rule 2
 \end{lstlisting}
 On the otherhand, as we are dealing with monomorphic types, in this case with the \ttt{Int} type, we can use the \ttt{Int} function generator introduced before:\\
-\begin{lstlisting}[language=Prolog]
-maybeint(nil).													%% rule 1
-maybeint(some(X21)) :- gen_int(X21).		%% rule 2
-\end{lstlisting}
-Now, if you type \ttt{maybeint(X)} in the Prolog's CLI, you will get a valid \ttt{MaybeInt} generated value.
+\lstinputlisting[language=Prolog, label=maybeint-prolog-monotype]{code/chapter3/monotypes/prolog/maybeint-monotype.pl}
+Now, if you type \ttt{maybeint(X)} in the Prolog's CLI, you will get a valid \ttt{MaybeInt} generated value.\\
 \end{example}
 %%
 %%
-\begin{example}[Non-Polimorphic Either]
-	Let's suppose our non-polimorphic version of the definition of Either in Haskell for both \ttt{String} and \ttt{Int} types:
-	\lstinputlisting[language=Haskell, label=either-haskell-monotype]{code/chapter3/monotypes/either-monotype.hs}
+\begin{example}[Non-Polymorphic Either]
+	Let's suppose our non-polymorphic version of the definition of Either in Haskell for both \ttt{String} and \ttt{Int} types:
+	\lstinputlisting[language=Haskell, label=either-haskell-monotype]{code/chapter3/monotypes/haskell/either-monotype.hs}
 	Here:
 	\begin{itemize}
 		\item $tycon \equiv \ttt{Either}$, $con_1 \equiv \ttt{Left}$ and $con_2 \equiv \ttt{Right}$, therefore $\_tycon \equiv \ttt{either}$, $\_con_1 \equiv \ttt{left}$ and $\_con_2 \equiv \ttt{right}$, respectively.
@@ -959,17 +956,16 @@ either(left(X11)) 	:- pred11(X11).					%% rule 1
 either(right(X21)) 	:- pred21(X21).					%% rule 2
 \end{lstlisting}
 On the otherhand, as we are dealing with monomorphic types, in this case with both \ttt{String} and \ttt{Int} types, we can use the \ttt{String} and \ttt{Int} function generators, respectively, introduced before:\\
-\begin{lstlisting}[language=Prolog]
-either(left(X11)) 	:- gen_string(X11).			%% rule 1
-either(right(X21)) 	:- gen_int(X21).				%% rule 2
-\end{lstlisting}
-Now, if you type \ttt{either(X)} in the Prolog's CLI, you will get a valid \ttt{Either} generated value.
+%%
+\lstinputlisting[language=Prolog, label=either-prolog-monotype]{code/chapter3/monotypes/prolog/either-monotype.pl}
+%%
+Now, if you type \ttt{either(X)} in the Prolog's CLI, you will get a valid \ttt{Either} generated value.\\
 \end{example}
 %%
 %%
 \begin{example}[MyListBool]
 	Let's suppose the following Haskell ADT definition:
-	\lstinputlisting[language=Haskell, label=mylistbool-haskell-monotype]{code/chapter3/monotypes/mylistbool-monotype.hs}
+	\lstinputlisting[language=Haskell, label=mylistbool-haskell-monotype]{code/chapter3/monotypes/haskell/mylistbool-monotype.hs}
 	We can observe it is a recursive definition, so here:
 	\begin{itemize}
 		\item $tycon \equiv \ttt{MyListBool}$, $con_1 \equiv \ttt{Nil}$ and $con_2 \equiv \ttt{Cons}$, therefore $\_tycon \equiv \ttt{mylistbool}$, $\_con_1 \equiv \ttt{nil}$ and $\_con_2 \equiv \ttt{cons}$, respectively.
@@ -990,17 +986,16 @@ mylistbool(nil).																										%% rule 1
 mylistbool(cons(X21, X22)) 	:- gen_bool(X21), pred22(X22).					%% rule 2
 \end{lstlisting}
 But, the question is, what happens with $pred_{2,2}$, what is the implementation of the predicate \ttt{pred22}. Well, as $\alpha_{2,2} = \ttt{MyListBool}$ and \ttt{MyListBool} is an Haskell algebra data type, we can deal with it as we have been doing in a recursively way or, in other hand, we can define the Prolog rule as a recursive rule (explained in section ~\ref{ch:recursive-rules}):\\
-\begin{lstlisting}[language=Prolog]
-mylistbool(nil).																										%% rule 1
-mylistbool(cons(X21, X22)) 	:- gen_bool(X21), mylistbool(X22).			%% rule 2
-\end{lstlisting}
-Now, if you type \ttt{mylistbool(X)} in the Prolog's CLI, you will get a valid \ttt{MyListBool} generated value. But, what happens here? Let's take a look at a few more examples before.
+%%
+\lstinputlisting[language=Prolog, label=mylistbool-prolog-monotype]{code/chapter3/monotypes/prolog/mylistbool-monotype.pl}
+%%
+Now, if you type \ttt{mylistbool(X)} in the Prolog's CLI, you will get a valid \ttt{MyListBool} generated value. But, what happens here? Let's take a look at a few more examples before.\\
 \end{example}
 %%
 %%
 \begin{example}[Binary Search Tree]
 	Here we go again... Let's suppose the following Haskell ADT definition:
-	\lstinputlisting[language=Haskell, label=bst-haskell-monotype]{code/chapter3/monotypes/bst-monotype.hs}
+	\lstinputlisting[language=Haskell, label=bst-haskell-monotype]{code/chapter3/monotypes/haskell/bst-monotype.hs}
 	We can observe it is a recursive definition, so here:
 	\begin{itemize}
 		\item $tycon \equiv \ttt{BSTree}$, $con_1 \equiv \ttt{Nil}$ and $con_2 \equiv \ttt{T}$, therefore $\_tycon \equiv \ttt{bstree}$, $\_con_1 \equiv \ttt{nil}$ and $\_con_2 \equiv \ttt{t}$, respectively.
@@ -1021,17 +1016,16 @@ bstree(nil).																														%% rule 1
 bstree(t(X21, X22, X23)) :- gen_int(X21), pred22(X22), pred23(X23).			%% rule 2
 \end{lstlisting}
 Again, as $\alpha_{2,2} = \ttt{BSTree}$, $\alpha_{2,3} = \ttt{BSTree}$ and \ttt{BSTree}, we can define the Prolog rule as a recursive rule:\\
-\begin{lstlisting}[language=Prolog]
-bstree(nil).																														%% rule 1
-bstree(t(X21, X22, X23)) :- gen_int(X21), bstree(X22), bstree(X23).			%% rule 2
-\end{lstlisting}
-Now, if you type \ttt{bstree(X)} in the Prolog's CLI, you will get a valid \ttt{BSTree} generated value. Again, what happens here? Did you see?
+%%
+\lstinputlisting[language=Prolog, label=bst-prolog-monotype]{code/chapter3/monotypes/prolog/bst-monotype.pl}
+%%
+Now, if you type \ttt{bstree(X)} in the Prolog's CLI, you will get a valid \ttt{BSTree} generated value. Again, what happens here? Did you see?\\
 \end{example}
 %%
 %%
 \begin{example}[SomeWeird]
 	Let's suppose the following (really weird) Haskell ADT definition:
-	\lstinputlisting[language=Haskell, label=bst-haskell-monotype]{code/chapter3/monotypes/someweird-monotype.hs}
+	\lstinputlisting[language=Haskell, label=someweird-haskell-monotype]{code/chapter3/monotypes/haskell/someweird-monotype.hs}
 	We can observe it is a recursive definition, so here:
 	\begin{itemize}
 		\item $tycon \equiv \ttt{SomeWeird}$, $con_1 \equiv \ttt{Nil1}$, $con_2 \equiv \ttt{Nil2}$, $con_3 \equiv \ttt{Some}$ and $con_4 \equiv \ttt{Weird}$; therefore $\_tycon \equiv \ttt{someweird}$, $\_con_1 \equiv \ttt{nil1}$, $\_con_2 \equiv \ttt{nil2}$, $\_con_3 \equiv \ttt{some}$ and $\_con_4 \equiv \ttt{weird}$, respectively.
@@ -1058,22 +1052,16 @@ someweird(some(X31)) :- gen_int(X31).																				%% rule 3
 someweird(weird(X31, X32, X33)) :- pred31(X31), pred32(X32), gen_bool(X33).	%% rule 4
 \end{lstlisting}
 Again, as $\alpha_{4,1} = \ttt{SomeWeird}$, $\alpha_{4,2} = \ttt{SomeWeird}$ and \ttt{SomeWeird}, we can define the Prolog rule as a recursive rule:\\
-\begin{lstlisting}[language=Prolog]
-someweird(nil1).																														%% rule 1
-someweird(nil2).																														%% rule 2
-someweird(some(X31)) :- gen_int(X31).																				%% rule 3
-someweird(weird(X41, X42, X43)) :-																					%% rule 4
-	someweird(X41),
-	someweird(X42),
-	gen_bool(X43).
-\end{lstlisting}
-Now, if you type \ttt{someweird(X)} in the Prolog's CLI, you will get a valid \ttt{SomeWeird} generated value. Oh my god... it was so weird. Finally, let's take a look one more example.
+%%
+\lstinputlisting[language=Prolog, label=someweird-prolog-monotype]{code/chapter3/monotypes/prolog/someweird-monotype.pl}
+%%
+Now, if you type \ttt{someweird(X)} in the Prolog's CLI, you will get a valid \ttt{SomeWeird} generated value. Oh my god... it was so weird. Finally, let's take a look one more example.\\
 \end{example}
 %%
 %%
 \begin{example}[Rose Tree]
 	Last dance! Let's suppose the following Haskell ADT definition:
-	\lstinputlisting[language=Haskell, label=rstree-haskell-monotype]{code/chapter3/monotypes/rstree-monotype.hs}
+	\lstinputlisting[language=Haskell, label=rstree-haskell-monotype]{code/chapter3/monotypes/haskell/rstree-monotype.hs}
 	Here we can observe two things: Again, it is a recursive definition and it is defined using Haskell's list type constructor which we have not yet discussed. \\
 	%%
 	
@@ -1093,13 +1081,10 @@ On the otherhand, as we are dealing with monomorphic types, in this case with \t
 rstree(r(X11, X12)) :- gen_int(X11), pred12(X12).					%% rule 1
 \end{lstlisting}
 Here, for the predicate $pred_{1,2}$ which holds that $X_{1,2}$ is a list of Rose Trees, we will implement a generator of list of elements that hold our $\ttt{rule}_1$ \ttt{rstree}:
-\begin{lstlisting}[language=Prolog]
-rstreelist([]).
-rstreelist([X|Xs]) 	:- rstreelist(Xs), rstree(X).
-
-rstree(r(X11, X12)) :- gen_int(X11), rstreelist(X12).			%% rule 1
-\end{lstlisting}
-Now, if you type \ttt{rstree(X)} in the Prolog's CLI, you will get a valid \ttt{RSTree} generated value. Again, what happens here? Did you see? No? Okay, let's talk.
+%%
+\lstinputlisting[language=Prolog, label=rstree-prolog-monotype]{code/chapter3/monotypes/prolog/rstree-monotype.pl}
+%%
+Now, if you type \ttt{rstree(X)} in the Prolog's CLI, you will get a valid \ttt{RSTree} generated value. Again, what happens here? Did you see? No? Okay, let's talk.\\
 \end{example}
 
 \section{Monomorphic Types with Bounderies}
@@ -1116,12 +1101,11 @@ To be more precise:
 An approach that fits very good is to define bouderies for recursive structures. We can define the limit of elements in a list, or the depth in the branch of a binary search tree. For instance:\\\\
 %%
 Let's suppose the following Haskell ADT definition showed before:
-\lstinputlisting[language=Haskell, label=mylistbool-haskell-monotype]{code/chapter3/monotypes/mylistbool-monotype.hs}
+\lstinputlisting[language=Haskell, label=mylistbool-haskell-monotype]{code/chapter3/monotypes/haskell/mylistbool-monotype.hs}
 We know that using the syntax-translate mechanism $\psi$ defined in \ref{ch:monomorphic-types}, we obtaing the following Prolog program:
-\begin{lstlisting}[language=Prolog]
-	mylistbool(nil).																									%% rule 1
-	mylistbool(cons(X21, X22)) :- gen_bool(X21), mylistbool(X22).			%% rule 2
-\end{lstlisting}
+%%
+\lstinputlisting[language=Prolog, label=mylistbool-prolog-monotype]{code/chapter3/monotypes/prolog/mylistbool-monotype.pl}
+%%
 Let's consider a new variable \ttt{Length} that represents the length of \ttt{MyListBool}. We can refine our last program into this new one
 \begin{lstlisting}[language=Prolog]
 	mylistbool(0, nil).																								%% rule 1
@@ -1317,12 +1301,11 @@ where:
 %%
 \begin{example}[MyListBool]
 	Let's suppose the following Haskell ADT definition:
-	\lstinputlisting[language=Haskell, label=mylistbool-haskell-monotype]{code/chapter3/monotypes/mylistbool-monotype.hs}
+	\lstinputlisting[language=Haskell, label=mylistbool-haskell-monotype]{code/chapter3/monotypes/haskell/mylistbool-monotype.hs}
 	Using $\psi$, in the las examples \ref{ch:monomorphic-types-examples} we obtain:
-\begin{lstlisting}[language=Prolog]
-mylistbool(nil).																										%% rule 1
-mylistbool(cons(X21, X22)) 	:- gen_bool(X21), mylistbool(X22).			%% rule 2
-\end{lstlisting}
+%%
+\lstinputlisting[language=Prolog, label=mylistbool-prolog-monotype]{code/chapter3/monotypes/prolog/mylistbool-monotype.pl}
+%%
 Now, if we use the newer refinement function $\phi$:
 \begin{itemize}
 	\item Let $\Gamma_{MyListBool}$ the set of expression that define the structure of an element in the \ttt{MyListBool} type. $$\Gamma_{MyListBool} = \{ Nil, \tav Cons(b, Nil), \tav Cons(b, Cons(b, Nil)), \; \ldots \} \tav \tav b \in \ttt{Bool}$$
@@ -1377,12 +1360,11 @@ For instance:
 %%
 \begin{example}[Binary Search Tree]
 	Let's suppose the following Haskell ADT definition:
-	\lstinputlisting[language=Haskell, label=bst-haskell-monotype]{code/chapter3/monotypes/bst-monotype.hs}
+	\lstinputlisting[language=Haskell, label=bst-haskell-monotype]{code/chapter3/monotypes/haskell/bst-monotype.hs}
 	Using $\psi$, in the las examples \ref{ch:monomorphic-types-examples} we obtain:
-\begin{lstlisting}[language=Prolog]
-bstree(nil).																														%% rule 1
-bstree(t(X21, X22, X23)) :- gen_int(X21), bstree(X22), bstree(X23).			%% rule 2
-\end{lstlisting}
+%%
+\lstinputlisting[language=Prolog, label=bst-prolog-monotype]{code/chapter3/monotypes/prolog/bst-monotype.pl}
+%%
 Now, if we use the newer refinement function $\phi$:
 \begin{itemize}
 	\item Let $\Gamma_{BSTree}$ the set of expression that define the structure of an element in the \ttt{BSTree} type.
@@ -1443,17 +1425,11 @@ For instance:
 %%
 \begin{example}[SomeWeird]
 	Let's suppose the following Haskell ADT definition:
-	\lstinputlisting[language=Haskell, label=someweird-haskell-monotype]{code/chapter3/monotypes/someweird-monotype.hs}
+	\lstinputlisting[language=Haskell, label=someweird-haskell-monotype]{code/chapter3/monotypes/haskell/someweird-monotype.hs}
 	Using $\psi$, in the las examples \ref{ch:monomorphic-types-examples} we obtain:
-\begin{lstlisting}[language=Prolog]
-someweird(nil1).																														%% rule 1
-someweird(nil2).																														%% rule 2
-someweird(some(X31)) :- gen_int(X31).																				%% rule 3
-someweird(weird(X41, X42, X43)) :-																					%% rule 4
-	someweird(X41),
-	someweird(X42),
-	gen_bool(X43).
-\end{lstlisting}
+%%
+\lstinputlisting[language=Prolog, label=someweird-prolog-monotype]{code/chapter3/monotypes/prolog/someweird-monotype.pl}
+%%
 Now, if we use the newer refinement function $\phi$:
 \begin{itemize}
 	\item Let $\Gamma_{SomeWeird}$ the set of expression that define the structure of an element in the \ttt{SomeWeird} type.
@@ -1528,6 +1504,95 @@ For instance:
 	\end{flalign*}
 \end{itemize}
 \end{example}
+\section{Polymorfism Types}
+We are now in the last problem of our journeym the polymorphism types. Usually, algebra data types are defined by parameter types that represent the polimorphism. We can obtain a greatest set of elements belonging to the ADT type. In particula, we can obtain a set of instance of our ADT for every type that you can use in its implementation. So here, we have to deal with a level more of abstraction. Therefore, the idea here is the following:\\\\
+%%
+Let's suppose our known definition of Binary Search Tree in Haskell:
+\lstinputlisting[language=Haskell, label=bst-haskell-monotype]{code/chapter3/monotypes/haskell/bst-monotype.hs}
+We need to know how should looks like it in a polymorphic version. So, first of all, let's define its polymorphic version:
+\lstinputlisting[language=Haskell, label=bst-haskell-monotype]{code/chapter3/polymorphic/haskell/bst-polymorphic.hs}
+Now, our Haskell expression depends on a type parameter. Let's take a look our first Binary Search Tree Prolog implementation results of the syntax-translation mechanism $\psi$ defined in \ref{ch:monomorphic-types}.
+%%
+\lstinputlisting[language=Prolog, label=bst-prolog-monotype]{code/chapter3/monotypes/prolog/bst-monotype.pl}
+%%
+We see that changing $\ttt{gen\_int}$ for some other more general $gen$ function we could obtain a parametriced generator of types. That is, we can define a newer generator as something like that \ttt{gen(T, X)}, where \ttt{T} is the symbolic variable that parametrice the type.
+%%
+\lstinputlisting[language=Prolog, label=bst-prolog-monotype]{code/chapter3/polymorphic/prolog/bst-draft.pl}
+%%
+However, an algebra data type can be defined using as many representation polymorphic types as it needs. So, we have to generalize it also following the Haskell formal grammar.\\\\
+Let $\mathcal{H}$, $\mathcal{P}$ the set of well-defined expression in Haskell and Prolog, respectively. Let $\psi$ be our syntax-translate mechanism function defined in the las section. We can define $\Psi$ a refinement of the function $\psi$ that sends $\mathcal{H}_{\ttt{ADT}} \subsetneq \mathcal{H}$, the subset of well-defined algebra data types expressions in Haskell, to Prolog expressions as follow: $$\Psi: \mathcal{H}_{\ttt{ADT}} \longrightarrow \mathcal{P} $$
+%%
+\begin{align*}
+	\ttt{data} \tav tycon \tav \tau_1 \tav \tau_2 \tav \ldots \tav \tau_k 	=& \tav con_1 \tav \alpha_{1,1} \tav \alpha_{1,2} \tav \ldots \tav \alpha_{1,k_1} \tav | && \\
+	& \tav con_2 \tav \alpha_{2,1} \tav \alpha_{2,2} \tav \ldots \tav \alpha_{2,k_2} \tav | && \\
+	& \tav \ldots \tav && \\
+	& \tav con_n \tav \alpha_{n,1} \tav \alpha_{n,2} \tav \ldots \tav \alpha_{n,k_n} \tav | && \\
+\end{align*}
+$$\SLongdownarrow \Psi$$
+\begin{align*}
+	\ttt{rule}_1: \tav \_ tycon (T_1, \tav T_2, \tav \ldots, \tav T_k, \; \_ con_1(X_{1,1}, \tav \ldots, \tav X_{1,k_1})) :-&
+	\tav pred_{1, 1}(\Omega_{1,1}, \tav X_{1,1}), && \\
+	& \tav pred_{1, 2}(\Omega_{1,2}, \tav X_{1,2}), && \\
+	& \tav \ldots \tav && \\
+	& \tav pred_{1, k_1}(\Omega_{1,k_1}, \tav X_{1,k_1}). && \\
+	\\
+	\ttt{rule}_2: \tav \_ tycon (T_1, \tav T_2, \tav \ldots, \tav T_k, \; \_ con_2(X_{2,1}, \tav \ldots, \tav X_{2,k_2})) :-&
+	\tav pred_{2, 1}(\Omega_{2,1}, \tav X_{2,1}), && \\
+	& \tav pred_{2, 2}(\Omega_{2,2}, \tav X_{2,2}), && \\
+	& \tav \ldots \tav && \\
+	& \tav pred_{2, k_2}(\Omega_{2,k_2}, \tav X_{2,k_2}). &&
+\end{align*}
+$$\vdots$$
+\begin{align*}
+	\ttt{rule}_n: \tav \_ tycon (T_1, \tav T_2, \tav \ldots, \tav T_k, \; \_ con_n(X_{n,1}, \tav \ldots, \tav X_{n,k_n})) :-&
+	\tav pred_{n, 1}(\Omega_{n,1}, \tav X_{n,1}), && \\
+	& \tav pred_{n, 2}(\Omega_{n,2}, \tav X_{n,2}), && \\
+	& \tav \ldots \tav && \\
+	& \tav pred_{n, k_n}(\Omega_{n,k_n}, \tav X_{n,k_n}). && \\
+\end{align*}\\
+%%
+where:
+%%
+\begin{itemize}
+	\item For all $\tau_i$ with $i \in \{1, \ldots k \}$, there exists a variable $T_i$ in Prolog, that represents the symbolic variable for the type that it will generate.
+	\begin{example}
+		Let's suppose the polymorphic version of the definition of Either:
+		\lstinputlisting[language=Haskell, label=either-haskell-monotype]{code/chapter3/polymorphic/haskell/either-polymorphic.hs}
+		Here, you can see that $\tau_1 = \ttt{a}$, $\tau_2 = \ttt{b}$, therefore there exists two variables, $T_1$ and $T_2$, respectively.\\\\
+		%%
+		In our Prolog program we will define a relationship between some atoms which will represent the type expression in Prolog, with respect its corresponds generation function.\\\\
+		%%
+		For example, if we have the \ttt{Either} definition showed above and we want to generate instances for \ttt{Either Unit Bool}, that is $\tau_1 = \ttt{Unit}$, $\tau_2 = \ttt{Bool}$, we will use $T_1 = \ttt{unit}$ and $T_2 = \ttt{bool}$ for getting the correct generation. Of course, it is the standard representation what we have choosen, we could have defined $\ttt{unit\_type}$ and $\ttt{bool\_type}$ instead for represent \ttt{Unit} and \ttt{Bool} in Prolog, respectively.
+	\end{example}
+	\item Let $P(\{ T_1 , T_2, \ldots, \; T_k \})$ be the \textit{powerset} of the set of all Prolog types variables. For all $\alpha_{i,j}$ with $(i,j) \in \{1, \ldots n \} \times \{1, \ldots k_i \}$, we define $\Omega_{i,j}$ an element of $P(\{ T_1 , T_2, \ldots, \; T_k \})$ as the set of the those Prolog types variables that participate in the definition of $\alpha_{i,j}$ at the Haskell's algebra data type definition.
+	%%
+	\begin{example}
+		Let's suppose the polymorphic version of the \ttt{SomeWeird} definition:
+		\lstinputlisting[language=Haskell, label=someweird-haskell-polymorphic]{code/chapter3/polymorphic/haskell/someweird-polymorphic.hs}
+		Here, $\tau_1 = \ttt{a}$ and $\tau_2=\ttt{b}$, we can define $T_1 = \ttt{A}$ and $T_2=\ttt{B}$
+		\begin{itemize}
+			\item As \ttt{Nil1} constructor doesn't require any type to be defined, therefore $\Omega_{1,1} = \emptyset \in P(\{ \ttt{A} , \ttt{B} \})$.
+			\item As \ttt{Nil2} constructor doesn't require any type to be defined, therefore $\Omega_{2,1} = \emptyset \in P(\{ \ttt{A} , \ttt{B} \})$.
+			\item As \ttt{Some} constructor requires \ttt{a}, that is, $\alpha_{3,1} = \ttt{a}$ and it needs $\ttt{a}$ to be defined, therefore $\Omega_{3,1} = \{\ttt{A}\} \in P(\{ \ttt{A} , \ttt{B} \})$.
+			\item As $\ttt{Weird}$ constructor requires both types \ttt{SomeWeird a b} and \ttt{b}, that is, $\alpha_{4,1} = \alpha_{4,2} = \ttt{SomeWeird a b}$ and $\alpha_{4,3} = \ttt{b}$, therefore $\Omega_{4,1} = \Omega_{4,2} = \{\ttt{A}, \ttt{B}\} \in P(\{ \ttt{A} , \ttt{B} \})$ and $\Omega_{4,3} = \{\ttt{B}\} \in P(\{ \ttt{A} , \ttt{B} \})$.
+		\end{itemize}
+	\end{example}
+	\item For all $\alpha_{i,j}$ with $(i,j) \in \{1, \ldots n \} \times \{1, \ldots k_i \}$, there exists a predicate $pred_{i,j}$ that resolve $X_{i,j}$ using $\Omega_{i,j}$.\\\\
+	%%
+	When $\alpha_{i,j}$ is an Haskell's primitive type, that means $\Omega_{i,j} = \{T_{\omega_{i,j}}\}$ with $T_{\omega_{i,j}} \in \{ T_1 , T_2, \ldots T_k \}$, the predicate $pred_{i,j}$ can be defined as the $gen$ generation function. That is, $pred_{i,j}(\Omega_{i,j}, X_{i,j}) \equiv gen(T_{\omega_{i,j}}, X_{i,j})$, being the $gen$ generation function our new Prolog rule that generate a value of type $\tau_{\omega_{i,j}} \in \{ \tau_1 , \tau_2, \ldots \tau_k \}$.
+\end{itemize}
+\subsection{Generic Polymorfic Types generator}
+For this work, I provide an implementation of the generic $gen$ generation function of primityve types which generalize by using a type variable as a new parameter. This implementation is not the best efficient one, but it is enougth for our purpose. First of all, we define the atoms which will represent the type expression in our Prolog program. That is:
+\begin{align*}
+	\Psi_{\ttt{Type}}:  & \tav \mathcal{H} \tav & \longrightarrow & \tav \mathcal{P}&\\
+	&\tav \ttt{Char}  \longrightarrow && \ttt{char}&&&&&&&&&&\\
+	&\tav \ttt{String}  \longrightarrow && \ttt{string}&&&&&&&&&&\\
+	&\tav \ttt{Int}  \longrightarrow && \ttt{int}&&&&&&&&&&\\
+	&\tav \ttt{Integer}  \longrightarrow && \ttt{integer}&&&&&&&&&&\\
+	&\tav \ttt{Double}  \longrightarrow && \ttt{double}&&&&&&&&&&\\
+	&\tav \ttt{Bool}  \longrightarrow && \ttt{bool}&&&&&&&&&&\\
+	&\tav \ttt{Unit}  \longrightarrow && \ttt{unit}&&&&&&&&&&\\
+\end{align*}
 \pagebreak
 %%
 %%
@@ -1577,19 +1642,19 @@ where:
 	      	      
 	      \begin{example}
 	      	Let's suppose the definition of Binary Search Tree in Haskell for \ttt{Int} type:
-	      	\lstinputlisting[language=Haskell, label=bstree-haskell-monotype]{code/chapter3/monotypes/bst-monotype.hs}
+	      	\lstinputlisting[language=Haskell, label=bstree-haskell-monotype]{code/chapter3/monotypes/haskell/bst-monotype.hs}
 	      	Here, you can see that $tycon \equiv \ttt{BTree}$, $con_1 \equiv \ttt{Nil}$ and $con_2 \equiv \ttt{T}$, therefore $\_tycon \equiv \ttt{btree}$, $\_con_1 \equiv \ttt{nil}$ and $\_con_2 \equiv \ttt{t}$, respectively.
 	      \end{example}
 	      \begin{example}
 	      	Let's suppose the definition of Either in Haskell for both \ttt{String} and \ttt{Int} types:
-	      	\lstinputlisting[language=Haskell, label=bstreehaskell]{code/chapter3/monotypes/either-monotype.hs}
+	      	\lstinputlisting[language=Haskell, label=bstreehaskell]{code/chapter3/monotypes/haskell/either-monotype.hs}
 	      	Here, you can see that $tycon \equiv \ttt{Either}$, $con_1 \equiv \ttt{Left}$ and $con_2 \equiv \ttt{Right}$, therefore $\_tycon \equiv \ttt{either}$, $\_con_1 \equiv \ttt{left}$ and $\_con_2 \equiv \ttt{right}$, respectively.
 	      \end{example}
 	      
 	\item For all $\tau_i$ with $i \in \{1, \ldots k \}$, there exists a variable in Prolog expression $T_i$ that represents the type that it will generate.
 	\begin{example}
 		Using againg the definition of Either showed before:
-		\lstinputlisting[language=Haskell, label=bstreehaskell]{code/chapter3/monotypes/either-monotype.hs}
+		\lstinputlisting[language=Haskell, label=bstreehaskell]{code/chapter3/monotypes/haskell/either-monotype.hs}
 		Here, you can see that $\tau_1 = \ttt{String}$, $\tau_2 = \ttt{Int}$, therefore $T_1 = \ttt{string}$ and $T_2 = \ttt{int}$, respectively. It is representative, in fact, you could have defined $T_1 = \ttt{str\_type}$, $T_2 = \ttt{int\_type}$ instead.
 	\end{example}
 	\item For all $con_i$ with $i \in \{1, \ldots n \}$, there exists a $\ttt{rule}_i$ Prolog rule that holds and generates the correspond translated expression from the Haskell's ADT constructor $i$. For instance, from the definition of the binary search tree , we obtain two Prolog rules that form a Prolog program.
@@ -1598,7 +1663,7 @@ where:
 	%%
 	\begin{example}
 		Let's suppose the definition of the \ttt{SomeWeird} for \ttt{Int}, \ttt{String} and \ttt{Bool} types:
-		\lstinputlisting[language=Haskell, label=someweird-haskell-monotype]{code/chapter3/monotypes/someweird-monotype.hs}
+		\lstinputlisting[language=Haskell, label=someweird-haskell-monotype]{code/chapter3/monotypes/haskell/someweird-monotype.hs}
 		Here, $\tau_1 = \ttt{Int}, \tav \tau_2=\ttt{String} \tav \tau_3=\ttt{Bool}$, we can define $T_1 = \ttt{int}, \tav T_2=\ttt{string} \tav T_3=\ttt{bool}$
 		\begin{itemize}
 			\item As \ttt{None} constructor doesn't require any type to be defined, therefore $\Omega_{1,1} = \emptyset$.
