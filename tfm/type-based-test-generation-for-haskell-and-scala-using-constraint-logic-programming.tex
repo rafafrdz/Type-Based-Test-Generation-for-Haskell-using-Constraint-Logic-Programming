@@ -856,7 +856,7 @@ where:
 %%
 \begin{itemize}
 	\item The expression starting with $\_$ represents the same expression in Haskell with all their characters in lowercase. Let's see some examples:
-	      	      	      	      	      
+	      	      	      	      	      	      
 	      \begin{example}
 	      	Let's suppose a monotype Binary Search Tree definition in Haskell with \ttt{Int} type:
 	      	\lstinputlisting[language=Haskell, label=bstree-haskell-monotype]{code/chapter3/monotypes/haskell/bst-monotype.hs}
@@ -867,16 +867,16 @@ where:
 	      	\lstinputlisting[language=Haskell, label=bstreehaskell]{code/chapter3/monotypes/haskell/either-monotype.hs}
 	      	Here, you can see that $tycon \equiv \ttt{Either}$, $con_1 \equiv \ttt{Left}$ and $con_2 \equiv \ttt{Right}$, therefore $\_tycon \equiv \ttt{either}$, $\_con_1 \equiv \ttt{left}$ and $\_con_2 \equiv \ttt{right}$, respectively.
 	      \end{example}
-	      	      	      	      
+	      	      	      	      	      
 	\item For all $con_i$ with $i \in \{1, \ldots, n \}$, there exists a $\ttt{rule}_i$ Prolog rule that holds and generates the corresponding translated expression from the Haskell's ADT constructor $i$. For instance, from the definition of the binary search tree, we obtain two Prolog rules that form a Prolog program.
 	\item For all $\alpha_{i,j}$ with $(i,j) \in \{1, \ldots, n \} \times \{1, \ldots, k_i \}$, there exists a variable in Prolog $X_{i,j}$ represents the symbolic variable for the generation of the element in the position $j$ from the constructor $i$ which is the Haskell type $\alpha_{i,j}$ in the Haskell's ADT definition.\\\\
 	      %%
 	      In case of the ADT constructor $con_i$ doesn't have any component $\alpha_{i,j}$, the rule $\ttt{rule}_i$ is automatically a \textbf{fact}.
-	      	      	      
+	      	      	      	      
 	\item For all $\alpha_{i,j}$ with $(i,j) \in \{1, \ldots, n \} \times \{1, \ldots, k_i \}$, there exists a predicate $pred_{i,j}$ that resolve $X_{i,j}$.\\\\
 	      %%
 	      When $\alpha_{i,j}$ is a Haskell's primitive type, the predicate $pred_{i,j}$ can be defined as the $gen_{\alpha_{i,j}}$ generation function. That is, $pred_{i,j}(X_{i,j}) \equiv gen_{\alpha_{i,j}}(X_{i,j})$, where the $gen_{\alpha_{i,j}}$ generation function is a Prolog program that generates a value of type $\alpha_{i,j} \in \{ \tau_1, \tau_2, \ldots \tau_k \}$.
-	      	      	      
+	      	      	      	      
 \end{itemize}
 %%
 Now we have defined our syntax-translation mechanism for monomorphic types, we will see some examples that help us to understand better. But before that, we need to know who is those generation functions for primitive types.
@@ -1064,7 +1064,7 @@ someweird(weird(X31, X32, X33)) :- pred31(X31), pred32(X32), gen_bool(X33).	%% r
 	\lstinputlisting[language=Haskell, label=rstree-haskell-monotype]{code/chapter3/monotypes/haskell/rstree-monotype.hs}
 	Here we can observe two things: Again, it is a recursive definition and it is defined using Haskell's list type constructor which we have not yet discussed. \\
 	%%
-				
+					
 	Haskell lists are not really either an algebra data type or a primitive type. It is a kind of algebra structure which is not formally defined as a \ttt{data}-Haskell expression. Therefore, its implementation in Prolog is different. For now, we will implement a particular generator of lists of Rose Trees, but when we talk about polymorphism, I will provide a generic generator of lists of any type. So, here:
 	\begin{itemize}
 		\item $tycon \equiv \ttt{RSTree}$ and $con_1 \equiv \ttt{R}$, therefore $\_tycon \equiv \ttt{rstree}$ and $\_con_1 \equiv \ttt{R}$, respectively.
@@ -1296,7 +1296,7 @@ where:
 		      %%
 	\end{itemize}
 	%%
-	\subsection{Examples}
+	\subsection{Examples} \label{ch:monomorphic-bounded-types-examples}
 	%%
 	%%
 	\begin{example}[MyListBool]
@@ -1334,7 +1334,7 @@ where:
 			      \end{flalign*}
 		\end{itemize}
 		So finally, we can translate the Haskell definition shown above to the following Prolog program:\\
-		\lstinputlisting[language=Prolog, label=binary-search-tree-prolog-monotype-boundary]{code/chapter3/monotypes-boundary/mylistbool-boundary.pl}
+		\lstinputlisting[language=Prolog, label=mylistbool-prolog-monotype-boundary]{code/chapter3/monotypes-boundary/mylistbool-boundary.pl}
 		Now, if you type \ttt{mylistbool(N, X)} in the Prolog's CLI, you will get a set of valid \ttt{MyListBool} generated value which holds the completeness we have been searching for.\\\\
 		%%
 		For instance:
@@ -1599,7 +1599,7 @@ where:
 	%%
 	Let $gen$ be the function which generates values of primitive types. We can implement in Prolog this function as the following rule:
 	\lstinputlisting[language=Prolog, label=gen-types]{code/chapter3/polymorphic/prolog/gen_types.pl}
-	So now, we can obtain a boolean value just by typing \ttt{gen(bool, B)}. The last case $\ttt{rel\_type(Gen, Gen)}$ is when you want to generate polymorphically by using another non-primitive generator. For instance:\\\\
+	So now, we can obtain a boolean value just by typing \ttt{gen(bool, B)}. The last cases $\ttt{rel\_gen}$ are when you want to generate polymorphically by using another non-primitive generator. For instance:\\\\
 	%%
 	Let's suppose our Prolog program that generates Binary Search Trees from the polymorphic definition.
 	%%
@@ -1613,7 +1613,7 @@ where:
 		  & \ttt{[nil, t(unit, nil, t(unit, nil, nil))]}               &   \\
 		  & \ttt{[nil, t(unit, nil, t(unit, nil, t(unit, nil, nil)))]} &   \\
 	\end{align*}
-	Of course you could have used the boundary version of \ttt{bstree} to get more control over the space of solutions.\\\\
+	Of course, you could have used the boundary version of \ttt{bstree} to get more control over the space of solutions.\\\\
 	%%
 	Finally, we can show many examples using this polymorphic approach. However, before proceeding further, I will provide the refinement of $\phi$ defined in the last section \ref{ch:monomorphic-types-boundaries} with its polymorphic version.
 	\subsection{Polymorfism Types with Boundaries}
@@ -1667,43 +1667,124 @@ where:
 		  & \tav pred_{n, k_n}(W_{n,k_n}, \tav \Omega_{n, k_n} \tav X_{n,k_n}). &   &   \\
 	\end{align*}\\
 	%%
-	\subsection{Examples}
+	\subsection{Examples} \label{ch:polymorphic-types-examples}
+	For the following examples, we will use the polymorphic and bounded approach $\Phi$. Of course, we avoid showing again the auxiliary corresponding function that accompanies the respective Prolog program in order to be briefer.
+	\begin{example}[MyList]
+		Let's consider the polymorphic version of our \ttt{MyListBool} Haskell ADT definition:
+		\lstinputlisting[language=Haskell, label=mylist-haskell-polymorphic]{code/chapter3/polymorphic/haskell/mylist-polymorphic.hs}
+		Using $\phi$, in the las examples \ref{ch:monomorphic-bounded-types-examples} we obtain:
+		%%
+		\lstinputlisting[language=Prolog, label=mylistbool-prolog-monotype-boundary]{code/chapter3/monotypes-boundary/mylistbool-boundary-simplify.pl}
+		%%
+		Now, if we use the newer refinement function $\Phi$:
+		\begin{itemize}
+			\item We can see that there exists a $\tau_1$. Therefore there exists a variable, $T_1$.
+			\item Here, $\tau_1 = \ttt{a}$ so we can define $T_1 = \ttt{A}$ and consider the poset $P(\{\ttt{A}\})$.
+			\item As \ttt{Nil} constructor doesn't require any type to be defined, therefore $\Omega_{1,1} = \emptyset \in P(\{ \ttt{A} \})$. \\\\
+			      For the second constructor, there exists two $\alpha_{2,1}$ and $\alpha_{2,2}$ related to the expression \ttt{Cons a (MyList a)}, that is $\alpha_{2,1} = \ttt{a}$ and $\alpha_{2,2} = \ttt{MyList a}$, which both is defined polymorphically, therefore $\Omega_{2,1} = \{\ttt{A}\} \in P(\{ \ttt{A} \})$ and $\Omega_{2,2} = \{\ttt{A}\} \in P(\{ \ttt{A} \})$.
+		\end{itemize}
+		So finally, we can translate the Haskell definition shown above to the following Prolog program:\\
+		\lstinputlisting[language=Prolog, label=mylist-prolog-polymorphic]{code/chapter3/polymorphic/prolog/mylist-polymorphic.pl}
+		Now, if you type \ttt{mylist(N, bool, X)} in the Prolog's CLI, you will get a set of valid \ttt{MyList a} with $\ttt{a} := \ttt{Bool}$ generated values which is the same set than the generated one by using our old \ttt{MyListBool} program and holds the completeness we have been searching for.\\
+	\end{example}
+	%%
+	\begin{example}[Binary Search Tree]
+		Let's consider the polymorphic version of our \ttt{BSTree} Haskell ADT definition:
+		\lstinputlisting[language=Haskell, label=binary-search-tree-haskell-polymorphic]{code/chapter3/polymorphic/haskell/bst-polymorphic.hs}
+		Using $\phi$, in the las examples \ref{ch:monomorphic-bounded-types-examples} we obtain:
+		%%
+		\lstinputlisting[language=Prolog, label=binary-search-tree-prolog-monotype-boundary]{code/chapter3/monotypes-boundary/bst-boundary-simplify.pl}
+		%%
+		Now, if we use the newer refinement function $\Phi$:
+		\begin{itemize}
+			\item We can see that there exists a $\tau_1$. Therefore there exists a variable, $T_1$.
+			\item Here, $\tau_1 = \ttt{a}$ so we can define $T_1 = \ttt{A}$ and consider the poset $P(\{\ttt{A}\})$.
+			\item As \ttt{Nil} constructor doesn't require any type to be defined, therefore $\Omega_{1,1} = \emptyset \in P(\{ \ttt{A} \})$. \\\\
+			      For the second constructor, there exists three $\alpha_{2,1}$, $\alpha_{2,2}$ and $\alpha_{2,3}$ related to the expression \ttt{T a (BSTree a) (BSTree a)}, that is $\alpha_{2,1} = \ttt{a}$ and $\alpha_{2,2} = \alpha_{2,3} = \ttt{BSTree a}$, which both is defined polymorphically, therefore $\Omega_{2,1} = \{\ttt{A}\} \in P(\{ \ttt{A} \})$ and $\Omega_{2,2} = \Omega_{2,3} = \{\ttt{A}\} \in P(\{ \ttt{A} \})$.
+		\end{itemize}
+		So finally, we can translate the Haskell definition shown above to the following Prolog program:\\
+		\lstinputlisting[language=Prolog, label=binary-search-tree-prolog-polymorphic]{code/chapter3/polymorphic/prolog/bst-polymorphic.pl}
+		Now, if you type \ttt{bstree(N, int, X)} in the Prolog's CLI, you will get a set of valid \ttt{BSTree a} with $\ttt{a} := \ttt{Int}$ generated values which is the same set than the generated one by using our old monomorphic type version of \ttt{BSTree} program and holds the completeness we have been searching for.\\
+	\end{example}
+	%%
+	\begin{example}[SomeWeird]
+		Let's consider the polymorphic version of our \ttt{SomeWeird} Haskell ADT definition:
+		\lstinputlisting[language=Haskell, label=someweird-haskell-polymorphic]{code/chapter3/polymorphic/haskell/someweird-polymorphic.hs}
+		Using $\phi$, in the las examples \ref{ch:monomorphic-bounded-types-examples} we obtain:
+		%%
+		\lstinputlisting[language=Prolog, label=someweird-prolog-monotype-boundary]{code/chapter3/monotypes-boundary/someweird-boundary-simplify.pl}
+		%%
+		Now, if we use the newer refinement function $\Phi$:
+		\begin{itemize}
+			\item We can see that there exists two $\tau_1$ and $\tau_2$. Therefore there exist two variables, $T_1$ and $T_2$.
+			\item Here, $\tau_1 = \ttt{a}$ and $\tau_2 = \ttt{b}$ so we can define $T_1 = \ttt{A}$, $T_2 = \ttt{B}$ and consider the poset $P(\{\ttt{A}, \ttt{B}\})$.
+			\item As \ttt{Nil1} constructor doesn't require any type to be defined, therefore $\Omega_{1,1} = \emptyset \in P(\{ \ttt{A} \})$. \\\\
+			      As \ttt{Nil2} constructor doesn't require any type to be defined, therefore $\Omega_{2,1} = \emptyset \in P(\{ \ttt{A} \})$. \\\\
+			      For the third constructor, there exists an $\alpha_{3,1}$ related to the expression \ttt{Some a}, that is $\alpha_{3,1} = \ttt{a}$, which is defined polymorphically, therefore $\Omega_{3,1} = \{\ttt{A}\} \in P(\{ \ttt{A} \})$. \\\\
+			      For the fourth constructor, there exists three $\alpha_{4,1}$, $\alpha_{4,2}$ and $\alpha_{4,3}$ related to the expression \ttt{Weird (SomeWeird a) (SomeWeird a) b}, that is $\alpha_{4,1} = \alpha_{4,2} = \ttt{SomeWeird a b}$ and $\alpha_{4,3} = \ttt{b}$, which both is defined polymorphically, therefore $\Omega_{4,1} = \Omega_{4,2} = \{\ttt{A}, \ttt{B}\} \in P(\{ \ttt{A} , \ttt{B} \})$ and $\Omega_{4,3} = \{\ttt{B}\} \in P(\{ \ttt{A} , \ttt{B} \})$.
+			      %%
+		\end{itemize}
+		So finally, we can translate the Haskell definition shown above to the following Prolog program:\\
+		\lstinputlisting[language=Prolog, label=someweird-polymorphic]{code/chapter3/polymorphic/prolog/someweird-polymorphic.pl}
+		Now, if you type \ttt{someweird(N, int, bool, X)} in the Prolog's CLI, you will get a set of valid \ttt{SomeWeird a b} with $\ttt{a} := \ttt{Int}$ and $\ttt{b} := \ttt{Bool}$ generated values which is the same set than the generated one by using our old monomorphic type version of \ttt{SomeWeird} program and holds the completeness we have been searching for.\\
+	\end{example}
+	%%
+	\subsection{Red-Black Tree}
+	Finally, we have the tools to get the Prolog program approach from a Red-Black Tree Haskell's definition. Let's pull out all the stops.\\\\
+	%%
+	Let's suppose the following Haskell ADT definition:
+	\lstinputlisting[language=Haskell, label=rbtree-haskell-polymorphic]{code/chapter3/polymorphic/haskell/rbtree-polymorphic.hs}
+	Using $\Phi$, in the las examples \ref{ch:monomorphic-bounded-types-examples} we obtain:
+	%%
+	\lstinputlisting[language=Prolog, label=rbtree-prolog-monotype]{code/chapter3/polymorphic/prolog/rbtree-polymorphic.pl}
+	And that is! right? right...\\\\
+	We have not finished yet in fact. Of course, now, we can generate random values from a given Haskell's ADT definition by using our syntax-translation mechanism. However, we are forgetting those structures that are valid if and only if hold so many invariants or restrictions.
+	%%
+	\chapter{Invariants Syntax-Translation Mechanism. Liquid Haskell to Rescue!}
 	%%
 	%%
-		
-			
+	\appendix
+	\chapter{Prolog Code}
+	In this chapter, I will show the Prolog code which is used as a prelude for the translation-syntax mechanism for generating the space of solutions of a given translated algebra data type. It is introduced as modules which you can import into your Prolog program.
+	\subsubsection*{Primitive Types Generators}
+	\lstinputlisting[language=Prolog, label=all-types]{code/appendix/prolog/types.pl}
+	\subsubsection*{Polymorphic Type Generators}
+	\lstinputlisting[language=Prolog, label=generators]{code/appendix/prolog/generator.pl}
+	\subsubsection*{Polymorphic and Bounded List Type Generator}
+	\lstinputlisting[language=Prolog, label=list-type]{code/appendix/prolog/list.pl}
+	%%
 	\begin{thebibliography}{9}
 		\bibitem{pbtfree}
 		E. De Angelis, F. Fioravanti, A. Palacios, A. Pettorossi and M. Proietti. (2019). Property-Based Test Case Generators for Free. 10.1007/978-3-030-31157-5\_12. 
-												
+														
 		\bibitem{genclp}
 		V. Senni and F. Fioravanti. (2012). Generation of Test Data Structures Using Constraint Logic Programming. 7305. 115-131. 10.1007/978-3-642-30473-6\_10.
-												
+														
 		\bibitem{effgenttransf}
 		F. Fioravanti, M. Proietti and V. Senni. (2015). Efficient generation of test data structures using constraint logic programming and program transformation. Journal of Logic and Computation, vol. 25, no. 6, pp. 1263-1283, doi: 10.1093/logcom/ext071.
-												
+														
 		\bibitem{smtbased}
 		R. Peña, J. Sánchez-Hernández, M. Garrido and J. Sagredo. (2019) SMT-based Test-Case Generation with Complex Preconditions. Actas de las XIX Jornadas de Programación y Lenguajes (PROLE 219).
-												
+														
 		\bibitem{intertypeoleg}
 		O. Kiselyov and C. Shan. (2008). Interpreting types as abstract values. Formosan Summer School on Logic, Language, and Computation.
-												
+														
 		\bibitem{rbtreehaskell}
 		C. Okasaki. (1999). Red-black trees in a functional setting. Journal of Functional Programming, 9(4), 471-477. doi:10.1017/S0956796899003494
-												
+														
 		\bibitem{cpierce}
 		Benjamin C. Pierce. (2002). Introduction. Types and Programming Languages, MIT Press, 2002, pp.1-13.
-												
+														
 		\bibitem{quickcheck}
 		K. Claessen and J. Hughes. (2000). QuickCheck: a lightweight tool for random testing of Haskell programs. SIGPLAN Not. 35, 9, 268–279. https://doi.org/10.1145/357766.351266
-												
+														
 		\bibitem{hasksynt}
 		Haskell. Haskell 98. Syntax. https://www.haskell.org/onlinereport/syntax-iso.html
-												
+														
 		\bibitem{haskdat}
 		Haskell. Haskell 98. User-Defined Datatypes. https://www.haskell.org/onlinereport/decls.html
-												
-												
+														
+														
 	\end{thebibliography}
-			
+				
 \end{document}

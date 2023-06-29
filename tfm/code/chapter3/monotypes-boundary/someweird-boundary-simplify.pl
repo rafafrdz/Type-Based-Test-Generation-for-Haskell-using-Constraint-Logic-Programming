@@ -1,0 +1,21 @@
+someweird(0, nil1).
+
+someweird(0, nil2).
+
+someweird(0, some(X31)) :-
+    gen_int(X31).
+
+someweird(1, weird(X41, X42, X43)) :-
+    base(Z41),
+    base(Z42),
+    someweird(Z41, X41),
+    someweird(Z42, X42),
+    gen_bool(X43).
+
+someweird(N4, weird(X41, X42, X43)) :-
+    N4 > 1,
+    Nr4 is N4 - 1,
+    states4(Nr4, W41, W42),
+    someweird(W41, X41),
+    someweird(W42, X42),
+    gen_bool(X43).

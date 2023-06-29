@@ -4,15 +4,15 @@
 
 % rule01
 % Base case for nil1
-someweird(0,nil1).
+someweird(0, nil1).
 
 % rule02
 % Base case for nil2
-someweird(0,nil2).
+someweird(0, nil2).
 
 % rule03
 % Base case for some(_)
-someweird(0,some(X31)) :-
+someweird(0, some(X31)) :-
     gen_int(X31).
 
 % rule04

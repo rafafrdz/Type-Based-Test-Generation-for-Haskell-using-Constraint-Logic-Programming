@@ -1,7 +1,14 @@
+:- module(generator, [gen/2]).
+
+% Import here the types module
+% By using :- consult(path/subpath/types.pl).
+
+
 %% Generator
 gen(Type, X) :-
-    rel_type(Type, Gen),
-    call(Gen, X).
+    rel_type(Type, G),
+    call(G, X).
+
 gen(Type, X) :-
     rel_gen(Type, Gen),
     call(Gen, X).
