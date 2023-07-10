@@ -1,0 +1,542 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.6 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \sortlist[entry]{none/global}
+    \entry{pbtnewapproach}{article}{}
+      \name{author}{2}{}{%
+        {{hash=a0c2b5dbc698a5876ee093476aaa9ad6}{%
+           family={Fink},
+           family_i={F\bibinitperiod},
+           given={George},
+           given_i={G\bibinitperiod}}}%
+        {{hash=78b10ccc549824aded66b9ff9fbcd882}{%
+           family={Bishop},
+           family_i={B\bibinitperiod},
+           given={Matt},
+           given_i={M\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York, NY, USA}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computing Machinery}%
+      }
+      \strng{namehash}{8e4c110d4b659e3c5642a212927a6519}
+      \strng{fullhash}{8e4c110d4b659e3c5642a212927a6519}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The goal of software testing analysis is to validate that an implementation satisfies its specifications. Many errors in software are caused by generalizable flaws in the source code. Property-based testing assures that a given program is free of specified generic flaws. Property-based testing uses property specifications and a data-flow analysis of the program to guide evaluation of test executions for correctness and completeness.}
+      \field{issn}{0163-5948}
+      \field{journaltitle}{SIGSOFT Softw. Eng. Notes}
+      \field{month}{07}
+      \field{number}{4}
+      \field{title}{Property-Based Testing: A New Approach to Testing for Assurance}
+      \field{volume}{22}
+      \field{year}{1997}
+      \field{pages}{74\bibrangedash 80}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1145/263244.263267
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1145/263244.263267
+      \endverb
+    \endentry
+    \entry{arttesting}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=af6de0169dd3e2ed233102751ba1a662}{%
+           family={Herzig},
+           family_i={H\bibinitperiod},
+           given={Kim},
+           given_i={K\bibinitperiod}}}%
+        {{hash=d27d3901f7ee97e48ad2c6f94b836b5d}{%
+           family={Greiler},
+           family_i={G\bibinitperiod},
+           given={Michaela},
+           given_i={M\bibinitperiod}}}%
+        {{hash=08c491642d0eb2fc08497eba5a56083a}{%
+           family={Czerwonka},
+           family_i={C\bibinitperiod},
+           given={Jacek},
+           given_i={J\bibinitperiod}}}%
+        {{hash=b0e20e5ae6e1892a688dfba455fc907d}{%
+           family={Murphy},
+           family_i={M\bibinitperiod},
+           given={Brendan},
+           given_i={B\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Florence, Italy}%
+      }
+      \list{publisher}{1}{%
+        {IEEE Press}%
+      }
+      \strng{namehash}{48d7959cee917c4fbdb098f4c774a59a}
+      \strng{fullhash}{5bd67b08c78eaa3d319ad85845dbdce0}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Testing is a key element of software development processes for the management and assessment of product quality. In most development environments, the software engineers are responsible for ensuring the functional correctness of code. However, for large complex software products, there is an additional need to check that changes do not negatively impact other parts of the software and they comply with system constraints such as backward compatibility, performance, security etc. Ensuring these system constraints may require complex verification infrastructure and test procedures. Although such tests are time consuming and expensive and rarely find defects they act as an insurance process to ensure the software is compliant. However, long lasting tests increasingly conflict with strategic aims to shorten release cycles. To decrease production costs and to improve development agility, we created a generic test selection strategy called THEO that accelerates test processes without sacrificing product quality. THEO is based on a cost model, which dynamically skips tests when the expected cost of running the test exceeds the expected cost of removing it. We replayed past development periods of three major Microsoft products resulting in a reduction of 50\% of test executions, saving millions of dollars per year, while maintaining product quality.}
+      \field{booktitle}{Proceedings of the 37th International Conference on Software Engineering - Volume 1}
+      \field{isbn}{9781479919345}
+      \field{series}{ICSE '15}
+      \field{title}{The Art of Testing Less without Sacrificing Quality}
+      \field{year}{2015}
+      \field{pages}{483\bibrangedash 493}
+      \range{pages}{11}
+      \keyw{measurement,cost estimation,test improvement}
+    \endentry
+    \entry{tddpaper}{article}{}
+      \name{author}{2}{}{%
+        {{hash=1e4ca8518fdff52bfe2c6dcca7ef35a4}{%
+           family={Janzen},
+           family_i={J\bibinitperiod},
+           given={D.},
+           given_i={D\bibinitperiod}}}%
+        {{hash=15f7ba239384b505ee3856b8013325f3}{%
+           family={Saiedian},
+           family_i={S\bibinitperiod},
+           given={H.},
+           given_i={H\bibinitperiod}}}%
+      }
+      \strng{namehash}{70fd52dbe197df11c15ceb896ff187b2}
+      \strng{fullhash}{70fd52dbe197df11c15ceb896ff187b2}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Test-driven development creates software in very short iterations with minimal upfront design. This strategy requires writing automated tests prior to developing functional code in small, rapid iterations. Although developers have been applying TDD in various forms for several decades, this software development strategy has continued to gain increased attention as one of the core extreme programming practices.}
+      \field{issn}{1558-0814}
+      \field{journaltitle}{Computer}
+      \field{month}{09}
+      \field{number}{9}
+      \field{title}{Test-driven development concepts, taxonomy, and future direction}
+      \field{volume}{38}
+      \field{year}{2005}
+      \field{pages}{43\bibrangedash 50}
+      \range{pages}{8}
+      \verb{doi}
+      \verb 10.1109/MC.2005.314
+      \endverb
+    \endentry
+    \entry{efftdd}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=694589f238a0fc26032bca41d44ea899}{%
+           family={Makinen},
+           family_i={M\bibinitperiod},
+           given={Simo},
+           given_i={S\bibinitperiod}}}%
+        {{hash=ce27e94467d0457370844e86b072ffef}{%
+           family={Münch},
+           family_i={M\bibinitperiod},
+           given={Jürgen},
+           given_i={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{f8a3abcb56ccf099112d93103b8f5895}
+      \strng{fullhash}{f8a3abcb56ccf099112d93103b8f5895}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{978-3-319-03601-4}
+      \field{journaltitle}{Lecture Notes in Business Information Processing}
+      \field{month}{01}
+      \field{title}{Effects of Test-Driven Development: A Comparative Analysis of Empirical Studies}
+      \field{volume}{166}
+      \field{year}{2014}
+      \verb{doi}
+      \verb 10.1007/978-3-319-03602-1_10
+      \endverb
+    \endentry
+    \entry{correctnesspaper}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=06b07cf2af3ca3ab3f2a0bf24a156426}{%
+           family={Schaefer},
+           family_i={S\bibinitperiod},
+           given={Ina},
+           given_i={I\bibinitperiod}}}%
+        {{hash=94dd58c87dc7e7b5a321b66fd6d11074}{%
+           family={Runge},
+           family_i={R\bibinitperiod},
+           given={Tobias},
+           given_i={T\bibinitperiod}}}%
+        {{hash=970acf9eff6c48b1b52b558d979fd3de}{%
+           family={Cleophas},
+           family_i={C\bibinitperiod},
+           given={Loek},
+           given_i={L\bibinitperiod}}}%
+        {{hash=ad2eb53741323db7abbef9c3ef12433c}{%
+           family={Watson},
+           family_i={W\bibinitperiod},
+           given={Bruce\bibnamedelima W.},
+           given_i={B\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+      }
+      \strng{namehash}{8eb92b560393dfbd6c3b71a21963667b}
+      \strng{fullhash}{63e8fb82fe3e599b48f11fe3fb4cf03b}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The Correctness-by-Construction tutorial focuses on a structured programming approach for correct software development. Besides functional correctness, also non-functional properties such as security properties can be guaranteed using the CbC approach. In this tutorial, the participants learn a good practice to develop software that is midway between formal approaches and a “hack into correctness” style.}
+      \field{booktitle}{2021 IEEE Secure Development Conference (SecDev)}
+      \field{month}{10}
+      \field{title}{Tutorial: The Correctness-by-Construction Approach to Programming Using CorC}
+      \field{year}{2021}
+      \field{pages}{1\bibrangedash 2}
+      \range{pages}{2}
+      \verb{doi}
+      \verb 10.1109/SecDev51306.2021.00012
+      \endverb
+    \endentry
+    \entry{pbtfree}{inproceedings}{}
+      \name{author}{5}{}{%
+        {{hash=73ddc825c0dd6050e72a1dea5e70175e}{%
+           family={De\bibnamedelima Angelis},
+           family_i={D\bibinitperiod\bibinitdelim A\bibinitperiod},
+           given={Emanuele},
+           given_i={E\bibinitperiod}}}%
+        {{hash=9de683b64d0e912b1fed2bff9c53189e}{%
+           family={Fioravanti},
+           family_i={F\bibinitperiod},
+           given={Fabio},
+           given_i={F\bibinitperiod}}}%
+        {{hash=aa3f42cdbcde1f3581804aace05eeb68}{%
+           family={Palacios},
+           family_i={P\bibinitperiod},
+           given={Adrián},
+           given_i={A\bibinitperiod}}}%
+        {{hash=38b7ca0f2d8fcc13301bce9245f5a4b7}{%
+           family={Pettorossi},
+           family_i={P\bibinitperiod},
+           given={Alberto},
+           given_i={A\bibinitperiod}}}%
+        {{hash=33ab1554cb7d19300a151d1143dc0252}{%
+           family={Proietti},
+           family_i={P\bibinitperiod},
+           given={Maurizio},
+           given_i={M\bibinitperiod}}}%
+      }
+      \name{editor}{2}{}{%
+        {{hash=89265f0408582b0000015ab90b18647f}{%
+           family={Beyer},
+           family_i={B\bibinitperiod},
+           given={Dirk},
+           given_i={D\bibinitperiod}}}%
+        {{hash=00b847d14fbf4d7462ac07d8e7c5cb04}{%
+           family={Keller},
+           family_i={K\bibinitperiod},
+           given={Chantal},
+           given_i={C\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Cham}%
+      }
+      \list{publisher}{1}{%
+        {Springer International Publishing}%
+      }
+      \strng{namehash}{ab17909e0f600a7b8985c06cb9eb435c}
+      \strng{fullhash}{4d9d408d4726f9969f7ad54a784cd937}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Property-Based Testing requires the programmer to write suitable generators, i.e., programs that generate (possibly in a random way) input values for which the program under test should be run. However, the process of writing generators is quite a costly, error-prone activity. In the context of Property-Based Testing of Erlang programs, we propose an approach to relieve the programmer from the task of writing generators. Our approach allows the automatic, efficient generation of input test values that satisfy a given specification. In particular, we have considered the case when the input values are data structures satisfying complex constraints. That generation is performed via the symbolic execution of the specification using constraint logic programming.}
+      \field{booktitle}{Tests and Proofs}
+      \field{isbn}{978-3-030-31157-5}
+      \field{title}{Property-Based Test Case Generators for Free}
+      \field{year}{2019}
+      \field{pages}{186\bibrangedash 206}
+      \range{pages}{21}
+    \endentry
+    \entry{strtyped}{article}{}
+      \name{author}{1}{}{%
+        {{hash=84b354bfc22eff333dfe651e245906e6}{%
+           family={Eckel},
+           family_i={E\bibinitperiod},
+           given={Bruce},
+           given_i={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{84b354bfc22eff333dfe651e245906e6}
+      \strng{fullhash}{84b354bfc22eff333dfe651e245906e6}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{978-1-59059-500-8}
+      \field{month}{01}
+      \field{title}{Strong Typing vs. Strong Testing}
+      \field{year}{2005}
+      \verb{doi}
+      \verb 10.1007/978-1-4302-0038-3_11
+      \endverb
+    \endentry
+    \entry{stvsdt}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=900d6a577075a7cf7f2e6591ee25000b}{%
+           family={Meijer},
+           family_i={M\bibinitperiod},
+           given={Erik},
+           given_i={E\bibinitperiod}}}%
+        {{hash=9c6d3f4bf2f65e9e6be6d6c653004971}{%
+           family={Drayton},
+           family_i={D\bibinitperiod},
+           given={Peter},
+           given_i={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{661d524641e611f4c23c7be91cc54608}
+      \strng{fullhash}{661d524641e611f4c23c7be91cc54608}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{01}
+      \field{title}{Static Typing Where Possible, Dynamic Typing When Needed: The End of the Cold War Between Programming Languages}
+      \field{year}{2004}
+    \endentry
+    \entry{scheckart}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=661b29faffafa1a05b6a7a62ddeb701f}{%
+           family={Hupel},
+           family_i={H\bibinitperiod},
+           given={Lars},
+           given_i={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{661b29faffafa1a05b6a7a62ddeb701f}
+      \strng{fullhash}{661b29faffafa1a05b6a7a62ddeb701f}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://typelevel.org/blog/2016/10/17/minicheck.html}}
+      \field{title}{Typelevel | Let's build ourselves a small ScalaCheck}
+    \endentry
+    \entry{rbtreehaskell}{article}{}
+      \name{author}{1}{}{%
+        {{hash=e4e76cfb2d550f0048c93839f784f76d}{%
+           family={Okasaki},
+           family_i={O\bibinitperiod},
+           given={Chris},
+           given_i={C\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{e4e76cfb2d550f0048c93839f784f76d}
+      \strng{fullhash}{e4e76cfb2d550f0048c93839f784f76d}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Functional Programming}
+      \field{number}{4}
+      \field{title}{Red-black trees in a functional setting}
+      \field{volume}{9}
+      \field{year}{1999}
+      \field{pages}{471\bibrangedash 477}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1017/S0956796899003494
+      \endverb
+    \endentry
+    \entry{genclp}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=0f45867b36b0a33f2ee13bb3dd71cfd3}{%
+           family={Senni},
+           family_i={S\bibinitperiod},
+           given={Valerio},
+           given_i={V\bibinitperiod}}}%
+        {{hash=9de683b64d0e912b1fed2bff9c53189e}{%
+           family={Fioravanti},
+           family_i={F\bibinitperiod},
+           given={Fabio},
+           given_i={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{e722104ef14dfa2d13bffc3809a52052}
+      \strng{fullhash}{e722104ef14dfa2d13bffc3809a52052}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{978-3-642-30472-9}
+      \field{month}{05}
+      \field{title}{Generation of Test Data Structures Using Constraint Logic Programming}
+      \field{volume}{7305}
+      \field{year}{2012}
+      \field{pages}{115\bibrangedash 131}
+      \range{pages}{17}
+      \verb{doi}
+      \verb 10.1007/978-3-642-30473-6_10
+      \endverb
+    \endentry
+    \entry{cpierce}{book}{}
+      \name{author}{1}{}{%
+        {{hash=8eb1c0a7778a466aa612ab3259d489ec}{%
+           family={Pierce},
+           family_i={P\bibinitperiod},
+           given={Benjamin\bibnamedelima C.},
+           given_i={B\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {The MIT Press}%
+      }
+      \strng{namehash}{8eb1c0a7778a466aa612ab3259d489ec}
+      \strng{fullhash}{8eb1c0a7778a466aa612ab3259d489ec}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{A type system is a syntactic method for automatically checking the absence of certain erroneous behaviors by classifying program phrases according to the kinds of values they compute. The study of type systems -- and of programming languages from a type-theoretic perspective -- has important applications in software engineering, language design, high-performance compilers, and security.This text provides a comprehensive introduction both to type systems in computer science and to the basic theory of programming languages. The approach is pragmatic and operational; each new concept is motivated by programming examples and the more theoretical sections are driven by the needs of implementations. Each chapter is accompanied by numerous exercises and solutions, as well as a running implementation, available via the Web. Dependencies between chapters are explicitly identified, allowing readers to choose a variety of paths through the material.The core topics include the untyped lambda-calculus, simple type systems, type reconstruction, universal and existential polymorphism, subtyping, bounded quantification, recursive types, kinds, and type operators. Extended case studies develop a variety of approaches to modeling the features of object-oriented languages.}
+      \field{edition}{1st}
+      \field{isbn}{0262162091}
+      \field{title}{Types and Programming Languages}
+      \field{year}{2002}
+    \endentry
+    \entry{quickcheck}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=b5810f3c048af7890859f522af846370}{%
+           family={Claessen},
+           family_i={C\bibinitperiod},
+           given={Koen},
+           given_i={K\bibinitperiod}}}%
+        {{hash=05db43db1a50c29c0eca01fd35ec8758}{%
+           family={Hughes},
+           family_i={H\bibinitperiod},
+           given={John},
+           given_i={J\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York, NY, USA}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computing Machinery}%
+      }
+      \strng{namehash}{63eb59c9175e0a68b08f258c32e88a31}
+      \strng{fullhash}{63eb59c9175e0a68b08f258c32e88a31}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Quick Check is a tool which aids the Haskell programmer in formulating and testing properties of programs. Properties are described as Haskell functions, and can be automatically tested on random input, but it is also possible to define custom test data generators. We present a number of case studies, in which the tool was successfully used, and also point out some pitfalls to avoid. Random testing is especially suitable for functional programs because properties can be stated at a fine grain. When a function is built from separately tested components, then random testing suffices to obtain good coverage of the definition under test.}
+      \field{booktitle}{Proceedings of the Fifth ACM SIGPLAN International Conference on Functional Programming}
+      \field{isbn}{1581132026}
+      \field{series}{ICFP '00}
+      \field{title}{QuickCheck: A Lightweight Tool for Random Testing of Haskell Programs}
+      \field{year}{2000}
+      \field{pages}{268\bibrangedash 279}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1145/351240.351266
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1145/351240.351266
+      \endverb
+    \endentry
+    \entry{effgenttransf}{article}{}
+      \name{author}{3}{}{%
+        {{hash=9de683b64d0e912b1fed2bff9c53189e}{%
+           family={Fioravanti},
+           family_i={F\bibinitperiod},
+           given={Fabio},
+           given_i={F\bibinitperiod}}}%
+        {{hash=33ab1554cb7d19300a151d1143dc0252}{%
+           family={Proietti},
+           family_i={P\bibinitperiod},
+           given={Maurizio},
+           given_i={M\bibinitperiod}}}%
+        {{hash=0f45867b36b0a33f2ee13bb3dd71cfd3}{%
+           family={Senni},
+           family_i={S\bibinitperiod},
+           given={Valerio},
+           given_i={V\bibinitperiod}}}%
+      }
+      \strng{namehash}{1ad6190922a5f99b4980108cd1cb4fb9}
+      \strng{fullhash}{1ad6190922a5f99b4980108cd1cb4fb9}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Logic and Computation}
+      \field{month}{11}
+      \field{title}{Efficient Generation of Test Data Structures using Constraint Logic Programming and Program Transformation}
+      \field{year}{2013}
+      \verb{doi}
+      \verb 10.1093/logcom/ext071
+      \endverb
+    \endentry
+    \entry{smtbased}{inbook}{}
+      \name{author}{4}{}{%
+        {{hash=3552c85b6bb215a4709637a3980aa677}{%
+           family={Peña},
+           family_i={P\bibinitperiod},
+           given={Ricardo},
+           given_i={R\bibinitperiod}}}%
+        {{hash=0147f58d17d788fdc5363acb8c0fc2b7}{%
+           family={Sánchez-Hernández},
+           family_i={S\bibinithyphendelim H\bibinitperiod},
+           given={Jaime},
+           given_i={J\bibinitperiod}}}%
+        {{hash=3cdae0010bbc55629c047c989e81b3d9}{%
+           family={Garrido},
+           family_i={G\bibinitperiod},
+           given={Miguel},
+           given_i={M\bibinitperiod}}}%
+        {{hash=872f34bdcef9d1ba5f513eced367dec8}{%
+           family={Sagredo},
+           family_i={S\bibinitperiod},
+           given={Javier},
+           given_i={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{9d9b649ee170bd3f6eb79c63713e85fc}
+      \strng{fullhash}{06eab6e63946bc80435ca64a0eec2d2c}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{978-3-031-31475-9}
+      \field{month}{05}
+      \field{title}{SMT-Based Test-Case Generation and Validation for Programs with Complex Specifications}
+      \field{year}{2023}
+      \field{pages}{188\bibrangedash 205}
+      \range{pages}{18}
+      \verb{doi}
+      \verb 10.1007/978-3-031-31476-6_10
+      \endverb
+    \endentry
+    \entry{hasksynt}{misc}{}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://www.haskell.org/onlinereport/syntax-iso.html}}
+      \field{title}{Haskell 98. Syntax}
+    \endentry
+    \entry{haskdat}{misc}{}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://www.haskell.org/onlinereport/decls.html}}
+      \field{title}{Haskell 98. User-Defined Datatypes}
+    \endentry
+  \endsortlist
+\endrefsection
+\endinput
+

@@ -1,0 +1,95 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\defcounter {refsection}{0}\relax 
+\select@language {english}
+\defcounter {refsection}{0}\relax 
+\select@language {english}
+\defcounter {refsection}{0}\relax 
+\select@language {english}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {1.1}Testing}{1}{section.1.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {1.2}Property-Based Testing}{3}{section.1.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {1.3}Problem: Test cases that satisfy a given specification}{4}{section.1.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {1.4}Our Approach}{6}{section.1.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {1.5}Related Works}{10}{section.1.5}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {1.5.1}QuickCheck: Automatic testing of Haskell programs}{10}{subsection.1.5.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {1.5.2}ScalaCheck: Automatic testing of Scala and Java programs}{10}{subsection.1.5.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {1.5.3}PropEr: Property-based testing tool for Erlang}{10}{subsection.1.5.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {1.5.4}Hypothesis: Property-based testing tool for Python}{11}{subsection.1.5.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {1.6}State of the Art: Test Cases with Pre-Condition}{11}{section.1.6}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {2}Preliminaries}{13}{chapter.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2.1}Haskell, the functional guy}{13}{section.2.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {2.1.1}Grammar specification}{15}{subsection.2.1.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2.2}Prolog, the logical guy}{16}{section.2.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {2.2.1}Getting Started}{16}{subsection.2.2.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Facts}{17}{section*.6}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Queries}{17}{section*.7}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{The Logical Variable, Substitution, and Instances}{17}{section*.8}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Rules}{18}{section*.9}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Recursive Rules}{20}{section*.10}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {2.2.2}Grammar specification}{20}{subsection.2.2.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {3}Syntax-Translation Mechanism}{21}{chapter.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3.1}Monomorphic Types}{21}{section.3.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.1.1}Primitive Types generators}{23}{subsection.3.1.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\texttt {Char} type generator}{23}{section*.11}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\texttt {String} type generator}{23}{section*.12}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\texttt {Int} type generator}{24}{section*.13}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\texttt {Integer} type generator}{24}{section*.14}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\texttt {Bool} type generator}{24}{section*.15}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\texttt {Unit} type generator}{24}{section*.16}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\texttt {Double} type generator}{24}{section*.17}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.1.2}Examples}{24}{subsection.3.1.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3.2}Monomorphic Types with Boundaries}{29}{section.3.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.2.1}Examples}{34}{subsection.3.2.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3.3}Polymorfism Types}{41}{section.3.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.3.1}Generic Polymorphic Types Generator}{43}{subsection.3.3.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.3.2}Polymorfism Types with Boundaries}{44}{subsection.3.3.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.3.3}Examples}{45}{subsection.3.3.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.3.4}Red-Black Tree}{48}{subsection.3.3.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {4}Future Works}{51}{chapter.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{Bibliography}{53}{section*.18}
+\defcounter {refsection}{0}\relax 
+\contentsline {part}{Appendix}{57}{part*.20}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {A}Prolog Code}{57}{appendix.A}

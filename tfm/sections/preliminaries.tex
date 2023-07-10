@@ -1,0 +1,328 @@
+\chapter{Preliminaries}
+In this section, we present the basic notions of the Haskell and Prolog languages. Both will be the main actors of this work and before starting we need to bring some context about both languages, identifying which one will be our scope and what will need from each one.
+%%
+\section{Haskell, the functional guy}
+Haskell is a purely functional programming language, lazy, statically typed, concurrent, type inference, and why not, elegant and concise language.\\\\
+%%
+\textbf{Purely functional programming}. Every function in Haskell is a function in the mathematical sense (i.e., "pure"). Even side-effecting IO operations are but a description of what to do, produced by pure code. There are no statements or instructions, only expressions which cannot mutate variables (local or global) nor access states like time or random numbers. The following function takes an integer and returns an integer. By the type it cannot do any side-effects whatsoever, it cannot mutate any of its arguments.
+%%
+\begin{lstlisting}[language=Haskell, caption=Purely Functional Programming]
+square :: Int -> Int
+square x = x * x
+\end{lstlisting}
+The following string concatenation is a type error:
+%%
+\begin{lstlisting}[caption=Purely Functional Programming]
+"Name: " ++ getLine -- error
+\end{lstlisting}
+Because \texttt{getLine} has type \texttt{IO String} and not \texttt{String}, like "Name: " is. So by the type system, you cannot mix and match purity with impurity.\\\\
+%%
+\textbf{Lazy}. Functions don't evaluate their arguments. This means that programs can compose together very well, with the ability to write control constructs (such as if/else) just by writing normal functions. The purity of Haskell code makes it easy to fuse chains of functions, allowing for performance benefits.\\\\
+%%
+\textbf{Statically Typed}. Every expression in Haskell has a type which is determined at compile time. All the types composed together by function application have to match up. If they don't, the program will be rejected by the compiler. Types become not only a form of guarantee, but a language for expressing the construction of programs. All Haskell values have a type:
+%%
+\begin{lstlisting}[language=Haskell, caption=Statically Typed]
+char = 'a'    :: Char
+int = 123     :: Int
+fun = isDigit :: Char -> Bool
+\end{lstlisting}
+%%
+You have to pass the right type of values to functions, or the compiler will reject the program:
+%%
+\begin{lstlisting}[language=Haskell, caption=Statically Typed]
+isDigit 1 -- error
+\end{lstlisting}
+%%
+\textbf{Concurrent}. Haskell lends itself well to concurrent programming due to its explicit handling of effects. Its flagship compiler, GHC, comes with a high-performance parallel garbage collector and lightweight concurrency library containing a number of useful concurrency primitives and abstractions. Easily launch threads and communicate with the standard library:
+%%
+\begin{lstlisting}[caption=Concurrent]
+main = do
+  done <- newEmptyMVar
+  forkIO (do putStrLn "I'm one thread!"
+             putMVar done "Done!")
+  second <- forkIO (do threadDelay 100000
+                       putStrLn "I'm another thread!")
+  killThread second
+  msg <- takeMVar done
+  putStrLn msg
+\end{lstlisting}
+%%
+Use an asynchronous API for threads:
+%%
+\begin{lstlisting}[language=Haskell, caption=Concurrent]
+do a1 <- async (getURL url1)
+  a2 <- async (getURL url2)
+  page1 <- wait a1
+  page2 <- wait a2
+  ...
+\end{lstlisting}
+%%
+\textbf{Type Inference}. You don't have to explicitly write out every type in a Haskell program. Types will be inferred by unifying every type bidirectionally. However, you can write out types if you choose, or ask the compiler to write them for you for handy documentation. This example has a type signature for every binding:
+%%
+\begin{lstlisting}[language=Haskell, caption=Type Inference]
+main :: IO ()
+main = do line :: String <- getLine
+          print (parseDigit line)
+  where parseDigit :: String -> Maybe Int
+        parseDigit ((c :: Char) : _) =
+          if isDigit c
+             then Just (ord c - ord '0')
+             else Nothing
+\end{lstlisting}
+But you can just write:
+\begin{lstlisting}[language=Haskell, caption=Type Inference]
+main = do line <- getLine
+          print (parseDigit line)
+  where parseDigit (c : _) =
+          if isDigit c
+             then Just (ord c - ord '0')
+             else Nothing
+\end{lstlisting}
+%%
+\textbf{Elegant and concise}. Because it uses a lot of high-level concepts, Haskell programs are usually shorter than their imperative equivalents. And shorter programs are easier to maintain than longer ones and have fewer bugs.
+
+\subsection{Grammar specification}
+
+For our purpose, it is necessary to identify which is the specification of Haskell's grammar. More precisely, which is the specification of the definition of an algebraic data type in Haskell. Then, we need to identify which elements participate in the specification, and, in the next chapter, we will see how we need to translate those elements to Prolog elements within a complete formal Prolog expression. Therefore: \\\\
+%%
+Let's suppose we want to formally define an algebraic data type. Regarding \cite{hasksynt} and \cite{haskdat}, we can consider a subset of the grammar specification (expressed in BNF-Like syntax) for defining an ADT expression in Haskell. In our case, we won't consider either \texttt{context} or \texttt{deriving} words because we want just an approach to simple algebraic data type expressions. Therefore, for our purpose and simplicity, we have considered the following subset.\\
+%%
+\begin{align*}
+	special &::=\tav \ttt{(} \alt \ttt{)} \alt \ttt{,} \alt \ttt{;} \alt \ttt{[} \alt \ttt{]} \alt \ttt{`} \alt \ttt{\{} \alt \ttt{\}}\\
+	reservedop  &::=\tav \ttt{..} \alt \ttt{:} \alt \ttt{::} \alt \ttt{=} \alt \backslash \alt \ttt{|} \alt \ttt{<-} \alt \ttt{->} \\
+	&\tab \alt \ttt{@} \alt \sim \alt \ttt{=>}\\
+	ascDigit    &::=\tav     \ttt{0} \alt \ttt{1} \alt \ldots \alt \ttt{9}\\
+	ascSmall    &::=\tav     \ttt{a} \alt \ttt{b} \alt \ldots \alt \ttt{z}\\
+	ascLarge    &::=\tav     \ttt{A} \alt \ttt{B} \alt \ldots \alt \ttt{Z}\\
+	ascSymbol   &::=\tav     \ttt{!} \alt \ttt{\#} \alt \ttt{\$} \alt \ttt{\%} \alt \ttt{\&} \alt \ttt{*} \alt \ttt{+} \alt \ttt{.} \alt \ttt{/} \alt \ttt{<} \\
+	&\tab \alt \ttt{=} \alt \ttt{>} \alt \ttt{?} \alt \ttt{@} \alt \backslash \alt \hat{} \alt \ttt{|} \alt \ttt{-} \alt \sim \\
+	uniDigit    &::=\tav     \text{Any Unicode decimal digit}\\
+	uniSmall    &::=\tav     \text{Any Unicode lowercase letter}\\
+	uniLarge    &::=\tav     \text{Any uppercase or titlecase Unicode letter}\\
+	uniSymbol   &::=\tav     \text{Any Unicode symbol or punctuation}\\
+	digit       &::=\tav     ascDigit \alt uniDigit\\
+	small       &::=\tav     ascSmall \alt uniSmall \alt \ttt{\_}\\
+	large       &::=\tav ascLarge \alt uniLarge \\
+	symbol      &::=\tav ascSymbol \alt uniSymbol_{< special \alt \ttt{\_} \alt \ttt{:} \alt \ttt{"} \alt \ttt{'} >} \\
+	reserveid   &::= \tav \ttt{case} \alt \ttt{class} \alt \ttt{data} \alt \ttt{default} \alt \ttt{deriving} \alt \ttt{do} \alt \ttt{else} \\
+	&\tab \alt \ttt{if} \alt \ttt{import} \alt \ttt{in} \alt \ttt{infix} \alt \ttt{infixl} \alt \ttt{infixr} \alt \ttt{instance} \\
+	&\tab \alt \ttt{let} \alt \ttt{module} \alt \ttt{newtype} \alt \ttt{of} \alt \ttt{then} \alt \ttt{type} \alt \ttt{where} \alt \ttt{\_} \\
+	varid       &::= \tav ( \; small \tav \{ \; small \alt large \alt digit \alt \textbf{'} \; \} )_{< reserveid >}\\
+	conid      & ::= \tav large \tav \{ \; small \alt large \alt digit \alt \ttt{'} \; \} &   & \text{(constructors)}         \\
+	consym      &::= \tav ( \; \ttt{:} \tav \{ \; symbol \alt \ttt{:} \; \} \; )_{< reservedop >} \\
+	tyvar      & ::= \tav varid                                                           &   & \text{(type variables)}       \\
+	tycon      & ::= \tav conid                                                           &   & \text{(type constructors)}    \\
+	simpletype & ::=\tav tycon \tav tyvar_1 \tav \ldots \tav tyvar_k                      &   & \text{($k \geq 0$)}           \\
+	modid      & ::=\tav conid                                                            &   & \text{(modules)}              \\
+	qtycon  &::= \tav [ \; modid \ttt{.} \; ] \tav tycon \\
+	gtycon  &::=\tav gtycon \\
+	           & \tab \alt \ttt{()}                                                       &   & \text{(unit type)}            \\
+	           & \tab \alt \ttt{[]}                                                       &   & \text{(list constructor)}     \\
+	           & \tab \alt \ttt{->}                                                       &   & \text{(function constructor)} \\
+	           & \tab \alt \ttt{( ,}\tav \{ \; \ttt{,} \; \}\ttt{)}                       &   & \text{(tupling constructor)}  \\
+\end{align*}
+\begin{align*}
+	btype   & ::=\tav [\; btype \;] \tav atype                                           &   & \text{(type application)}            \\
+	type    & ::=\tav btype \tav [\; \ttt{->} \tav type ]                                &   & \text{(function type)}               \\
+	atype   & ::=\tav gtycon                                                             &   &                                      \\
+	        & \tab \alt tyvar                                                            &   &                                      \\
+	        & \tab \alt \ttt{(}type_1, ..., type_k\ttt{)}                                &   & \text{(tuple type, $k\geq 2$)}       \\
+	        & \tab \alt \ttt{[} type \ttt{]}                                             &   & \text{(list type)}                   \\
+	        & \tab \alt \ttt{(} type \ttt{)}                                             &   & \text{(parenthesized constructor)}   \\
+	con     & ::=\tav conid \alt ( consym )                                              &   & \text{(constructor)}                 \\
+	constr  & ::=\tav con \tav [\ttt{!}] \tav atype_1 \ldots \tav [\ttt{!}] \tav atype_k &   & \text{(arity $con = k$, $k \geq 0$)} \\
+	constrs & ::=\tav constr_1 \alt \ldots \alt constr_n                                 &   & \text{($n \geq 0$)}                  \\
+	topdecl & ::=\tav \ttt{data} \tav simpletype \tav \ttt{=} \tav constrs               &   &                                      
+\end{align*}
+%%
+
+\section{Prolog, the logical guy}
+Prolog is a logic programming language associated with artificial intelligence and computational linguistics.\\\\
+%%
+Prolog has its roots in first-order logic, a formal logic, and unlike many other programming languages, Prolog is intended primarily as a declarative programming language: the program logic is expressed in terms of relations, represented as facts and rules. A computation is initiated by running a query over these relations.\\\\
+%%
+A logic program is a set of axioms, or rules, defining relations between objects. A computation of a logic program is a deduction of the consequences of the program. A program defines a set of consequences, which is its meaning The art of logic programming is constructing concise and elegant programs that have the desired meaning.\\\\
+%%
+Prolog is a practical and efficient implementation of many aspects of "intelligent" program execution, such as non-determinism, parallelism, and pattern-directed procedure call. It provides a uniform data structure called the \textit{term}, from which all data, as well as Prolog programs, are constructed. A Prolog program consists of a set of clauses, where each clause is either a fact about the given information or a rule about how the solution may relate to or be inferred from the given facts. Thus Prolog can be seen as a first step towards the ultimate goal of programming in logic.\\\\
+%%
+In another way, in Prolog, a program logic is expressed in terms of relations, and a computation is initiated by running a query over these relations. Relations and queries are constructed using Prolog's single data type, the \textit{term}. Relations are defined by \textit{clauses}. Given a query, the Prolog engine attempts to find a resolution refutation of the negated query. If the negated query can be refuted, i.e., an instantiation for all free variables is found that makes the union of clauses and the singleton set consisting of the negated query false, it follows that the original query, with the found instantiation applied, is a logical consequence of the program. This makes Prolog (and other logic programming languages) particularly useful for database, symbolic mathematics, and language parsing applications.
+%%
+\subsection{Getting Started}
+%%
+Let's show the essential elements of the Prolog in real programs, but without becoming diverted by details, formal rules, and exceptions, before getting started with its specification.\\\\
+%%
+Computer programming in Prolog consists of:
+\begin{itemize}
+	\item Specifying some \textit{facts} about object and their relationships
+	\item Defining some \textit{rules} about objects and their relationships
+	\item Asking \textit{questions} about objects and their relationships
+\end{itemize}
+%%
+
+For example, Let's suppose we told to Prolog system our rule about the \textit{father relationship}. Let's suppose that Anakin's son is Luke, Julio's son is Anakin and there is a fourth guy, Manuel, who is just Luke's friend. Therefore, we can observe that just Anakin is related to Luke and Julio is related to Anakin by the \textit{father relationship}. These logical rules can be written in Prolog as follow:
+%%
+\begin{lstlisting}[language=Prolog, caption=Father Relationship]
+father(anakin, luke).
+father(julio, anakin).
+\end{lstlisting}
+%%
+And if we type in Prolog-CLI \ttt{father(anakin, luke)} it returns \ttt{true}, also with \ttt{father(julio, anakin)}. However, if we try to type \ttt{father(julio, manuel)} or whatever with Manuel, (or any other combination that does not represent the relationship written before) it will return \ttt{false}.
+%%
+\subsubsection{Facts}
+The simplest kind of statement is called a \textit{fact}. Facts are a means of stating that a relation holds between objects. In the example above, the expression \ttt{father(anakin, luke)} is a fact which says that \ttt{anakin} is the \textit{father} of \ttt{luke}. Names of the individuals are known as \textit{atom}s.\\\\
+The \textit{plus} relation can be realized via a set of facts that defines the addition table. An initial segment of the table is:
+%%
+\begin{lstlisting}[language=Prolog, caption=Plus Relationship]
+plus(0, 0, 0).
+plus(0, 1, 1).
+plus(1, 0, 1).
+plus(1, 1, 2).
+plus(0, 2, 2).
+plus(2, 0, 2).
+\end{lstlisting}
+This is not the best approach to defining \textit{plus} relation but it is good enough to catch the idea.
+%%
+\subsubsection{Queries}
+%%
+The second form of a statement in Prolog is a \textit{query}. Queries are a means of retrieving information from a logic program. A query asks whether a certain relation holds between objects. For example, the query \ttt{father(anakin, luke)?} asks whether the \textit{father} relationship holds between \ttt{anakin} and \ttt{luke}. Given the facts written before, the answer to this query is \textit{yes}.
+%%
+\subsubsection{The Logical Variable, Substitution, and Instances}
+A logical variable stands for an unspecified individual and is used accordingly. Consider its use in queries. Suppose we want to know of whom \ttt{luke} is the father. One way is to ask a series of queries, \ttt{father(julio, luke)?}, \ttt{father(manuel, luke)?}, \ttt{father(anakin, luke)?}, until an answer \textit{yes} is given.\\\\
+%%
+A variable allows a better way of expressing the query as \ttt{father(X, luke)?} to which the answer is \ttt{X=anakin}. Used in this way, \textit{variables are a means of summarizing many queries}. A query containing a variable asks whether there is a value for the variable that makes the query a logical consequence of the program.\\
+%%
+\begin{definition*}[Variable]
+	\textit{Variables} in logic programs behave differently from variables in conventional programming languages. They stand for an unspecified but single entity rather than for a store location in memory.
+\end{definition*}
+When Prolog uses a variable, the variable can be either \textit{instantiated} or \textit{not instantiated}\\
+%%
+\begin{definition*}[Instantiation]
+	A variable is \textit{instantiated} when there is an object that the variable stands for. A variable is not instantiated when what the variable stands for is not yet known.
+\end{definition*}
+Having introduced variables, we can define a \textit{term}.\\
+%%
+\begin{definition*}[Term]
+	A \textit{term} is the single data structure in logic programs. The definition is inductive. Constants and variables are terms. Also, compound terms or structures are terms.
+\end{definition*}
+Prolog can distinguish variables from terms because any term beginning with a capital letter is taken to be a variable.\\
+%%
+\begin{definition*}[Compound Term]
+	A \textit{compound term} comprises a \textbf{functor} (called the principal functor of the term) and a sequence of one or more arguments, which are terms. A \textit{functor} is characterized by its name, which is an atom, and its arity or number of arguments.\\\\
+	%%
+	Sintatically, compound terms have the form $f(t_1, t_2, \ldots, t_n)$, where the functor has name $f$ and is of arity $n$ and the $t_i$ with $1 \leq i \leq n$, are the arguments.\\
+\end{definition*}
+%%
+Examples of compound terms include \ttt{s(0)}, \ttt{hot(milk)}, \ttt{name(john,doe)}, \\ \ttt{list(a,list(b,nil))}, \ttt{foo(X)}, and \ttt{tree(tree(nil,3,nil) ,5,R)}.\\\\
+%%
+Queries, goals, and more general terms where variables do not occur are called \textit{ground}. Where variables do occur, they are called \textit{nonground}. For example, \ttt{foo(a, b)} is \textit{ground}, whereas \ttt{bar(X)} is \textit{nonground}.\\
+%%
+\begin{definition*}[Substitution]
+	A \textit{substitution} is a finite set (possibly empty) of pairs of the form $X_i = t_i$, where $X_i$ is a variable and $t_i$ is a \textit{term}, and $X_i \neq X_j$, for every $i \neq j$, and $X_i$ does not occur in $t_j$, for any $i$ and $j$.
+\end{definition*}
+%%
+An example of a substitution consisting of a single pair is \ttt{X=anakin}. Substitution can be applied to terms. The result of applying a substitution $\sigma$  to a term $W$, denoted by $W \sigma$, is the term obtained by replacing every occurrence of $X$ by $t$ in $W$, for every pair $X=t$ in $\sigma$.\\\\
+%%
+The result of applying \ttt{X=anakin} to the term \ttt{father(X, luke)} is the term \ttt{anakin, luke)}.\\
+%%
+\begin{definition*}[Instance]
+	$X$ is an \textit{instance} of $W$ if there is a substitution $\sigma$ such that $X = W \sigma$
+\end{definition*}
+%%
+The goal \ttt{father(anakin, luke)} is an instance of \ttt{father(X, luke)} by definition. Similarly, \ttt{plus(1,0,1)} is an (one of them) instance of \ttt{plus(1,Y,X)}.\\\\
+Those definitions are enough to encourage us to talk about the grammar of Prolog.
+\subsubsection{Rules}
+Conjunctive queries are defining relationships in their own right. We can add to our facts the following table:
+\begin{lstlisting}[language=Prolog, caption=Force-Side Relationship]
+sith(anakin).
+jedi(luke).
+jedi(julio).
+\end{lstlisting}
+%%
+The query \ttt{father(X,Y),sith(X)?} is asking for a \textit{father} which is also a \textit{sith}.\\
+%%
+The query \ttt{father(anakin,X),jedi(X)?} is asking if there exists an \ttt{anakin}'s son who is also a \ttt{jedi}.\\\\
+%%
+This brings us to the third and most important statement in logic programming, a \textit{rule}, which enables us to define new relationships in terms of existing relationships.
+%%
+\pagebreak
+\begin{definition*}[Rules]
+	\textit{Rules} are statements of the form $$A \leftarrow B_1, B_2, \ldots B_n$$ where $n \geq 0$.
+	%%
+	The goal $A$ is the \textit{head} of the rule, and the conjunction of goals $B_1, B_2, \ldots B_n$ is the body of the rule.
+\end{definition*}
+%%
+Rules, fats, and queries are also called \textit{Horn clauses} or \textit{clauses} for short. Note that a fact is just a special case of a rule when $n = 0$. Facts are also called \textit{unit clauses}. We also have a special name for clauses with one goal in the body, namely, when $n = 1$. Such a clause is called an \textit{iterative clause}. As for facts variables appearing in rules are universally quantified, and their scope is the whole rule.\\\\
+%%
+A rule expressing the \textit{enemy} relationship could be
+%%
+\begin{equation*}
+	\ttt{enemy(X,Y)} \leftarrow \ttt{jedi(X),sith(Y).}
+\end{equation*}
+%%
+Similarly one can define a rule expressing the \textit{master} relationship
+\begin{equation*}
+	\ttt{master(X,Y)} \leftarrow \ttt{sith(X),sith(Y).}
+\end{equation*}
+%%
+Rules can be viewed in two ways. First, they are a means of expressing new or complex queries in terms of simple queries. A query \ttt{enemy(luke, Y)?} to the program that contains the preceding rule for \ttt{enemy} is translated to the query \ttt{jedi(luke), sith(Y)?} according to the rule. A new query about the \ttt{enemy} relationship has been built from simple queries involving \ttt{jedi} and \ttt{sith} relationships. Interpreting rules in this way is their \textit{procedural} reading.\\\\
+%%
+The second view of rules comes from interpreting the rule as a logical axiom. The backward arrow $\leftarrow$ is used to denote logical implication. The \ttt{enemy} rule reads: \textit{X is an} \ttt{enemy} \textit{of Y if X is a} \ttt{jedi} \textit{and Y is a} \ttt{sith}.\\\\
+%%
+Although formally all variables in a clause are universally quantified, we will sometimes refer to variables that occur in the body of the clause, but not in its head, as if they are existentially quantified inside the body.\\
+%%
+
+For example, the \ttt{enemy} rule can be read: "For all $X$ and $Y$, $X$ is an enemy of $Y$ if there exists a couple of $X$ and $Y$, such that $X$ is a Jedi and $Y$ is a Sith". The formal justification for this verbal transformation will not be given, and we treat it just as a convenience.\\
+%%
+\begin{definition*}
+	The law of \textit{universal modus ponens} says that from the rule $$R = (A \leftarrow B_1, B_2, \dots B_n)$$ and the facts $B'_1$, $B'_2$, $\dots$ $B'_n$, $A'$ can be deduced if  $$A' \leftarrow B'_1, B'_2, \dots B'_n$$ is an instace of $R$.\\
+\end{definition*}
+%%
+\begin{definition*}
+	A \textit{logical program} is a finite set of rules.\\
+\end{definition*}
+%%
+\begin{definition*}
+	An existentially quantified goal $G$ is a logical consequence of a program $P$ if there is a clause in $P$ with a ground instance $A \leftarrow B_1, B_2, \cdot B_n$ with $n \geq 0$ such that $B_1, B_2, \cdot B_n$ are logical consequences of $P$, and $A$ is an instance of $G$.
+\end{definition*}
+%%
+\subsubsection{Recursive Rules} \label{ch:recursive-rules}
+%%
+The rules described so far define new relationships in terms of existing ones. An interesting extension is the recursive definition of relationships that define relationships in terms of themselves. One way of viewing recursive rules is a generalization of a set of nonrecursive rules.\\
+%%
+
+Consider the problem of testing connectivity in a directed graph. A directed can be represented as a logic program by a collection of facts. A fact \ttt{edge(Node1, Node2)} is present in the program if there is an edge from \ttt{Node1} to \ttt{Node2} in the graph. Let's suppose the following directed graph program:
+%%
+\begin{lstlisting}[language=Prolog, caption=A direct graph]
+edge(a,b).   edge(b,d).   edge(d,e).
+edge(a,c).   edge(c,d).   edge(f,g).
+\end{lstlisting}
+%%
+Two nodes are connected if there is a series of edges that can be traversed to get from the first node to the second. That is, the relation \ttt{connected(Node1, Node2)} is \ttt{true} if \ttt{Node1} and \ttt{Node2} are connected, is the transitive closure of the \ttt{edge} relation. We could represent the connected relationship as follow:
+%%
+\begin{lstlisting}[language=Prolog, caption=Connected relationship]
+connected_one(N1, N2) <- edge(N1, N), edge(N, N2).
+\end{lstlisting}
+%%
+However, this just shows the relationship of \textit{one-path-connexion}, i.e. the rule \\ \ttt{connected\_one(a,c)} returns \ttt{true}, but \ttt{connected\_one(a,d)} returns \ttt{false}. We should define again a new one to reach the node \ttt{d} in our \textit{connected} relationship.
+%%
+\begin{lstlisting}[language=Prolog, caption=Connected relationship]
+connected_one(N1, N2) <- edge(N1, N), edge(N, N2).
+connected_two(N1, N2) <- edge(N1, N), connected_one(N, N2).
+\end{lstlisting}
+%%
+Again, we have now the \textit{one-path-connexion} and \textit{two-path-connexion} relationships, i.e. the rule \ttt{connected\_one(a,c)} returns \ttt{true}, \ttt{connected\_two(a,d)} returns \ttt{true} but we don't have any way to reach the node \ttt{e}.\\\\
+%%
+A clear pattern can be seen, which can be expressed in a rule defining the relationship \ttt{connected(Node1, Node2)} recursively.
+%%
+\begin{lstlisting}[language=Prolog, caption=Generalization of the connected relationship]
+connected(N,N).
+connected(N1, N2) <- edge(N1, N), conected(N, N2).
+\end{lstlisting}
+%%
+
+\subsection{Grammar specification}
+
+This section will be short. Prolog is hugely flexible concerning its grammar and the expressions that one can define. This helps do syntax transformation between Haskell to Prolog, and vice versa.\\
+%%
+
+In the next chapter, we will see step by step how we should define the primitive type generators, then we will talk about how each part of the ADT specification should be translated into Prolog expressions, and finally, we will define a generator for the ADTs.

@@ -1,0 +1,33 @@
+\chapter*{Resumen}
+
+Construir \textit{generadores} para crear casos de prueba que Property-Based Testing utilice para probar el comportamiento del software es una tarea difícil, bastante costosa y propensa a errores. Aunque la mayoría de los marcos de PBT cubren escenarios simples, suele haber problemas con los casos de prueba generados que preservan precondiciones.
+\\\\
+%%
+En el contexto de las PBT para lenguajes fuertes y estáticamente bien tipados, como Haskell o Scala, proponemos un enfoque para aliviar al programador de la tarea de escribir estos generadores.\\\\
+%%
+Nuestro enfoque proporciona una generación eficiente y automática de valores como \textit{inputs} siguiendo la gramática formal de Haskell, concretamente, un mecanismo de traducción sintáctica guiado por la declaración de tipos. Esta es una característica que la mayoría de las herramientas conocidas de PBT como QuickCheck, por ejemplo, aún no tienen implementada. En particular, consideramos el caso en que los valores de entrada son tipos de datos algebraicos.\\\\
+%%
+El proceso de generación se realiza a través de las especificaciones de las expresiones definidas según sintaxis del lenguaje y mediante resolución simbólica en lenguajes de programación lógica de restricciones. En primer lugar, cubriremos el llamado escenario monomórfico. En este escenario, los tipos de datos algebraicos no se definen mediante una representación polimórfica en su declaración, siendo este el caso más sencillo de abarcar. Después, cubriremos la versión polimórfica de nuestra función de traducción sintáctica, añadiendo la complejidad de la parametrización de los tipos en la definición del ADT. Además, debido a que los lenguajes CLP tratan de proporcionar un espacio generado infinito de solución, en este trabajo, proporcionamos algunas técnicas para limitarlo y obtener un espacio de valores generados suficientemente bueno que mantenga la completitud que necesitamos en nuestros casos de prueba. Definimos aquí un concepto de \textit{size} alrededor del significado de completitud que buscamos, e integramos ese concepto en la definición de nuestra función.\\\\
+%%
+Por último, hablamos de aquellos enfoques interesantes que serían adecuados para el trabajo futuro. Por ejemplo, haciendo extensiones de sintaxis Haskell utilizando Liquid Haskell para proporcionar invariantes o restricciones complejas en el proceso de generación. Con esta nueva característica, podríamos cubrir tipos de datos algebraicos que tienen invariantes implícitos en su definición, como pueden ser estructuras de arbol rojo y negro.
+
+\begin{otherlanguage}{english}
+	\chapter*{Abstract}
+	Building \textit{generators} to create test cases that Property-Based Testing use to test software behavior is a hard, quite costly, and error-prone task. Even though most Property-Based Testing frameworks cover simple scenarios, there is some kind of issues with preconditioned generated test cases.
+	\\\\
+	%%
+	In the context of Property-Based Testing for strong and statically well-typed languages, such as Haskell or Scala, we propose an approach to relieve the programmer from the task of writing generators.\\\\
+	%%
+	Our approach provides an efficient and automatic generation of input test values that
+	follows the Haskell formal syntax, precisely, a syntax-translation mechanism guided by the types declaration. This is a feature that most known tools of property-based testing as QuickCheck, for example, don't have implemented yet. In particular, we consider the case when the input values are algebraic data types.\\\\
+	%%
+	The generation process is performed by writing specification expressions driven by the language' syntax and via symbolic execution using constraint logic programming. First of all, we will cover the so-called monomorphic scenario. The scenario when algebraic data types aren't defined by a polymorphic representation in their declaration. After that, we will cover the polymorphic version of our syntax-translation function. Also, CLP languages try to provide an infinite generated space of solution, therefore we provide some techniques to limit it for getting a well-enough space of generated values that holds the completeness that we need in our testing cases. We define here a concept of \textit{size} around what completeness means and integrate that concept into the definition of our function.\\\\
+	%%
+	Finally, we talk about what approaches will be fit for future work. For example, by doing Haskell syntax extensions using Liquid Haskell to provide complex invariants or restrictions in the generation process. With this new feature, we could cover algebraic data types which have implicit invariants that hold complex conditions. For example, red-black trees algebraic data types
+	
+\end{otherlanguage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Final del resumen.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

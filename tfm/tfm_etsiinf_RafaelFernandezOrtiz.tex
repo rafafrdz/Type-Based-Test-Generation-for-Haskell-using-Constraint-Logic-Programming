@@ -1,0 +1,171 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Plantilla para trabajos fin de estudios (grado y master).
+%% Escuela Técnica Superior de Ingenieros Informáticos. UPM.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{book}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[T1]{fontenc} % font encoding
+\usepackage[utf8]{inputenc} % input encoding
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\usepackage[backend=biber,style=ieee]{biblatex} % bibliografía
+\addbibresource{sections/biblio.bib} % fichero/s donde estará la bibliografía
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Configuración relacionada con la accesibilidad del documento PDF
+%% (tagged PDF).
+%% Comentado porque tiene algunos problems relacionados con otros paquetes
+% \usepackage{accessibility}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Headers and Footers
+\usepackage{emptypage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\leftmark}
+\fancyhead[RO]{\rightmark}
+\setlength{\headheight}{1.5\headheight}
+\cfoot{\thepage}
+
+\renewcommand{\chaptermark}[1]{\markboth{\textbf{Chapter \thechapter. #1}}{}}
+\renewcommand{\sectionmark}[1]{\markright{\textbf{\thesection. #1}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Useful packages
+\usepackage[colorlinks=true, allcolors=black]{hyperref}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{stmaryrd}
+\usepackage{amssymb}
+\usepackage{ebproof}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{csquotes}
+\usepackage{ulem}
+\usepackage{tikz}
+\usepackage{mathtools}
+\usepackage{listings}
+\usepackage{courier}
+\usepackage{caption}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Definition of snippet code
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+%\definecolor{backcolour}{rgb}{0.97,0.98,0.99}
+\definecolor{backcolour}{rgb}{1,1,1}
+
+\lstset{
+    basicstyle=\footnotesize\ttfamily, % Default font
+    numberstyle=\tiny,          % Style of line numbers
+    numbersep=5pt,              % Margin between line numbers and text
+    tabsize=2,                  % Size of tabs
+    extendedchars=true,
+    breaklines=true,            % Lines will be wrapped
+    keywordstyle=\color{black},
+    frame=b,
+    stringstyle=\color{white}\ttfamily, % Color of strings
+    showspaces=false,
+    showtabs=false,
+    xleftmargin=17pt,
+    framexleftmargin=17pt,
+    framexrightmargin=5pt,
+    framexbottommargin=4pt,
+    backgroundcolor=\color{backcolour},
+    showstringspaces=false
+}
+
+\lstloadlanguages{
+     Haskell,
+     Scala,
+     Prolog
+}
+
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFont{black}{\color{black}}
+\DeclareCaptionFormat{listing}{\colorbox[rgb]{1,1,1}{\parbox{\textwidth}{\hspace{15pt}#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white, singlelinecheck=false, margin=0pt, font={bf,footnotesize}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Definition of theoremstyles
+
+\theoremstyle{definition}
+\newtheorem{example}{Example}[section]
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem*{definition*}{Definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Definition of newcommands
+
+\newcommand{\bhref}[2]{\textbf{\href{#1}{#2}}}
+\newcommand{\repo}[1]{\bhref{#1}{[Repository]}}
+\newcommand{\ttt}[1]{\texttt{#1}}
+\newcommand{\ttb}[1]{\textbf{\ttt{#1}}}
+\newcommand{\alt}{\;\; | \;\;}
+\newcommand{\tab}{\;\;\;}
+\newcommand{\tav}{\;\;}
+\newcommand{\hookuparrow}{\mathrel{\rotatebox[origin=c]{90}{$\hookrightarrow$}}}
+\newcommand{\hookdownarrow}{\mathrel{\rotatebox[origin=c]{-90}{$\hookrightarrow$}}}
+\newcommand{\SLongdownarrow}{\mathrel{\rotatebox[origin=c]{-90}{$\Longrightarrow$}}}
+\newcommand{\updownsquigarrow}{\mathrel{\rotatebox[origin=c]{-90}{$\leftrightsquigarrow$}}}
+\newcommand\nldots{\stackrel{\mathclap{\normalfont\mbox{n}}}{\ldots}}
+\newcommand{\kldots}[1]{\stackrel{\mathclap{\normalfont\mbox{#1}}}{\ldots}}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Title, author, and so on.
+\input{tfm_author}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Begin the document
+\begin{document}
+
+%% -----------------------------------------------
+\input{title_page/title}
+\frontmatter  % numeración romana
+
+%% -----------------------------------------------
+\input{sections/abstract}
+
+%% -----------------------------------------------
+\tableofcontents
+\mainmatter 
+
+%%-----------------------------------------------
+%% Sections
+\input{sections/introduction}
+
+\input{sections/preliminaries}
+
+\input{sections/syntax-translation-mechanism}
+
+\input{sections/future-works}
+
+%%-----------------------------------------------
+%% Bibliography
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Bibliography}
+\printbibliography
+
+%% -----------------------------------------------
+%% Anexos
+\appendix
+\part*{Appendix}
+\addcontentsline{toc}{part}{Appendix}
+\input{sections/appendix}	
+\end{document}

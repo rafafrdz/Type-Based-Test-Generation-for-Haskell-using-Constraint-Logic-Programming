@@ -1,0 +1,9 @@
+\chapter{Future Works}
+
+The result of this master's thesis is subject to further improvements. The first of all is to implement the Prolog-Haskell syntax-translate function. This will allow us to recover all values that are generated in Prolog after applying the syntax-translate mechanism defined in this work, and integrate it in some way with other PBT frameworks like QuickCheck. We also need to automatize it in a complete Haskell library in order to complement QuickCheck without switching either IDE or language. And finally, it could be improved by using some of the generation strategies defined in the recent research which are mentioned at the beginning of this work and/or improving the implementation of the primitive types generators.\\\\
+%%
+Apart from the previous improvements, there is still room for new research. In this work, we did not explore the generation of those algebraic data types that are defined by invariants. We have limited just for generating ADT's structures but some ones are well-defined if and only if they hold complex constraints like red-black trees or sorted-list. For this purpose, I suggest following the Liquid-Haskell syntax as an extension of the Haskell's formal grammar. So, define pre-conditions and post-conditions and translate those sentences in some way to Prolog expressions following the concept worked in this thesis.\\\\
+%%
+Finally, this field helps to create new interesting lines of research for many strong and static types languages like Scala, Rust or Solidity and explore new ways to do property-based testing not just in academic scenarios but also in industrial areas.
+
+

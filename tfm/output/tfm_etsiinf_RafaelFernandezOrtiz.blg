@@ -1,0 +1,15 @@
+[0] Config.pm:340> INFO - This is Biber 2.4
+[0] Config.pm:343> INFO - Logfile is 'output/tfm_etsiinf_RafaelFernandezOrtiz.blg'
+[22] biber:287> INFO - === Mon Jul 10, 2023, 14:46:30
+[82] Biber.pm:348> INFO - Reading 'output/tfm_etsiinf_RafaelFernandezOrtiz.bcf'
+[164] Biber.pm:742> INFO - Found 17 citekeys in bib section 0
+[168] Biber.pm:3151> INFO - Processing section 0
+[186] Biber.pm:3308> INFO - Looking for bibtex format file 'sections/biblio.bib' for section 0
+[215] bibtex.pm:1113> INFO - Decoding LaTeX character macros into UTF-8
+[238] bibtex.pm:974> INFO - Found BibTeX data source 'sections/biblio.bib'
+[390] UCollate.pm:65> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[390] UCollate.pm:65> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[391] Biber.pm:3028> INFO - Sorting list 'none/global' of type 'entry' with scheme 'none' and locale 'en-US'
+[391] Biber.pm:3032> INFO - No sort tailoring available for locale 'en-US'
+[399] bbl.pm:519> INFO - Writing 'output/tfm_etsiinf_RafaelFernandezOrtiz.bbl' with encoding 'UTF-8'
+[441] bbl.pm:615> INFO - Output to output/tfm_etsiinf_RafaelFernandezOrtiz.bbl
