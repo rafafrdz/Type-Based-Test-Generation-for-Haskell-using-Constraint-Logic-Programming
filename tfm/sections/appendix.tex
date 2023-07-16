@@ -7,3 +7,72 @@ In this chapter, I will show the Prolog code which is used as a prelude for the 
 \subsubsection*{Polymorphic and Bounded List Type Generator}
 \lstinputlisting[language=Prolog, label=list-type]{sections/code/appendix/prolog/list.pl}
 %%
+\chapter{Translations}
+\section{Monomorphic Type}
+\subsection{Syntax-Translation Function}\label{subsec:monomorphic-types-function}
+We define our syntax-tranlsation semantic $$\text{HSyntax} :\tav \mathcal{H}_{\ttt{ADT}} \tav \longrightarrow \tav \mathcal{P}_{\text{Clause}}$$ for monomorphic types as follow:
+\small
+\input{sections/function/monomorphic/monomorphic-part1}
+%%
+\input{sections/function/monomorphic/monomorphic-part2}
+%%
+\normalsize
+The expression starting with $'$ in the evaluation of Lower, represents the same expression in Haskell with all their characters in lowercase. Let's see some examples:\\
+%%  	      	      	      	      	      
+    \begin{example}
+    Let's suppose a monotype Binary Search Tree definition in Haskell with \ttt{Int} type:
+    \lstinputlisting[language=Haskell, label=bstree-haskell-monotype]{sections/code/chapter3/monotypes/haskell/bst-monotype.hs}
+    Here, you can see that $tycon \equiv \ttt{BTree}$, $con_1 \equiv \ttt{Nil}$ and $con_2 \equiv \ttt{T}$, therefore 
+    \begin{align*}
+        \sem{Lower}{tycon} =& \; \sem{Lower}{BTree} = \ttt{btree}\\
+        \sem{Lower}{con_1} =& \; \sem{Lower}{Nil} = \ttt{nil} \\
+        \sem{Lower}{con_2} =& \; \sem{Lower}{T} = \ttt{t}
+    \end{align*}
+    respectively.\\
+    \end{example}
+    \begin{example}
+    Let's suppose a non-polymorphic version of the definition of Either in Haskell for both \ttt{String} and \ttt{Int} types:
+    \lstinputlisting[language=Haskell, label=bstreehaskell]{sections/code/chapter3/monotypes/haskell/either-monotype.hs}
+    Here, you can see that $tycon \equiv \ttt{Either}$, $con_1 \equiv \ttt{Left}$ and $con_2 \equiv \ttt{Right}$, therefore
+        \begin{align*}
+        \sem{Lower}{tycon} =& \; \sem{Lower}{Either} = \ttt{either}\\
+        \sem{Lower}{con_1} =& \; \sem{Lower}{Left} = \ttt{left} \\
+        \sem{Lower}{con_2} =& \; \sem{Lower}{Right} = \ttt{right}
+    \end{align*}
+        respectively.
+    \end{example}
+%%
+\small
+\subsection{MaybeInt}\label{subsec:monomorphic-types-translation-maybeint}
+\input{sections/code/appendix/translations/monotypes/maybeint}
+%%
+\subsection{Either}\label{subsec:monomorphic-types-translation-either}
+\input{sections/code/appendix/translations/monotypes/either}
+%%
+\subsection{MyListBool}\label{subsec:monomorphic-types-translation-mylistbool}
+\input{sections/code/appendix/translations/monotypes/mylistbool}
+\subsection{BSTree}\label{subsec:monomorphic-types-translation-bstree}
+\input{sections/code/appendix/translations/monotypes/bstree}
+%%
+\subsection{SomeWeird}\label{subsec:monomorphic-types-translation-someweird}
+\input{sections/code/appendix/translations/monotypes/someweird}
+%%
+\subsection{RSTree}\label{subsec:monomorphic-types-translation-rstree}
+\input{sections/code/appendix/translations/monotypes/rstree}
+%%
+\pagebreak
+\section{Monomorphic Type with Boundaries}
+
+\subsection{Syntax-Translation Function}\label{subsec:monomorphic-types-boundary-function}
+We define HBSyntax a refinement of the function HSyntax $$\text{HBSyntax} :\tav \mathcal{H}_{\ttt{ADT}} \tav \longrightarrow \tav \mathcal{P}_{\text{Clause}}$$ as an extension of our syntax-translation semantic for monomorphic types with boundaries as follow:\\
+\small
+\input{sections/function/monomorphic-boundary/monomorphic-boundary-part1}
+\input{sections/function/monomorphic-boundary/monomorphic-boundary-part2}
+\pagebreak
+%%
+\section{Polymorphic Type}
+\subsection{Syntax-Translation Function}\label{subsec:polymorphic-types-function}
+We define HBSyntax the refinement of the function HSyntax $$\text{HGSyntax} :\tav \mathcal{H}_{\ttt{ADT}} \tav \longrightarrow \tav \mathcal{P}_{\text{Clause}}$$ as an extension of our syntax-translation semantic for polymorphic types as follow:\\
+\small
+\input{sections/function/polymorphic/polymorphic-part1}
+\input{sections/function/polymorphic/polymorphic-part2}

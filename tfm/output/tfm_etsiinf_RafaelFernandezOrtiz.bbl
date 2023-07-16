@@ -290,46 +290,6 @@
       \verb 10.1007/978-1-4302-0038-3_11
       \endverb
     \endentry
-    \entry{stvsdt}{inproceedings}{}
-      \name{author}{2}{}{%
-        {{hash=900d6a577075a7cf7f2e6591ee25000b}{%
-           family={Meijer},
-           family_i={M\bibinitperiod},
-           given={Erik},
-           given_i={E\bibinitperiod}}}%
-        {{hash=9c6d3f4bf2f65e9e6be6d6c653004971}{%
-           family={Drayton},
-           family_i={D\bibinitperiod},
-           given={Peter},
-           given_i={P\bibinitperiod}}}%
-      }
-      \strng{namehash}{661d524641e611f4c23c7be91cc54608}
-      \strng{fullhash}{661d524641e611f4c23c7be91cc54608}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{month}{01}
-      \field{title}{Static Typing Where Possible, Dynamic Typing When Needed: The End of the Cold War Between Programming Languages}
-      \field{year}{2004}
-    \endentry
-    \entry{scheckart}{misc}{}
-      \name{author}{1}{}{%
-        {{hash=661b29faffafa1a05b6a7a62ddeb701f}{%
-           family={Hupel},
-           family_i={H\bibinitperiod},
-           given={Lars},
-           given_i={L\bibinitperiod}}}%
-      }
-      \strng{namehash}{661b29faffafa1a05b6a7a62ddeb701f}
-      \strng{fullhash}{661b29faffafa1a05b6a7a62ddeb701f}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{howpublished}{\url{https://typelevel.org/blog/2016/10/17/minicheck.html}}
-      \field{title}{Typelevel | Let's build ourselves a small ScalaCheck}
-    \endentry
     \entry{rbtreehaskell}{article}{}
       \name{author}{1}{}{%
         {{hash=e4e76cfb2d550f0048c93839f784f76d}{%
@@ -386,69 +346,6 @@
       \range{pages}{17}
       \verb{doi}
       \verb 10.1007/978-3-642-30473-6_10
-      \endverb
-    \endentry
-    \entry{cpierce}{book}{}
-      \name{author}{1}{}{%
-        {{hash=8eb1c0a7778a466aa612ab3259d489ec}{%
-           family={Pierce},
-           family_i={P\bibinitperiod},
-           given={Benjamin\bibnamedelima C.},
-           given_i={B\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
-      }
-      \list{publisher}{1}{%
-        {The MIT Press}%
-      }
-      \strng{namehash}{8eb1c0a7778a466aa612ab3259d489ec}
-      \strng{fullhash}{8eb1c0a7778a466aa612ab3259d489ec}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{abstract}{A type system is a syntactic method for automatically checking the absence of certain erroneous behaviors by classifying program phrases according to the kinds of values they compute. The study of type systems -- and of programming languages from a type-theoretic perspective -- has important applications in software engineering, language design, high-performance compilers, and security.This text provides a comprehensive introduction both to type systems in computer science and to the basic theory of programming languages. The approach is pragmatic and operational; each new concept is motivated by programming examples and the more theoretical sections are driven by the needs of implementations. Each chapter is accompanied by numerous exercises and solutions, as well as a running implementation, available via the Web. Dependencies between chapters are explicitly identified, allowing readers to choose a variety of paths through the material.The core topics include the untyped lambda-calculus, simple type systems, type reconstruction, universal and existential polymorphism, subtyping, bounded quantification, recursive types, kinds, and type operators. Extended case studies develop a variety of approaches to modeling the features of object-oriented languages.}
-      \field{edition}{1st}
-      \field{isbn}{0262162091}
-      \field{title}{Types and Programming Languages}
-      \field{year}{2002}
-    \endentry
-    \entry{quickcheck}{inproceedings}{}
-      \name{author}{2}{}{%
-        {{hash=b5810f3c048af7890859f522af846370}{%
-           family={Claessen},
-           family_i={C\bibinitperiod},
-           given={Koen},
-           given_i={K\bibinitperiod}}}%
-        {{hash=05db43db1a50c29c0eca01fd35ec8758}{%
-           family={Hughes},
-           family_i={H\bibinitperiod},
-           given={John},
-           given_i={J\bibinitperiod}}}%
-      }
-      \list{location}{1}{%
-        {New York, NY, USA}%
-      }
-      \list{publisher}{1}{%
-        {Association for Computing Machinery}%
-      }
-      \strng{namehash}{63eb59c9175e0a68b08f258c32e88a31}
-      \strng{fullhash}{63eb59c9175e0a68b08f258c32e88a31}
-      \field{sortinit}{0}
-      \field{sortinithash}{990108227b3316c02842d895999a0165}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{abstract}{Quick Check is a tool which aids the Haskell programmer in formulating and testing properties of programs. Properties are described as Haskell functions, and can be automatically tested on random input, but it is also possible to define custom test data generators. We present a number of case studies, in which the tool was successfully used, and also point out some pitfalls to avoid. Random testing is especially suitable for functional programs because properties can be stated at a fine grain. When a function is built from separately tested components, then random testing suffices to obtain good coverage of the definition under test.}
-      \field{booktitle}{Proceedings of the Fifth ACM SIGPLAN International Conference on Functional Programming}
-      \field{isbn}{1581132026}
-      \field{series}{ICFP '00}
-      \field{title}{QuickCheck: A Lightweight Tool for Random Testing of Haskell Programs}
-      \field{year}{2000}
-      \field{pages}{268\bibrangedash 279}
-      \range{pages}{12}
-      \verb{doi}
-      \verb 10.1145/351240.351266
-      \endverb
-      \verb{url}
-      \verb https://doi.org/10.1145/351240.351266
       \endverb
     \endentry
     \entry{effgenttransf}{article}{}
@@ -521,6 +418,120 @@
       \verb{doi}
       \verb 10.1007/978-3-031-31476-6_10
       \endverb
+    \endentry
+    \entry{stvsdt}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=900d6a577075a7cf7f2e6591ee25000b}{%
+           family={Meijer},
+           family_i={M\bibinitperiod},
+           given={Erik},
+           given_i={E\bibinitperiod}}}%
+        {{hash=9c6d3f4bf2f65e9e6be6d6c653004971}{%
+           family={Drayton},
+           family_i={D\bibinitperiod},
+           given={Peter},
+           given_i={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{661d524641e611f4c23c7be91cc54608}
+      \strng{fullhash}{661d524641e611f4c23c7be91cc54608}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{01}
+      \field{title}{Static Typing Where Possible, Dynamic Typing When Needed: The End of the Cold War Between Programming Languages}
+      \field{year}{2004}
+    \endentry
+    \entry{cpierce}{book}{}
+      \name{author}{1}{}{%
+        {{hash=8eb1c0a7778a466aa612ab3259d489ec}{%
+           family={Pierce},
+           family_i={P\bibinitperiod},
+           given={Benjamin\bibnamedelima C.},
+           given_i={B\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {The MIT Press}%
+      }
+      \strng{namehash}{8eb1c0a7778a466aa612ab3259d489ec}
+      \strng{fullhash}{8eb1c0a7778a466aa612ab3259d489ec}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{A type system is a syntactic method for automatically checking the absence of certain erroneous behaviors by classifying program phrases according to the kinds of values they compute. The study of type systems -- and of programming languages from a type-theoretic perspective -- has important applications in software engineering, language design, high-performance compilers, and security.This text provides a comprehensive introduction both to type systems in computer science and to the basic theory of programming languages. The approach is pragmatic and operational; each new concept is motivated by programming examples and the more theoretical sections are driven by the needs of implementations. Each chapter is accompanied by numerous exercises and solutions, as well as a running implementation, available via the Web. Dependencies between chapters are explicitly identified, allowing readers to choose a variety of paths through the material.The core topics include the untyped lambda-calculus, simple type systems, type reconstruction, universal and existential polymorphism, subtyping, bounded quantification, recursive types, kinds, and type operators. Extended case studies develop a variety of approaches to modeling the features of object-oriented languages.}
+      \field{edition}{1st}
+      \field{isbn}{0262162091}
+      \field{title}{Types and Programming Languages}
+      \field{year}{2002}
+    \endentry
+    \entry{quickcheck}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=b5810f3c048af7890859f522af846370}{%
+           family={Claessen},
+           family_i={C\bibinitperiod},
+           given={Koen},
+           given_i={K\bibinitperiod}}}%
+        {{hash=05db43db1a50c29c0eca01fd35ec8758}{%
+           family={Hughes},
+           family_i={H\bibinitperiod},
+           given={John},
+           given_i={J\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York, NY, USA}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computing Machinery}%
+      }
+      \strng{namehash}{63eb59c9175e0a68b08f258c32e88a31}
+      \strng{fullhash}{63eb59c9175e0a68b08f258c32e88a31}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Quick Check is a tool which aids the Haskell programmer in formulating and testing properties of programs. Properties are described as Haskell functions, and can be automatically tested on random input, but it is also possible to define custom test data generators. We present a number of case studies, in which the tool was successfully used, and also point out some pitfalls to avoid. Random testing is especially suitable for functional programs because properties can be stated at a fine grain. When a function is built from separately tested components, then random testing suffices to obtain good coverage of the definition under test.}
+      \field{booktitle}{Proceedings of the Fifth ACM SIGPLAN International Conference on Functional Programming}
+      \field{isbn}{1581132026}
+      \field{series}{ICFP '00}
+      \field{title}{QuickCheck: A Lightweight Tool for Random Testing of Haskell Programs}
+      \field{year}{2000}
+      \field{pages}{268\bibrangedash 279}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1145/351240.351266
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1145/351240.351266
+      \endverb
+    \endentry
+    \entry{qcrepo}{misc}{}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://github.com/nick8325/quickcheck}}
+      \field{title}{QuickCheck. Github Reposittory}
+    \endentry
+    \entry{screpo}{misc}{}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://github.com/typelevel/scalacheck}}
+      \field{title}{ScalaCheck. Github Reposittory}
+    \endentry
+    \entry{pprepo}{misc}{}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://github.com/proper-testing/proper}}
+      \field{title}{PropEr. Github Reposittory}
+    \endentry
+    \entry{hprepo}{misc}{}
+      \field{sortinit}{0}
+      \field{sortinithash}{990108227b3316c02842d895999a0165}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://github.com/HypothesisWorks/hypothesis}}
+      \field{title}{Hypothesis. Github Reposittory}
     \endentry
     \entry{hasksynt}{misc}{}
       \field{sortinit}{0}

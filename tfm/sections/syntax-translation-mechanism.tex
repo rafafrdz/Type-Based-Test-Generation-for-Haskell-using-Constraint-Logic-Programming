@@ -11,84 +11,23 @@ We will talk about what kind of problems those generations carry on and how to d
 For our first steps, we can deal with the most basic case: those scenarios where ADT expressions are defined with monomorphic types. To do that, we can avoid keeping in mind the type or fixing the type expression in the formal grammar definition and simply try to generate their structure with it.\\
 %%
 
-Let's define the syntax translation function. Let $\mathcal{H}$, $\mathcal{P}$ be the set of well-defined expressions in Haskell and Prolog, respectively. Following the formal grammar definition for algebra data type expressions in Haskell:
+Let's define the syntax translation function. Let $\mathcal{H}$, $\mathcal{P}$ be the set of well-defined expressions in Haskell and Prolog, respectively. We can consider $\mathcal{H}_{\ttt{ADT}}$ and $\mathcal{P}_{\text{Clause}}$, the subset of well-defined algebra data types expressions in Haskell contained in $\mathcal{H}$ and the subset of clauses in $\mathcal{P}$, respectively. Following the formal grammar definition for algebra data type expressions in Haskell:
 \begin{align*}
-	\ttt{data} \tav simpletype =                                                & \tav constrs                                                                       &   &   \\
-	                                                                            & \updownsquigarrow                                                                  &   &   \\
-	\ttt{data} \tav tycon \tav tyvar_1 \tav tyvar_2 \tav \ldots \tav tyvar_k 	= & \tav constr_1 \tav | \tav constr_2 \tav | \tav \ldots \tav | \tav constr_n         &   &   \\
-	                                                                            & \updownsquigarrow                                                                  &   &   \\
-	\ttt{data} \tav tycon \tav tyvar_1 \tav tyvar_2 \tav \ldots \tav tyvar_k 	= & \tav con_1 \tav atype_{1,1} \tav atype_{1,2} \tav \ldots \tav atype_{1,k_1} \tav | &   &   \\
-	                                                                            & \tav con_2 \tav atype_{2,1} \tav atype_{2,2} \tav \ldots \tav atype_{2,k_2} \tav | &   &   \\
-	                                                                            & \tav \vdots \tav                                                                   &   &   \\
-	                                                                            & \tav con_n \tav atype_{n,1} \tav atype_{n,2} \tav \ldots \tav atype_{n,k_n} \tav | &   &   \\
+	\ttt{data} \tav simpletype =  & \tav constrs                                                                       &   &   \\
+	                              & \updownsquigarrow                                                                  &   &   \\
+	\ttt{data} \tav tycon \tav 	= & \tav constr_1 \tav | \tav constr_2 \tav | \tav \ldots \tav | \tav constr_n         &   &   \\
+	                              & \updownsquigarrow                                                                  &   &   \\
+	\ttt{data} \tav tycon \tav 	= & \tav con_1 \tav atype_{1,1} \tav atype_{1,2} \tav \ldots \tav atype_{1,k_1} \tav | &   &   \\
+	                              & \tav con_2 \tav atype_{2,1} \tav atype_{2,2} \tav \ldots \tav atype_{2,k_2} \tav | &   &   \\
+	                              & \tav \vdots \tav                                                                   &   &   \\
+	                              & \tav con_n \tav atype_{n,1} \tav atype_{n,2} \tav \ldots \tav atype_{n,k_n} \tav | &   &   \\
 \end{align*}
+We define our syntax-tranlsation semantic $$\text{HSyntax} :\tav \mathcal{H}_{\ttt{ADT}} \tav \longrightarrow \tav \mathcal{P}_{\text{Clause}}$$ for monomorphic types as is shown in appendix ~\ref{subsec:monomorphic-types-function}.\\\\
 %%
-We can define $\psi$ the function that sends $\mathcal{H}_{\ttt{ADT}} \subsetneq \mathcal{H}$, the subset of well-defined algebra data types expressions in Haskell, to Prolog expressions as follows: $$\psi: \mathcal{H}_{\ttt{ADT}} \longrightarrow \mathcal{P} $$
-%%
-\begin{align*}
-	\ttt{data} \tav tycon \tav \tau_1 \tav \tau_2 \tav \ldots \tav \tau_k 	= & \tav con_1 \tav \alpha_{1,1} \tav \alpha_{1,2} \tav \ldots \tav \alpha_{1,k_1} \tav | &   &   \\
-	                                                                         & \tav con_2 \tav \alpha_{2,1} \tav \alpha_{2,2} \tav \ldots \tav \alpha_{2,k_2} \tav | &   &   \\
-	                                                                         & \tav \vdots \tav                                                                      &   &   \\
-	                                                                         & \tav con_n \tav \alpha_{n,1} \tav \alpha_{n,2} \tav \ldots \tav \alpha_{n,k_n} \tav | &   &   \\
-\end{align*}
-$$\SLongdownarrow \psi$$
-\begin{align*}
-	\ttt{rule}_1: \tav \_ tycon (\_ con_1(X_{1,1}, \tav \ldots, \tav X_{1,k_1})) :-&
-	\tav pred_{1, 1}(X_{1,1}), && \\
-	  & \tav pred_{1, 2}(X_{1,2}),     &   &   \\
-	  & \tav \ldots \tav               &   &   \\
-	  & \tav pred_{1, k_1}(X_{1,k_1}). &   &   \\
-	\\
-	\ttt{rule}_2: \tav \_ tycon (\_ con_2(X_{2,1}, \tav \ldots, \tav X_{2,k_2})) :-&
-	\tav pred_{2, 1}(X_{2,1}), && \\
-	  & \tav pred_{2, 2}(X_{2,2}),     &   &   \\
-	  & \tav \ldots \tav               &   &   \\
-	  & \tav pred_{2, k_2}(X_{2,k_2}). &   &   
-\end{align*}
-$$\vdots$$
-\begin{align*}
-	\ttt{rule}_n: \tav \_ tycon (\_ con_n(X_{n,1}, \tav \ldots, \tav X_{n,k_n})) :-&
-	\tav pred_{n, 1}(X_{n,1}), && \\
-	  & \tav pred_{n, 2}(X_{n,2}),     &   &   \\
-	  & \tav \ldots \tav               &   &   \\
-	  & \tav pred_{n, k_n}(X_{n,k_n}). &   &   \\
-\end{align*}\\
-%%
-where:
-%%
-\begin{itemize}
-	\item The expression starting with $\_$ represents the same expression in Haskell with all their characters in lowercase. Let's see some examples:\\
-	      	      	      	      	      	      	      
-	      \begin{example}
-	      	Let's suppose a monotype Binary Search Tree definition in Haskell with \ttt{Int} type:
-	      	\lstinputlisting[language=Haskell, label=bstree-haskell-monotype]{sections/code/chapter3/monotypes/haskell/bst-monotype.hs}
-	      	Here, you can see that $tycon \equiv \ttt{BTree}$, $con_1 \equiv \ttt{Nil}$ and $con_2 \equiv \ttt{T}$, therefore $\_tycon \equiv \ttt{btree}$, $\_con_1 \equiv \ttt{nil}$ and $\_con_2 \equiv \ttt{t}$, respectively.\\
-	      \end{example}
-	      \begin{example}
-	      	Let's suppose a non-polymorphic version of the definition of Either in Haskell for both \ttt{String} and \ttt{Int} types:
-	      	\lstinputlisting[language=Haskell, label=bstreehaskell]{sections/code/chapter3/monotypes/haskell/either-monotype.hs}
-	      	Here, you can see that $tycon \equiv \ttt{Either}$, $con_1 \equiv \ttt{Left}$ and $con_2 \equiv \ttt{Right}$, therefore $\_tycon \equiv \ttt{either}$, $\_con_1 \equiv \ttt{left}$ and $\_con_2 \equiv \ttt{right}$, respectively.
-	      \end{example}
-	      	      	      	      	      	      
-	\item For all $con_i$ with $i \in \{1, \ldots, n \}$, there exists a $\ttt{rule}_i$ Prolog rule that holds and generates the corresponding translated expression from the Haskell's ADT constructor $i$. For instance, from the definition of the binary search tree, we obtain two Prolog rules that form a Prolog program.
-	\item For all $\alpha_{i,j}$ with $(i,j) \in \{1, \ldots, n \} \times \{1, \ldots, k_i \}$, there exists a variable in Prolog $X_{i,j}$ represents the symbolic variable for the generation of the element in the position $j$ from the constructor $i$ which is the Haskell type $\alpha_{i,j}$ in the Haskell's ADT definition.\\\\
-	      %%
-	      In case of the ADT constructor $con_i$ doesn't have any component $\alpha_{i,j}$, the rule $\ttt{rule}_i$ is automatically a \textbf{fact}.
-	      	      	      	      	      
-	\item For all $\alpha_{i,j}$ with $(i,j) \in \{1, \ldots, n \} \times \{1, \ldots, k_i \}$, there exists a predicate $pred_{i,j}$ that resolve $X_{i,j}$.\\\\
-	      %%
-	      When $\alpha_{i,j}$ is a Haskell's primitive type, the predicate $pred_{i,j}$ can be defined as the $gen_{\alpha_{i,j}}$ generation function. That is, $pred_{i,j}(X_{i,j}) \equiv gen_{\alpha_{i,j}}(X_{i,j})$, where the $gen_{\alpha_{i,j}}$ generation function is a Prolog program that generates a value of type $\alpha_{i,j} \in \{ \tau_1, \tau_2, \ldots \tau_k \}$.
-	      	      	      	      	      
-\end{itemize}
-%%
-Now we have defined our syntax-translation mechanism for monomorphic types, we will see some examples that help us to understand better. But before that, we need to know who is those generation functions for primitive types.
+Now we have defined our syntax-translation semantic for monomorphic types, we will see some examples that help us to understand better. But before that, I will introduce you generation functions for primitive types.
 %%
 \subsection{Primitive Types generators}
-For this work, I provide some kind of Prolog programs that will be useful to us to generate primitive types. These implementations are not the best efficient ones, but they are enough for our purpose. For all types, we will have two rules:
-\begin{itemize}
-	\item The first one is for checking if a variable $X$ holds the corresponding type. It is named as the type name with lowercase, and
-	\item The second one with the same name but with the prefix \ttt{gen\_} at the beginning of the name, which helps us to generate the correct value for the corresponding type.
-\end{itemize}
+For this work, I provide some kind of Prolog programs that will be useful to us to generate primitive types. These implementations are not the best efficient ones, but they are enough for our purpose. We need those generators in the case when $tycon$ is a primitive type, because $$\sem{GSyntax}{tycon} = gen\_\sem{Lower}{tycon}$$
 %%
 \subsubsection{\ttt{Char} type generator}
 \lstinputlisting[language=Prolog, label=char-type-generator]{sections/code/chapter3/types/char.pl}
@@ -120,104 +59,44 @@ In Prolog, \ttt{float} predicate is a \textit{representation type}. You can have
 \begin{example}[MaybeInt]
 	Let's suppose the following Haskell ADT definition:
 	\lstinputlisting[language=Haskell, label=maybeint-haskell-monotype]{sections/code/chapter3/monotypes/haskell/maybeint-monotype.hs}
-	Here:
-	\begin{itemize}
-		\item $tycon \equiv \ttt{MaybeInt}$, $con_1 \equiv \ttt{Nil}$ and $con_2 \equiv \ttt{Some}$, therefore $\_tycon \equiv \ttt{maybeint}$, $\_con_1 \equiv \ttt{nil}$ and $\_con_2 \equiv \ttt{some}$, respectively.
-		\item As we have two consutrctor $con_1$ and $con_2$, therefore we have two rules, $\ttt{rule}_1$ and $\ttt{rule}_2$, respectively.
-		\item As \ttt{None} doesn't have any type in its definition, there is not any $\alpha_{1,j}$ in its Haskell definition, so the $\ttt{rule}_1$ is the fact \ttt{maybeint(nil)}.\\\\
-		      %%
-		      For the second constructor, there exists an $\alpha_{2,1}$ related to the expression \ttt{Some Int}, that is $\alpha_{2,1} = \ttt{Int}$, so there exists a variable $X_{2,1}$ and a predicate $pred_{2,1}$ such that the rule $\ttt{rule}_2$ is defined as \ttt{maybeint(some(X21)) :- pred21(X21).}
-	\end{itemize}
-	%%
-	So finally, we can translate the Haskell definition shown above to the following Prolog program:\\
-	\begin{lstlisting}[language=Prolog]
-maybeint(nil).													%% rule 1
-maybeint(some(X21)) :- pred21(X21).			%% rule 2
-	\end{lstlisting}
-	On the other hand, as we are dealing with monomorphic types, in this case with the \ttt{Int} type, we can use the \ttt{Int} function generator introduced before:\\
+	Here, using the translation function defined above as is shown in appendix ~\ref{subsec:monomorphic-types-translation-maybeint}, we can translate the Haskell definition shown above to the following Prolog program:\\
 	\lstinputlisting[language=Prolog, label=maybeint-prolog-monotype]{sections/code/chapter3/monotypes/prolog/maybeint-monotype.pl}
-	Now, if you type \ttt{maybeint(X)} in the Prolog's CLI, you will get a valid \ttt{MaybeInt} generated value.\\
+	Now, if you type \ttt{maybeint(X)} in the Prolog's CLI, you will get a valid \ttt{MaybeInt} generated value.
 \end{example}
 %%
 %%
 \begin{example}[Non-Polymorphic Either]
 	Let's suppose our non-polymorphic version of the definition of Either in Haskell for both \ttt{String} and \ttt{Int} types:
 	\lstinputlisting[language=Haskell, label=either-haskell-monotype]{sections/code/chapter3/monotypes/haskell/either-monotype.hs}
-	Here:
-	\begin{itemize}
-		\item $tycon \equiv \ttt{Either}$, $con_1 \equiv \ttt{Left}$ and $con_2 \equiv \ttt{Right}$, therefore $\_tycon \equiv \ttt{either}$, $\_con_1 \equiv \ttt{left}$ and $\_con_2 \equiv \ttt{right}$, respectively.
-		\item As we have two consutrctor $con_1$ and $con_2$, therefore we have two rules, $\ttt{rule}_1$ and $\ttt{rule}_2$, respectively.
-		\item For the first constructor, there exists an $\alpha_{1,1}$ related to the expression \ttt{Left String}, that is $\alpha_{1,1} = \ttt{String}$, so there exists a variable $X_{1,1}$ and a predicate $pred_{1,1}$ such that the rule $\ttt{rule}_1$ is defined as \ttt{either(left(X11)) :- pred11(X11).}\\\\
-		      %%
-		      For the second constructor, there exists an $\alpha_{2,1}$ related to the expression \ttt{Right Int}, that is $\alpha_{2,1} = \ttt{Int}$, so there exists a variable $X_{2,1}$ and a predicate $pred_{2,1}$ such that the rule $\ttt{rule}_2$ is defined as \ttt{either(right(X21)) :- pred21(X21).}
-	\end{itemize}
-	%%
-	So finally, we can translate the Haskell definition shown above to the following Prolog program:\\
-	\begin{lstlisting}[language=Prolog]
-either(left(X11)) 	:- pred11(X11).					%% rule 1
-either(right(X21)) 	:- pred21(X21).					%% rule 2
-	\end{lstlisting}
-	On the other hand, as we are dealing with monomorphic types, in this case with both \ttt{String} and \ttt{Int} types, we can use the \ttt{String} and \ttt{Int} function generators, respectively, introduced before:\\
+	Here, using the translation function defined above as is shown in appendix ~\ref{subsec:monomorphic-types-translation-either}, we can translate the Haskell definition shown above to the following Prolog program:\\
 	%%
 	\lstinputlisting[language=Prolog, label=either-prolog-monotype]{sections/code/chapter3/monotypes/prolog/either-monotype.pl}
 	%%
-	Now, if you type \ttt{either(X)} in the Prolog's CLI, you will get a valid \ttt{Either} generated value.\\
+	Now, if you type \ttt{either(X)} in the Prolog's CLI, you will get a valid \ttt{Either} generated value.
 \end{example}
 %%
 %%
 \begin{example}[MyListBool]
 	Let's suppose the following Haskell ADT definition:
 	\lstinputlisting[language=Haskell, label=mylistbool-haskell-monotype]{sections/code/chapter3/monotypes/haskell/mylistbool-monotype.hs}
-	We can observe it is a recursive definition, so here:
-	\begin{itemize}
-		\item $tycon \equiv \ttt{MyListBool}$, $con_1 \equiv \ttt{Nil}$ and $con_2 \equiv \ttt{Cons}$, therefore $\_tycon \equiv \ttt{mylistbool}$, $\_con_1 \equiv \ttt{nil}$ and $\_con_2 \equiv \ttt{cons}$, respectively.
-		\item As we have two consutrctor $con_1$ and $con_2$, therefore we have two rules, $\ttt{rule}_1$ and $\ttt{rule}_2$, respectively.
-		\item As \ttt{Nil} doesn't have any type in its definition, there is not any $\alpha_{1,j}$ in its Haskell definition, so the $\ttt{rule}_1$ is the fact \ttt{mylistbool(nil)}.\\\\
-		      %%
-		      For the second constructor, there exists two $\alpha_{2,1}$ and $\alpha_{2,2}$ related to the expression \ttt{Cons Bool MyListBool}, that is $\alpha_{2,1} = \ttt{Bool}$ and $\alpha_{2,2} = \ttt{MyListBool}$, so there exists two variables $X_{2,1}$, $X_{2,2}$ and two predicates $pred_{2,1}$, $pred_{2,2}$ such that the rule $\ttt{rule}_2$ is defined as \\ \ttt{mylistbool(cons(X21, X22)) :- pred21(X21), pred22(X22).}
-	\end{itemize}
 	%%
-	So finally, we can translate the Haskell definition shown above to the following Prolog program:\\
-	\begin{lstlisting}[language=Prolog]
-mylistbool(nil).																										%% rule 1
-mylistbool(cons(X21, X22)) 	:- pred21(X21), pred22(X22).						%% rule 2
-	\end{lstlisting}
-	On the other hand, as we are dealing with monomorphic types, in this case with \ttt{Bool} type, we can use the \ttt{Bool} function generator introduced before:\\
-	\begin{lstlisting}[language=Prolog]
-mylistbool(nil).																										%% rule 1
-mylistbool(cons(X21, X22)) 	:- gen_bool(X21), pred22(X22).					%% rule 2
-	\end{lstlisting}
-	But, the question is, what happens with $pred_{2,2}$, what is the implementation of the predicate \ttt{pred22}? Well, as $\alpha_{2,2} = \ttt{MyListBool}$ and \ttt{MyListBool} is a Haskell algebra data type, we can deal with it as we have been doing in a recursively way or, in another hand, we can define the Prolog rule as a recursive rule (explained in section ~\ref{ch:recursive-rules}):\\
+	We can observe it is a recursive definition, so the question is, what happens with the declaration of $\ttt{MyListBool}$ in its own declaration. Well, as \ttt{MyListBool} is a Haskell algebra data type, we can deal with it as we have been doing in a recursively way or, in another hand, we can define the Prolog rule as a recursive rule (explained in section ~\ref{ch:recursive-rules}).\\\\
+	%%
+	Therefore, using the translation function defined above as is shown in appendix ~\ref{subsec:monomorphic-types-translation-mylistbool}, we can translate the Haskell definition shown above to the following Prolog program:\\
 	%%
 	\lstinputlisting[language=Prolog, label=mylistbool-prolog-monotype]{sections/code/chapter3/monotypes/prolog/mylistbool-monotype.pl}
 	%%
-	Now, if you type \ttt{mylistbool(X)} in the Prolog's CLI, you will get a valid \ttt{MyListBool} generated value. But, what happens here? Let's take a look at a few more examples before.\\
+	Now, if you type \ttt{mylistbool(X)} in the Prolog's CLI, you will get a valid \ttt{MyListBool} generated value. But, what happens here? Let's take a look at a few more examples before.
 \end{example}
 %%
 %%
 \begin{example}[Binary Search Tree]
 	Here we go again... Let's suppose the following Haskell ADT definition:
 	\lstinputlisting[language=Haskell, label=bst-haskell-monotype]{sections/code/chapter3/monotypes/haskell/bst-monotype.hs}
-	We can observe it is a recursive definition, so here:
-	\begin{itemize}
-		\item $tycon \equiv \ttt{BSTree}$, $con_1 \equiv \ttt{Nil}$ and $con_2 \equiv \ttt{T}$, therefore $\_tycon \equiv \ttt{bstree}$, $\_con_1 \equiv \ttt{nil}$ and $\_con_2 \equiv \ttt{t}$, respectively.
-		\item As we have two consutrctor $con_1$ and $con_2$, therefore we have two rules, $\ttt{rule}_1$ and $\ttt{rule}_2$, respectively.
-		\item As \ttt{Nil} doesn't have any type in its definition, there is not any $\alpha_{1,j}$ in its Haskell definition, so the $\ttt{rule}_1$ is the fact \ttt{bstree(nil)}.\\\\
-		      %%
-		      For the second constructor, there exists three $\alpha_{2,1}$, $\alpha_{2,2}$ and $\alpha_{2,3}$ related to the expression \ttt{T Int BSTree BSTree}, that is $\alpha_{2,1} = \ttt{Int}$, $\alpha_{2,2} = \ttt{BSTree}$ and $\alpha_{2,3} = \ttt{BSTree}$, so there exists three variables $X_{2,1}$, $X_{2,2}$, $X_{2,3}$ and three predicates $pred_{2,1}$, $pred_{2,2}$, $pred_{2,3}$ such that the rule $\ttt{rule}_2$ is defined as \\ \ttt{bstree(t(X21, X22, X23)) :- pred21(X21), pred22(X22), pred23(X23).}
-	\end{itemize}
 	%%
-	So finally, we can translate the Haskell definition shown above to the following Prolog program:\\
-	\begin{lstlisting}[language=Prolog]
-bstree(nil).																														%% rule 1
-bstree(t(X21, X22, X23)) :- pred21(X21), pred22(X22), pred23(X23).			%% rule 2
-	\end{lstlisting}
-	On the other hand, as we are dealing with monomorphic types, in this case with \ttt{Int} type, we can use the \ttt{Int} function generator introduced before:\\
-	\begin{lstlisting}[language=Prolog]
-bstree(nil).																														%% rule 1
-bstree(t(X21, X22, X23)) :- gen_int(X21), pred22(X22), pred23(X23).			%% rule 2
-	\end{lstlisting}
-	Again, as $\alpha_{2,2} = \ttt{BSTree}$, $\alpha_{2,3} = \ttt{BSTree}$ and \ttt{BSTree}, we can define the Prolog rule as a recursive rule:\\
+	We can observe it is a recursive definition, so the question is, what happens with the declaration of $\ttt{BSTree}$ in its own declaration. Well, as \ttt{BSTree} is a Haskell algebra data type, we can deal with it as we have been doing in a recursively way or, in another hand, we can define the Prolog rule as a recursive rule (explained in section ~\ref{ch:recursive-rules}).\\\\
+	%%
+	Therefore, using the translation function defined above as is shown in appendix ~\ref{subsec:monomorphic-types-translation-bstree}, we can translate the Haskell definition shown above to the following Prolog program:\\
 	%%
 	\lstinputlisting[language=Prolog, label=bst-prolog-monotype]{sections/code/chapter3/monotypes/prolog/bst-monotype.pl}
 	%%
@@ -228,33 +107,10 @@ bstree(t(X21, X22, X23)) :- gen_int(X21), pred22(X22), pred23(X23).			%% rule 2
 \begin{example}[SomeWeird]
 	Let's suppose the following (really weird) Haskell ADT definition:
 	\lstinputlisting[language=Haskell, label=someweird-haskell-monotype]{sections/code/chapter3/monotypes/haskell/someweird-monotype.hs}
-	We can observe it is a recursive definition, so here:
-	\begin{itemize}
-		\item $tycon \equiv \ttt{SomeWeird}$, $con_1 \equiv \ttt{Nil1}$, $con_2 \equiv \ttt{Nil2}$, $con_3 \equiv \ttt{Some}$ and $con_4 \equiv \ttt{Weird}$; therefore $\_tycon \equiv \ttt{someweird}$, $\_con_1 \equiv \ttt{nil1}$, $\_con_2 \equiv \ttt{nil2}$, $\_con_3 \equiv \ttt{some}$ and $\_con_4 \equiv \ttt{weird}$, respectively.
-		\item As we have four consutrctor $con_1$, $con_2$, $con_3$, $con_4$, therefore we have two rules, $\ttt{rule}_1$, $\ttt{rule}_2$, $\ttt{rule}_3$ and $\ttt{rule}_4$, respectively.
-		\item As both \ttt{Nil1} and \ttt{Nil2} don't have any type in its definition, there is not any $\alpha_{i,j}$ with $i \in \{ 1,\; 2 \}$ in its Haskell definition, so the both $\ttt{rule}_1$ and $\ttt{rule}_2$ are the facts \ttt{someweird(nil1)} and \ttt{someweird(nil2)}, respectively.\\\\
-		      %%
-		      For the third constructor, there exists a $\alpha_{3,1}$ related to the expression \ttt{Some Int}, that is $\alpha_{3,1} = \ttt{Int}$, so there exists one variable $X_{3,1}$ and one predicate $pred_{3,1}$, such that the rule $\ttt{rule}_3$ is defined as \\ \ttt{someweird(some(X31)) :- pred31(X31).}\\\\
-		      %%
-		      For the forth constructor, there exists three $\alpha_{4,1}$, $\alpha_{4,2}$ and $\alpha_{4,3}$ related to the expression \ttt{Weird SomeWeird SomeWeird Bool}, that is $\alpha_{4,1} = \ttt{SomeWeird}$, $\alpha_{4,2} = \ttt{SomeWeird}$ and $\alpha_{4,3} = \ttt{Bool}$, so there exists three variables $X_{4,1}$, $X_{4,2}$, $X_{4,3}$ and three predicates $pred_{4,1}$, $pred_{4,2}$, $pred_{4,3}$ such that the rule $\ttt{rule}_4$ is defined as \\ \ttt{someweird(weird(X41, X42, X43)) :- pred41(X41), pred42(X42), pred43(X43).}
-	\end{itemize}
 	%%
-	So finally, we can translate the Haskell definition shown above to the following Prolog program:\\
-	\begin{lstlisting}[language=Prolog]
-someweird(nil1).																														%% rule 1
-someweird(nil2).																														%% rule 2
-someweird(some(X31)) :- pred31(X31).																				%% rule 3
-someweird(weird(X31, X32, X33)) :- pred31(X31), pred32(X32), pred33(X33).		%% rule 4
-	\end{lstlisting}
-	On the other hand, as we are dealing with monomorphic types, in this case with both \ttt{Int} and \ttt{Bool} types, we can use the \ttt{Int} and \ttt{Bool} functions generator introduced before:\\
-	\begin{lstlisting}[language=Prolog]
-someweird(nil1).																														%% rule 1
-someweird(nil2).																														%% rule 2
-someweird(some(X31)) :- gen_int(X31).																				%% rule 3
-someweird(weird(X31, X32, X33)) :- pred31(X31), pred32(X32), gen_bool(X33).	%% rule 4
-	\end{lstlisting}
-	Again, as $\alpha_{4,1} = \ttt{SomeWeird}$, $\alpha_{4,2} = \ttt{SomeWeird}$ and \ttt{SomeWeird}, we can define the Prolog rule as a recursive rule:\\
+	We can observe it is a recursive definition, so the question is, what happens with the declaration of $\ttt{SomeWeird}$ in its own declaration. Well, as \ttt{SomeWeird} is a Haskell algebra data type, we can deal with it as we have been doing in a recursively way or, in another hand, we can define the Prolog rule as a recursive rule (explained in section ~\ref{ch:recursive-rules}).\\\\
 	%%
+	Therefore, using the translation function defined above as is shown in appendix ~\ref{subsec:monomorphic-types-translation-someweird}, we can translate the Haskell definition shown above to the following Prolog program:\\
 	\lstinputlisting[language=Prolog, label=someweird-prolog-monotype]{sections/code/chapter3/monotypes/prolog/someweird-monotype.pl}
 	%%
 	Now, if you type \ttt{someweird(X)} in the Prolog's CLI, you will get a valid \ttt{SomeWeird} generated value. Oh my god... it was so weird. Finally, let's take a look at one more example.\\
@@ -264,25 +120,10 @@ someweird(weird(X31, X32, X33)) :- pred31(X31), pred32(X32), gen_bool(X33).	%% r
 \begin{example}[Rose Tree]
 	Last dance! Let's suppose the following Haskell ADT definition:
 	\lstinputlisting[language=Haskell, label=rstree-haskell-monotype]{sections/code/chapter3/monotypes/haskell/rstree-monotype.hs}
-	Here we can observe two things: Again, it is a recursive definition and it is defined using Haskell's list type constructor which we have not yet discussed. \\
+	We can observe it is a recursive definition. Again, as \ttt{RSTree} is a Haskell algebra data type, we can deal with it as we have been doing in a recursively way or, in another hand, we can define the Prolog rule as a recursive rule (explained in section ~\ref{ch:recursive-rules}). Also, it is defined using Haskell's list type constructor which we have not yet discussed. \\
 	%%
-						
-	Haskell lists are not really either an algebra data type or a primitive type. It is a kind of algebra structure which is not formally defined as a \ttt{data}-Haskell expression. Therefore, its implementation in Prolog is different. For now, we will implement a particular generator of lists of Rose Trees, but when we talk about polymorphism, I will provide a generic generator of lists of any type. So, here:
-	\begin{itemize}
-		\item $tycon \equiv \ttt{RSTree}$ and $con_1 \equiv \ttt{R}$, therefore $\_tycon \equiv \ttt{rstree}$ and $\_con_1 \equiv \ttt{R}$, respectively.
-		\item As we have one consutrctor $con_1$, therefore we have only one rule, $\ttt{rule}_1$.
-		\item There exists two $\alpha_{1,1}$ and $\alpha_{1,2}$ related to the expression \ttt{R Int [RSTree]}, that is $\alpha_{1,1} = \ttt{Int}$ and $\alpha_{1,2} = \ttt{[RSTree]}$, so there exists two variables $X_{1,1}$, $X_{1,2}$, and two predicates $pred_{1,1}$, $pred_{1,2}$ such that the rule $\ttt{rule}_1$ is defined as \\ \ttt{rstree(r(X11, X12)) :- pred11(X11), pred12(X12).}
-	\end{itemize}
-	%%
-	So finally, we can translate the Haskell definition shown above to the following Prolog program:\\
-	\begin{lstlisting}[language=Prolog]
-rstree(r(X11, X12)) :- pred11(X11), pred12(X12).					%% rule 1
-	\end{lstlisting}
-	On the other hand, as we are dealing with monomorphic types, in this case with \ttt{Int} type, we can use the \ttt{Int} function generator introduced before:\\
-	\begin{lstlisting}[language=Prolog]
-rstree(r(X11, X12)) :- gen_int(X11), pred12(X12).					%% rule 1
-	\end{lstlisting}
-	Here, for the predicate $pred_{1,2}$ which holds that $X_{1,2}$ is a list of Rose Trees, we will implement a generator of lists of elements that hold our $\ttt{rule}_1$ \ttt{rstree}:
+							
+	Haskell lists are not really either an algebra data type or a primitive type. It is a kind of algebra structure which is not formally defined as a \ttt{data}-Haskell expression. Therefore, its implementation in Prolog is different. For now, we will implement a particular generator of lists of Rose Trees, but when we talk about polymorphism, I will provide a generic generator of lists of any type. So, here using the translation function defined above as is shown in appendix ~\ref{subsec:monomorphic-types-translation-rstree}, we can translate the Haskell definition shown above to the following Prolog program:\\
 	%%
 	\lstinputlisting[language=Prolog, label=rstree-prolog-monotype]{sections/code/chapter3/monotypes/prolog/rstree-monotype.pl}
 	%%
@@ -304,7 +145,7 @@ An approach that fits very well is to define boundaries for recursive structures
 %%
 Let's suppose the following Haskell ADT definition showed before:
 \lstinputlisting[language=Haskell, label=mylistbool-haskell-monotype]{sections/code/chapter3/monotypes/haskell/mylistbool-monotype.hs}
-We know that using the syntax-translate mechanism $\psi$ defined in \ref{ch:monomorphic-types}, we obtaing the following Prolog program:
+We know that using the syntax-translate mechanism HSyntax defined in \ref{ch:monomorphic-types}, we obtaing the following Prolog program:
 %%
 \lstinputlisting[language=Prolog, label=mylistbool-prolog-monotype]{sections/code/chapter3/monotypes/prolog/mylistbool-monotype.pl}
 %%
@@ -387,77 +228,13 @@ Let $\Gamma_{SomeWeird}$ be the set of expressions that define the structure of 
 	&& \tav Weird(Nil1, \; Some(n), \; b), \tav Weird(Nil2, \; Some(n), \; b), \; \ldots \; \} \tav \tav n \in \ttt{Int} \tav b \in \ttt{Bool}
 \end{eqnarray*}
 %%
-Therefore, $(\Gamma_{SomeWeird}, \preceq)$ is a poset, where $Nil1$ and $Nil2$ are the minimal elements. Therefore, it wasn't also clear who the minimal element was (in fact, we see there may be several).\\\\
+Therefore, $(\Gamma_{SomeWeird}, \preceq)$ is a poset, where $Nil1$, $Nil2$ and $Some(n)$ with $n \in \ttt{Int}$ are the minimal elements. Therefore, it wasn't also clear who the minimal element was (in fact, we see there may be several).\\\\
 %%
 In order to define a general definition of boundary or a well-known structure \textit{size} concept for getting a good-enough space of solutions that hold and providing us completeness in a systematic way, we need to identify those scenarios where an algebra data type is defined recursively and keep in mind the concept of induction. More precisely, mathematical induction over natural numbers or \textit{recursion}, and structural induction. We will see how recursion will help us to control our concept of \textit{size}, and the structural induction will help us to identify which ones are the minimal elements in the poset of the algebra data type expressions.\\\\
 %%
 Of course, this is not the only solution. There are a lot of ways to implement the concept of \textit{size} in Prolog, we will show an approach that fits so well with our work and more important: it will be built following the syntax of Haskell's formal grammar, getting consistency between our implementation and the mechanism that we have been defining.\\\\
 %%
-Let $\mathcal{H}$, $\mathcal{P}$ be the set of well-defined expressions in Haskell and Prolog, respectively. Let $\psi$ be our syntax-translate mechanism function defined before. We can define $\phi$ a refinement of the function $\psi$ that sends $\mathcal{H}_{\ttt{ADT}} \subsetneq \mathcal{H}$, the subset of well-defined algebra data types expressions in Haskell, to Prolog expressions as follow: $$\phi: \mathcal{H}_{\ttt{ADT}} \longrightarrow \mathcal{P} $$
-%%
-\begin{align*}
-	\ttt{data} \tav tycon \tav \tau_1 \tav \tau_2 \tav \ldots \tav \tau_k 	= & \tav con_1 \tav \alpha_{1,1} \tav \alpha_{1,2} \tav \ldots \tav \alpha_{1,k_1} \tav | &   &   \\
-	                                                                         & \tav con_2 \tav \alpha_{2,1} \tav \alpha_{2,2} \tav \ldots \tav \alpha_{2,k_2} \tav | &   &   \\
-	                                                                         & \tav \ldots \tav                                                                      &   &   \\
-	                                                                         & \tav con_n \tav \alpha_{n,1} \tav \alpha_{n,2} \tav \ldots \tav \alpha_{n,k_n} \tav | &   &   \\
-\end{align*}
-$$\SLongdownarrow \phi$$
-\begin{align*}
-	\ttt{rule}_{1}^{0}: \tav \_ tycon (N_{1}^{0}, \tav \_ con_1(X_{1,1}, \tav \ldots, \tav X_{1,k_1})) :-
-	  & \tav base(Z_{1,1}),                                             &   &   \\
-	  & \tav \ldots                                                     &   &   \\
-	  & \tav base(Z_{1,k_1}),                                           &   &   \\
-	  & \tav pred_{1, 1}(Z_{1,1}, \tav X_{1,1}),                        &   &   \\
-	  & \tav pred_{1, 2}(Z_{1,2}, \tav X_{1,2}),                        &   &   \\
-	  & \tav \ldots \tav                                                &   &   \\
-	  & \tav pred_{1, k_1}(Z_{1,k_1}, \tav X_{1,k_1}).                  &   &   \\
-	\\
-	\ttt{rule}_1: \tav \_ tycon (N_1, \tav \_ con_1(X_{1,1}, \tav \ldots, \tav X_{1,k_1})) :-
-	  & \tav N_1 > N_{1}^{0},                                           &   &   \\
-	  & \tav Nr_1 \tav \ttt{is} \tav N_1 - 1,                           &   &   \\
-	  & \tav states_1(Nr_1, \tav W_{1,1}, \tav \ldots, \tav W_{1,k_1}), &   &   \\
-	  & \tav pred_{1, 1}(W_{1,1}, \tav X_{1,1}),                        &   &   \\
-	  & \tav pred_{1, 2}(W_{1,2}, \tav X_{1,2}),                        &   &   \\
-	  & \tav \ldots \tav                                                &   &   \\
-	  & \tav pred_{1, k_1}(W_{1,k_1}, \tav X_{1,k_1}).                  &   &   \\
-	\ttt{rule}_{2}^{0}: \tav \_ tycon (N_{2}^{0}, \tav \_ con_2(X_{2,1}, \tav \ldots, \tav X_{2,k_2})) :-
-	  & \tav base(Z_{2,1}),                                             &   &   \\
-	  & \tav \ldots                                                     &   &   \\
-	  & \tav base(Z_{2,k_2}),                                           &   &   \\
-	  & \tav pred_{2, 1}(Z_{2,1}, \tav X_{2,1}),                        &   &   \\
-	  & \tav pred_{2, 2}(Z_{2,2}, \tav X_{2,2}),                        &   &   \\
-	  & \tav \ldots \tav                                                &   &   \\
-	  & \tav pred_{2, k_2}(Z_{2,k_2}, \tav X_{2,k_2}).                  &   &   \\
-	\\
-	\ttt{rule}_2: \tav \_ tycon (N_2, \tav \_ con_1(X_{2,1}, \tav \ldots, \tav X_{2,k_2})) :-
-	  & \tav N_2 > N_{2}^{0},                                           &   &   \\
-	  & \tav Nr_2 \tav \ttt{is} \tav N_2 - 1,                           &   &   \\
-	  & \tav states_2(Nr_2, \tav W_{2,1}, \tav \ldots, \tav W_{2,k_2}), &   &   \\
-	  & \tav pred_{2, 1}(W_{2,1}, \tav X_{2,1}),                        &   &   \\
-	  & \tav pred_{2, 2}(W_{2,2}, \tav X_{2,2}),                        &   &   \\
-	  & \tav \ldots \tav                                                &   &   \\
-	  & \tav pred_{2, k_2}(W_{2,k_2}, \tav X_{2,k_2}).                  &   &   
-\end{align*}
-$$\vdots$$
-\begin{align*}
-	\ttt{rule}_{n}^{0}: \tav \_ tycon (N_{n}^{0}, \tav \_ con_n(X_{n,1}, \tav \ldots, \tav X_{n,k_n})) :-
-	  & \tav base(Z_{n,1}),                                             &   &   \\
-	  & \tav \ldots                                                     &   &   \\
-	  & \tav base(Z_{n,k_n}),                                           &   &   \\
-	  & \tav pred_{n, 1}(Z_{n,1}, \tav X_{n,1}),                        &   &   \\
-	  & \tav pred_{n, 2}(Z_{n,2}, \tav X_{n,2}),                        &   &   \\
-	  & \tav \ldots \tav                                                &   &   \\
-	  & \tav pred_{n, k_n}(Z_{n,k_n}, \tav X_{n,k_n}).                  &   &   \\
-	\\
-	\ttt{rule}_n: \tav \_ tycon (N_n, \tav \_ con_n(X_{n,1}, \tav \ldots, \tav X_{n,k_n})) :-
-	  & \tav N_n > N_{n}^{0},                                           &   &   \\
-	  & \tav Nr_n \tav \ttt{is} \tav N_n - 1,                           &   &   \\
-	  & \tav states_n(Nr_n, \tav W_{n,1}, \tav \ldots, \tav W_{n,k_n}), &   &   \\
-	  & \tav pred_{n, 1}(W_{n,1}, \tav X_{n,1}),                        &   &   \\
-	  & \tav pred_{n, 2}(W_{n,2}, \tav X_{n,2}),                        &   &   \\
-	  & \tav \ldots \tav                                                &   &   \\
-	  & \tav pred_{n, k_n}(W_{n,k_n}, \tav X_{n,k_n}).                  &   &   \\
-\end{align*}
+Let's define the syntax translation function. Let $\mathcal{H}$, $\mathcal{P}$ be the set of well-defined expressions in Haskell and Prolog, respectively. We can consider $\mathcal{H}_{\ttt{ADT}}$ and $\mathcal{P}_{\text{Clause}}$, the subset of well-defined algebra data types expressions in Haskell contained in $\mathcal{H}$ and the subset of clauses in $\mathcal{P}$, respectively. Let HSyntax be our syntax-translate mechanism function defined before. We define HBSyntax a refinement of the function HSyntax $$\text{HBSyntax} :\tav \mathcal{H}_{\ttt{ADT}} \tav \longrightarrow \tav \mathcal{P}_{\text{Clause}}$$ as an extension of our syntax-translation semantic for monomorphic types with boundaries as is shown in appendix ~\ref{subsec:monomorphic-types-boundary-function}.\\\\
 %%
 where:
 %%
@@ -466,17 +243,17 @@ where:
 	      %%
 	\item For all $con_i$ with $i \in \{1, \ldots, n \}$, there exist two $\ttt{rule}_{i}^{0}$ and $\ttt{rule}_i$ Prolog rules that hold and generate the corresponding translated expression from the Haskell's ADT constructor $i$. The rule $\ttt{rule}_{i}^{0}$ represents the base case in the structural induction for the constructor $con_i$ and $\ttt{rule}_i$ represents the structural induction scenario.\\\\
 	      %%
-	      In the case of the ADT constructor, $con_i$ doesn't have any component $\alpha_{i,j}$ or for all $j \in \{1, \ldots, k_i \}$ there is no exists any $\alpha_{i,j}$ with recursive type, therefore we can omit the inductive $\ttt{rule}_i$.
+	      In the case of the ADT constructor, $con_i$ doesn't have any component $atype_{i,j}$ or for all $j \in \{1, \ldots, k_i \}$ there is no exists any $atype_{i,j}$ with recursive type, therefore we can omit the inductive $\ttt{rule}_i$.
 	\item For all $con_i$ with $i \in \{1, \ldots, n \}$, there exists a $N_{i}^{0} \in \mathbb{N}$, that represents the minimal \textit{size} (on our \textit{size} concept) of the constructor $con_i$. It will be the base case in the \textit{recursion}.\\\\
 	      %%
-	      In case of the ADT constructor $con_i$ doesn't have any component $\alpha_{i,j}$ or for all $j \in \{1, \ldots, k_i \}$ there is no exists any $\alpha_{i,j}$ with recursive type, therefore we can define $N_{i}^{0} = 0$.
+	      In case of the ADT constructor $con_i$ doesn't have any component $atype_{i,j}$ or for all $j \in \{1, \ldots, k_i \}$ there is no exists any $atype_{i,j}$ with recursive type, therefore we can define $N_{i}^{0} = 0$.
 	      %%
 	\item For all $con_i$ with $i \in \{1, \ldots, n \}$, there exists a variable $N_i$ in Prolog, that represents the symbolic variable which will be used to do the recursion scenario from the base case $N_{i}^{0} \in \mathbb{N}$, that is, $N_i$ represent the $m \in \mathbb{N}$ such that if $m > N_{i}^{0}$ implies $rule_i$ hold.
 	\item There exists a fact $base$ such that for all $i \in \{1, \ldots, n \}$, $base(N_{i}^{0})$ holds.
-	\item For all $\alpha_{i,j}$ with $(i,j) \in \{1, \ldots, n \} \times \{1, \ldots, k_i \}$, there exists a variable $Z_{i,j}$ in Prolog, that represents the symbolic variable for the generation of the base case number in the recursion steps, $N_{i}^{0}$, for the position $j$ in the constructor $i$ which is the Haskell type $\alpha_{i,j}$ in the Haskell's ADT definition.\\\\
+	\item For all $aytpe_{i,j}$ with $(i,j) \in \{1, \ldots, n \} \times \{1, \ldots, k_i \}$, there exists a variable $Z_{i,j}$ in Prolog, that represents the symbolic variable for the generation of the base case number in the recursion steps, $N_{i}^{0}$, for the position $j$ in the constructor $i$ which is the Haskell type $atype_{i,j}$ in the Haskell's ADT definition.\\\\
 	      %%
 	      Hence, getting the natural number which represents the minimal \textit{size} (on our \textit{size} concept) of the constructor $j$, we will obtain the expression of the minimal element that the constructor $con_i$ can build.
-	\item Let $m \in \mathbb{N}$ be, with $m > N_{i}^{0}$. For all $\alpha_{i,j}$ with $(i,j) \in \{1, \ldots, n \} \times \{1, \ldots, k_i \}$, there exists a variable $W_{i,j}$ in Prolog, that represents the symbolic variable for the generation of the natural $s \in [N_{i}^{0}, m )$ which represent the \textit{size} equal $s$ (on our \textit{size} concept); and a predicate $state_{i}$ such that $states_i(s, \; W_{i,1}, \; \ldots, \; W_{i,k_i})$ holds $\Longleftrightarrow $ for all $b,b' \in \{1, \ldots, k_i \}$,  $W_{i,b}=W_{i,b'} \Rightarrow b = b'$.\\\\
+	\item Let $m \in \mathbb{N}$ be, with $m > N_{i}^{0}$. For all $atype_{i,j}$ with $(i,j) \in \{1, \ldots, n \} \times \{1, \ldots, k_i \}$, there exists a variable $W_{i,j}$ in Prolog, that represents the symbolic variable for the generation of the natural $s \in [N_{i}^{0}, m )$ which represent the \textit{size} equal $s$ (on our \textit{size} concept); and a predicate $states_{i}$ such that $states_i(s, \; W_{i,1}, \; \ldots, \; W_{i,k_i})$ holds $\Longleftrightarrow $ for all $b,b' \in \{1, \ldots, k_i \}$,  $W_{i,b}=W_{i,b'} \Rightarrow b = b'$.\\\\
 		      %%
 		      For this approach, we can implement the functions $state_i$ as:
 		      \begin{align*}
@@ -502,19 +279,19 @@ where:
 	\begin{example}[MyListBool]
 		Let's suppose the following Haskell ADT definition:
 		\lstinputlisting[language=Haskell, label=mylistbool-haskell-monotype]{sections/code/chapter3/monotypes/haskell/mylistbool-monotype.hs}
-		Using $\psi$, in the las examples \ref{ch:monomorphic-types-examples} we obtain:
+		Using HSyntax, in the las examples \ref{ch:monomorphic-types-examples} we obtain:
 		%%
 		\lstinputlisting[language=Prolog, label=mylistbool-prolog-monotype]{sections/code/chapter3/monotypes/prolog/mylistbool-monotype.pl}
 		%%
-		Now, if we use the newer refinement function $\phi$:
+		Now, if we use the newer refinement function HBSyntax:
 		\begin{itemize}
 			\item Let $\Gamma_{MyListBool}$ the set of expressions that define the structure of an element in the \ttt{MyListBool} type. $$\Gamma_{MyListBool} = \{ Nil, \tav Cons(b, Nil), \tav Cons(b, Cons(b, Nil)), \; \ldots \} \tav \tav b \in \ttt{Bool}$$
 			      %%
 			      We can consider $(\Gamma_{MyListBool}, \preceq)$ that is a poset.
 			\item As we have two consutrctor $con_1$ and $con_2$, therefore we have four rules instead, $\ttt{rule}_{1}^{0}$, $\ttt{rule}_1$, $\ttt{rule}_{2}^{0}$ and $\ttt{rule}_2$.
-			\item As \ttt{Nil} doesn't have any type in its definition, that is, there is not any $\alpha_{1,j}$ in its Haskell definition. In fact, by using $\phi$ we know that $\ttt{rule}_1$ is a fact \ttt{mylistbool(nil)}, therefore we don't need the $\ttt{rule}_1$ (because we won't do recursion on \ttt{nil}) and we can consider $N_{1}^{0} = 0$, which means, we will consider $Nil$ as the minimal structure in \ttt{MyListBool} with respect our \textit{size} concept.\\\\
+			\item As \ttt{Nil} doesn't have any type in its definition, that is, there is not any $atype_{1,j}$ in its Haskell definition. In fact, by using HBSyntax we know that $\ttt{rule}_1$ is a fact \ttt{mylistbool(nil)}, therefore we don't need the $\ttt{rule}_1$ (because we won't do recursion on \ttt{nil}) and we can consider $N_{1}^{0} = 0$, which means, we will consider $Nil$ as the minimal structure in \ttt{MyListBool} with respect our \textit{size} concept.\\\\
 			      %%
-			      For the second constructor, there exists two $\alpha_{2,1}$ and $\alpha_{2,2}$ related to the expression \ttt{Cons Bool MyListBool}, that is $\alpha_{2,1} = \ttt{Bool}$ and $\alpha_{2,2} = \ttt{MyListBool}$, so here we have to do structural induction in one place: $\alpha_{2,2}$.\\\\
+			      For the second constructor, there exists two $atype_{2,1}$ and $atype_{2,2}$ related to the expression \ttt{Cons Bool MyListBool}, that is $atype_{2,1} = \ttt{Bool}$ and $atype_{2,2} = \ttt{MyListBool}$, so here we have to do structural induction in one place: $atype_{2,2}$.\\\\
 			      %%
 			      Therefore, there exists a natural $N_{2}^{0}$, in this case $N_{2}^{0} = 1$, and a variables $Z_{2,2}$ such that $\ttt{rule}_{2}^{0}$ holds and is defined as follow:
 			      \begin{flalign*}
@@ -561,11 +338,11 @@ where:
 	\begin{example}[Binary Search Tree]
 		Let's suppose the following Haskell ADT definition:
 		\lstinputlisting[language=Haskell, label=bst-haskell-monotype]{sections/code/chapter3/monotypes/haskell/bst-monotype.hs}
-		Using $\psi$, in the las examples \ref{ch:monomorphic-types-examples} we obtain:
+		Using HSyntax, in the las examples \ref{ch:monomorphic-types-examples} we obtain:
 		%%
 		\lstinputlisting[language=Prolog, label=bst-prolog-monotype]{sections/code/chapter3/monotypes/prolog/bst-monotype.pl}
 		%%
-		Now, if we use the newer refinement function $\phi$:
+		Now, if we use the newer refinement function HBSyntax:
 		\begin{itemize}
 			\item Let $\Gamma_{BSTree}$ the set of expressions that define the structure of an element in the \ttt{BSTree} type.
 			      \begin{eqnarray*}
@@ -576,9 +353,9 @@ where:
 			      %%
 			      We can consider $(\Gamma_{BSTree}, \preceq)$ that is a poset.
 			\item As we have two consutrctor $con_1$ and $con_2$, therefore we have four rules instead, $\ttt{rule}_{1}^{0}$, $\ttt{rule}_1$, $\ttt{rule}_{2}^{0}$ and $\ttt{rule}_2$.
-			\item As \ttt{Nil} doesn't have any type in its definition, that is, there is not any $\alpha_{1,j}$ in its Haskell definition. In fact, by using $\phi$ we know that $\ttt{rule}_1$ is a fact \ttt{bstree(nil)}, therefore we don't need the $\ttt{rule}_1$ (because we won't do recursion on \ttt{nil}) and we can consider $N_{1}^{0} = 0$, which means, we will consider $Nil$ as the minimal structure in \ttt{BSTree} with respect our \textit{size} concept.\\\\
+			\item As \ttt{Nil} doesn't have any type in its definition, that is, there is not any $atype_{1,j}$ in its Haskell definition. In fact, by using HBSyntax we know that $\ttt{rule}_1$ is a fact \ttt{bstree(nil)}, therefore we don't need the $\ttt{rule}_1$ (because we won't do recursion on \ttt{nil}) and we can consider $N_{1}^{0} = 0$, which means, we will consider $Nil$ as the minimal structure in \ttt{BSTree} with respect our \textit{size} concept.\\\\
 			      %%
-			      For the second constructor, there exists three $\alpha_{2,1}$, $\alpha_{2,2}$ and $\alpha_{2,3}$ related to the expression \ttt{T Int BSTree BSTree}, that is $\alpha_{2,1} = \ttt{Int}$, $\alpha_{2,2} = \ttt{BSTree}$ and $\alpha_{2,3} = \ttt{BSTree}$, so here we have to do structural induction in two places: $\alpha_{2,2}$ and $\alpha_{2,3}$.\\\\
+			      For the second constructor, there exists three $atype_{2,1}$, $atype_{2,2}$ and $atype_{2,3}$ related to the expression \ttt{T Int BSTree BSTree}, that is $atype_{2,1} = \ttt{Int}$, $atype_{2,2} = \ttt{BSTree}$ and $atype_{2,3} = \ttt{BSTree}$, so here we have to do structural induction in two places: $atype_{2,2}$ and $atype_{2,3}$.\\\\
 			      %%
 			      Therefore, there exists a natural $N_{2}^{0}$, in this case $N_{2}^{0} = 1$; two variables $Z_{2,2}$ and $Z_{2,3}$ such that $\ttt{rule}_{2}^{0}$ holds and is defined as follow:
 			      \begin{flalign*}
@@ -626,11 +403,11 @@ where:
 	\begin{example}[SomeWeird]
 		Let's suppose the following Haskell ADT definition:
 		\lstinputlisting[language=Haskell, label=someweird-haskell-monotype]{sections/code/chapter3/monotypes/haskell/someweird-monotype.hs}
-		Using $\psi$, in the las examples \ref{ch:monomorphic-types-examples} we obtain:
+		Using HSyntax, in the las examples \ref{ch:monomorphic-types-examples} we obtain:
 		%%
 		\lstinputlisting[language=Prolog, label=someweird-prolog-monotype]{sections/code/chapter3/monotypes/prolog/someweird-monotype.pl}
 		%%
-		Now, if we use the newer refinement function $\phi$:
+		Now, if we use the newer refinement function HBSyntax:
 		\begin{itemize}
 			\item Let $\Gamma_{SomeWeird}$ the set of expressions that define the structure of an element in the \ttt{SomeWeird} type.
 			      \begin{eqnarray*}
@@ -643,11 +420,11 @@ where:
 			      %%
 			      We can consider $(\Gamma_{SomeWeird}, \preceq)$ that is a poset.
 			\item As we have four consutrctors $con_1$, $con_2$, $con_3$ and $con_4$, therefore we have eight rules instead, $\ttt{rule}_{1}^{0}$, $\ttt{rule}_1$, $\ttt{rule}_{2}^{0}$, $\ttt{rule}_2$, $\ttt{rule}_{3}^{0}$, $\ttt{rule}_3$, $\ttt{rule}_{4}^{0}$ and $\ttt{rule}_4$.
-			\item As both \ttt{Nil1} and \ttt{Nil2} don't have any type in their definitions, that is, there is not any $\alpha_{1,j}$ and $\alpha_{2,j}$ in their Haskell definition, respectively. In fact, by using $\phi$ we know that both $\ttt{rule}_1$ and $\ttt{rule}_2$ are facts \ttt{someweird(nil1)} and \ttt{someweird(nil1)}; therefore we don't need neither $\ttt{rule}_1$ nor $\ttt{rule}_2$ (because we won't do recursion on \ttt{nil1} nor \ttt{nil2}) and we can consider $N_{1}^{0} = 0$ and $N_{2}^{0} = 0$, which means, we will consider both \ttt{Nil1} and \ttt{Nil2} as the minimal structures in \ttt{SomeWeird} with respect our \textit{size} concept.\\\\
+			\item As both \ttt{Nil1} and \ttt{Nil2} don't have any type in their definitions, that is, there is not any $atype_{1,j}$ and $atype_{2,j}$ in their Haskell definition, respectively. In fact, by using HBSyntax we know that both $\ttt{rule}_1$ and $\ttt{rule}_2$ are facts \ttt{someweird(nil1)} and \ttt{someweird(nil1)}; therefore we don't need neither $\ttt{rule}_1$ nor $\ttt{rule}_2$ (because we won't do recursion on \ttt{nil1} nor \ttt{nil2}) and we can consider $N_{1}^{0} = 0$ and $N_{2}^{0} = 0$, which means, we will consider both \ttt{Nil1} and \ttt{Nil2} as the minimal structures in \ttt{SomeWeird} with respect our \textit{size} concept.\\\\
 			      %%
-			      For the third constructor, there exists a $\alpha_{3,1}$  related to the expression \ttt{Some Int}, that is $\alpha_{3,1} = \ttt{Int}$. However, we won't do structural induction on that. Therefore, we work similarly as both \ttt{Nil1} and \ttt{Nil2}. That is, we can consider $N_{3}^{0} = 0$, which means, we will consider \ttt{Some Int} as another minimal structure in \ttt{SomeWeird} concerning our \textit{size} concept. So, at this moment, we have three minimal elements: \ttt{Nil1}, \ttt{Nil2} and \ttt{Some Int}.\\\\
+			      For the third constructor, there exists a $atype_{3,1}$  related to the expression \ttt{Some Int}, that is $atype_{3,1} = \ttt{Int}$. However, we won't do structural induction on that. Therefore, we work similarly as both \ttt{Nil1} and \ttt{Nil2}. That is, we can consider $N_{3}^{0} = 0$, which means, we will consider \ttt{Some Int} as another minimal structure in \ttt{SomeWeird} concerning our \textit{size} concept. So, at this moment, we have three minimal elements: \ttt{Nil1}, \ttt{Nil2} and \ttt{Some Int}.\\\\
 			      %%
-			      For the fourth constructor, there exists three $\alpha_{4,1}$, $\alpha_{4,2}$ and $\alpha_{4,3}$ related to the expression \ttt{Weird SomeWeird SomeWeird Bool}, that is $\alpha_{4,1} = \ttt{SomeWeird}$, $\alpha_{4,2} = \ttt{SomeWeird}$ and $\alpha_{4,3} = \ttt{Bool}$, so here we have to do structural induction in two places: $\alpha_{4,1}$ and $\alpha_{4,2}$.\\\\
+			      For the fourth constructor, there exists three $atype_{4,1}$, $atype_{4,2}$ and $atype_{4,3}$ related to the expression \ttt{Weird SomeWeird SomeWeird Bool}, that is $atype_{4,1} = \ttt{SomeWeird}$, $atype_{4,2} = \ttt{SomeWeird}$ and $atype_{4,3} = \ttt{Bool}$, so here we have to do structural induction in two places: $atype_{4,1}$ and $atype_{4,2}$.\\\\
 			      %%
 			      Therefore, there exists a natural $N_{4}^{0}$, in this case $N_{4}^{0} = 1$; two variables $Z_{4,1}$ and $Z_{4,2}$ such that $\ttt{rule}_{4}^{0}$ holds and is defined as follow:
 			      \begin{flalign*}
@@ -711,7 +488,7 @@ where:
 	\lstinputlisting[language=Haskell, label=bst-haskell-monotype]{sections/code/chapter3/monotypes/haskell/bst-monotype.hs}
 	We need to know what should look like it in a polymorphic approach. So, first of all, let's define its polymorphic version:
 	\lstinputlisting[language=Haskell, label=bst-haskell-monotype]{sections/code/chapter3/polymorphic/haskell/bst-polymorphic.hs}
-	Now, our Haskell expression depends on a type parameter. Let's take a look at our first Binary Search Tree Prolog implementation results of the syntax-translation mechanism $\psi$ defined in \ref{ch:monomorphic-types}.
+	Now, our Haskell expression depends on a type parameter. Let's take a look at our first Binary Search Tree Prolog implementation results of the syntax-translation mechanism HSyntax defined in \ref{ch:monomorphic-types}.
 	%%
 	\lstinputlisting[language=Prolog, label=bst-prolog-monotype]{sections/code/chapter3/monotypes/prolog/bst-monotype.pl}
 	%%
@@ -719,8 +496,15 @@ where:
 	%%
 	\lstinputlisting[language=Prolog, label=bst-prolog-monotype]{sections/code/chapter3/polymorphic/prolog/bst-draft.pl}
 	%%
-	However, an algebra data type can be defined using as many representation polymorphic types as it needs. So, we have to generalize it also following the Haskell formal grammar.\\\\
-	Let $\mathcal{H}$, $\mathcal{P}$ be the set of well-defined expressions in Haskell and Prolog, respectively. Let $\psi$ be our syntax-translate mechanism function defined in the last section. We can define $\Psi$ a refinement of the function $\psi$ that sends $\mathcal{H}_{\ttt{ADT}} \subsetneq \mathcal{H}$, the subset of well-defined algebra data types expressions in Haskell, to Prolog expressions as follow: $$\Psi: \mathcal{H}_{\ttt{ADT}} \longrightarrow \mathcal{P} $$
+	However, an algebra data type can be defined using as many representation polymorphic types as it needs. So, we have to generalize it also following the Haskell formal grammar. In fact, now we have to care about type variables $\tau_i$ in the left-side declaration.\\
+	\begin{align*}
+		\ttt{data} \tav tycon \tav \tau_1 \tav \tau_2 \tav \ldots \tav \tau_k 	= & \tav con_1 \tav \alpha_{1,1} \tav \alpha_{1,2} \tav \ldots \tav \alpha_{1,k_1} \tav | &   &   \\
+		                                                                         & \tav con_2 \tav \alpha_{2,1} \tav \alpha_{2,2} \tav \ldots \tav \alpha_{2,k_2} \tav | &   &   \\
+		                                                                         & \tav \ldots \tav                                                                      &   &   \\
+		                                                                         & \tav con_n \tav \alpha_{n,1} \tav \alpha_{n,2} \tav \ldots \tav \alpha_{n,k_n} \tav | &   &   \\
+	\end{align*}
+	%%
+ Let $\mathcal{H}$, $\mathcal{P}$ be the set of well-defined expressions in Haskell and Prolog, respectively. We can consider $\mathcal{H}_{\ttt{ADT}}$ and $\mathcal{P}_{\text{Clause}}$, the subset of well-defined algebra data types expressions in Haskell contained in $\mathcal{H}$ and the subset of clauses in $\mathcal{P}$, respectively. Let HSyntax be our syntax-translate mechanism function defined before. We define HBSyntax the refinement of the function HSyntax $$\text{HGSyntax} :\tav \mathcal{H}_{\ttt{ADT}} \tav \longrightarrow \tav \mathcal{P}_{\text{Clause}}$$ as an extension of our syntax-translation semantic for polymorphic types as is shown in appendix ~\ref{subsec:monomorphic-types-boundary-function}.\\\\
 	%%
 	\begin{align*}
 		\ttt{data} \tav tycon \tav \tau_1 \tav \tau_2 \tav \ldots \tav \tau_k 	= & \tav con_1 \tav \alpha_{1,1} \tav \alpha_{1,2} \tav \ldots \tav \alpha_{1,k_1} \tav | &   &   \\
@@ -728,27 +512,40 @@ where:
 		                                                                         & \tav \ldots \tav                                                                      &   &   \\
 		                                                                         & \tav con_n \tav \alpha_{n,1} \tav \alpha_{n,2} \tav \ldots \tav \alpha_{n,k_n} \tav | &   &   \\
 	\end{align*}
-	$$\SLongdownarrow \Psi$$
+	$$\SLongdownarrow \text{HGSyntax}$$
 	\begin{align*}
-		\ttt{rule}_1: \tav \_ tycon (T_1, \tav T_2, \tav \ldots, \tav T_k, \; \_ con_1(X_{1,1}, \tav \ldots, \tav X_{1,k_1})) :-&
-		\tav pred_{1, 1}(\Omega_{1,1}, \tav X_{1,1}), && \\
+		\ttt{rule}_1: \tav 'tycon (T_1, \tav T_2, \tav \ldots, \tav T_k, \; 'con_1(X_{1,1}, \tav \ldots, \tav X_{1,k_1})) :-&
+		\tav gen(\Delta_{1,1}, \tav X_{1,1}), && \\
+		  & \tav gen(\Delta_{1,2}, \tav X_{1,2}),       &   &   \\
+		  & \tav \ldots \tav                                    &   &   \\
+		  & \tav gen(\Delta_{1,k_1}, \tav X_{1,k_1}). &   &   \\
+		  & \tav pred_{1, 1}(\Omega_{1,1}, \tav X_{1,1}), && \\
 		  & \tav pred_{1, 2}(\Omega_{1,2}, \tav X_{1,2}),       &   &   \\
 		  & \tav \ldots \tav                                    &   &   \\
 		  & \tav pred_{1, k_1}(\Omega_{1,k_1}, \tav X_{1,k_1}). &   &   \\
 		\\
-		\ttt{rule}_2: \tav \_ tycon (T_1, \tav T_2, \tav \ldots, \tav T_k, \; \_ con_2(X_{2,1}, \tav \ldots, \tav X_{2,k_2})) :-&
-		\tav pred_{2, 1}(\Omega_{2,1}, \tav X_{2,1}), && \\
+		\\
+		\ttt{rule}_2: \tav 'tycon (T_1, \tav T_2, \tav \ldots, \tav T_k, \; 'con_2(X_{2,1}, \tav \ldots, \tav X_{2,k_2})) :-&
+		\tav gen(\Delta_{2,1}, \tav X_{2,1}), && \\
+		  & \tav gen(\Delta_{2,2}, \tav X_{2,2}),       &   &   \\
+		  & \tav \ldots \tav                                    &   &   \\
+		  & \tav gen(\Delta_{2,k_1}, \tav X_{2,k_2}). &   &   \\
+		  & \tav pred_{2, 1}(\Omega_{2,1}, \tav X_{2,1}), && \\
 		  & \tav pred_{2, 2}(\Omega_{2,2}, \tav X_{2,2}),       &   &   \\
 		  & \tav \ldots \tav                                    &   &   \\
-		  & \tav pred_{2, k_2}(\Omega_{2,k_2}, \tav X_{2,k_2}). &   &   
+		  & \tav pred_{2, k_2}(\Omega_{2,k_2}, \tav X_{2,k_2}). &   &   \\
 	\end{align*}
 	$$\vdots$$
 	\begin{align*}
-		\ttt{rule}_n: \tav \_ tycon (T_1, \tav T_2, \tav \ldots, \tav T_k, \; \_ con_n(X_{n,1}, \tav \ldots, \tav X_{n,k_n})) :-&
-		\tav pred_{n, 1}(\Omega_{n,1}, \tav X_{n,1}), && \\
+		\ttt{rule}_n: \tav 'tycon (T_1, \tav T_2, \tav \ldots, \tav T_k, \; 'con_n(X_{n,1}, \tav \ldots, \tav X_{n,k_n})) :-&
+		\tav gen(\Delta_{n,1}, \tav X_{n,1}), && \\
+		  & \tav gen(\Delta_{n,2}, \tav X_{n,2}),       &   &   \\
+		  & \tav \ldots \tav                                    &   &   \\
+		  & \tav gen(\Delta_{n,k_1}, \tav X_{n,k_n}). &   &   \\
+		  & \tav pred_{n, 1}(\Omega_{n,1}, \tav X_{n,1}), && \\
 		  & \tav pred_{n, 2}(\Omega_{n,2}, \tav X_{n,2}),       &   &   \\
 		  & \tav \ldots \tav                                    &   &   \\
-		  & \tav pred_{n, k_n}(\Omega_{n,k_n}, \tav X_{n,k_n}). &   &   \\
+		  & \tav pred_{n, k_n}(\Omega_{n,k_2}, \tav X_{n,k_n}). &   &   \\
 	\end{align*}\\
 	%%
 	where:
@@ -761,8 +558,6 @@ where:
 		      	Here, you can see that $\tau_1 = \ttt{a}$, $\tau_2 = \ttt{b}$, therefore there exists two variables, $T_1$ and $T_2$, respectively.\\\\
 		      	%%
 		      	In our Prolog program, we will define a relationship between some atoms which will represent the type expression in Prolog, concerning its corresponding generation function.\\\\
-		      	%%
-		      	For example, if we have the \ttt{Either} definition showed above and we want to generate instances for \ttt{Either Unit Bool}, that is $\tau_1 = \ttt{Unit}$, $\tau_2 = \ttt{Bool}$, we will use $T_1 = \ttt{unit}$ and $T_2 = \ttt{bool}$ for getting the correct generation. Of course, it is the standard representation that we have chosen, we could have defined $\ttt{unit\_type}$ and $\ttt{bool\_type}$ instead for representing \ttt{Unit} and \ttt{Bool} in Prolog, respectively.
 		      \end{example}
 		\item Let $P(\{ T_1 , T_2, \ldots, \; T_k \})$ be the \textit{powerset} of the set of all Prolog types variables. For all $\alpha_{i,j}$ with $(i,j) \in \{1, \ldots n \} \times \{1, \ldots k_i \}$, we define $\Omega_{i,j}$ an element of $P(\{ T_1, T_2, \ldots, \; T_k \})$ as the set of the those Prolog types variables that participate in the definition of $\alpha_{i,j}$ at our Haskell's algebra data type definition.
 		      %%
@@ -785,14 +580,14 @@ where:
 	For this work, I provide an implementation of the generic $gen$ generation function of primitive types which generalize by using a type variable as a new parameter. This implementation is not the best efficient one, but it is enough for our purpose. First of all, we define the atoms which will represent the type expression in our Prolog program. That is:
 	\begin{equation*}
 		\begin{matrix}
-			\Psi_{\ttt{Type}}: & \mathcal{H}   & \longrightarrow & \tav \mathcal{P} &   &   &   \\
-			                   & \ttt{Char}    & \longrightarrow & \ttt{char}       &   &   &   \\
-			                   & \ttt{String}  & \longrightarrow & \ttt{string}     &   &   &   \\
-			                   & \ttt{Int}     & \longrightarrow & \ttt{int}        &   &   &   \\
-			                   & \ttt{Integer} & \longrightarrow & \ttt{integer}    &   &   &   \\
-			                   & \ttt{Double}  & \longrightarrow & \ttt{double}     &   &   &   \\
-			                   & \ttt{Bool}    & \longrightarrow & \ttt{bool}       &   &   &   \\
-			                   & \ttt{Unit}    & \longrightarrow & \ttt{unit}       &   &   &   \\
+			\text{HGSyntax}_{\ttt{PrimitiveType}}: & \mathcal{H}   & \longrightarrow & \tav \mathcal{P} &   &   &   \\
+			                                & \ttt{Char}    & \longrightarrow & \ttt{char}       &   &   &   \\
+			                                & \ttt{String}  & \longrightarrow & \ttt{string}     &   &   &   \\
+			                                & \ttt{Int}     & \longrightarrow & \ttt{int}        &   &   &   \\
+			                                & \ttt{Integer} & \longrightarrow & \ttt{integer}    &   &   &   \\
+			                                & \ttt{Double}  & \longrightarrow & \ttt{double}     &   &   &   \\
+			                                & \ttt{Bool}    & \longrightarrow & \ttt{bool}       &   &   &   \\
+			                                & \ttt{Unit}    & \longrightarrow & \ttt{unit}       &   &   &   \\
 		\end{matrix}
 	\end{equation*}
 	Therefore, we can define the following relationship in Prolog:\\\\
@@ -815,68 +610,21 @@ where:
 	\end{align*}
 	Of course, you could have used the boundary version of \ttt{bstree} to get more control over the space of solutions.\\\\
 	%%
-	Finally, we can show many examples using this polymorphic approach. However, before proceeding further, I will provide the refinement of $\phi$ defined in the last section \ref{ch:monomorphic-types-boundaries} with its polymorphic version.
+	Finally, we can show many examples using this polymorphic approach. However, before proceeding further, I will provide the refinement of HBSyntax defined in the last section \ref{ch:monomorphic-types-boundaries} with its polymorphic version.
 	\subsection{Polymorfism Types with Boundaries}
 	%%
-	Let $\mathcal{H}$, $\mathcal{P}$ be the set of well-defined expressions in Haskell and Prolog, respectively. Let $\phi$ be our syntax-translate mechanism function defined in the last section. We can define $\Phi$ a refinement of the function $\phi$ that sends $\mathcal{H}_{\ttt{ADT}} \subsetneq \mathcal{H}$, the subset of well-defined algebra data types expressions in Haskell, to Prolog expressions as follow: $$\Phi: \mathcal{H}_{\ttt{ADT}} \longrightarrow \mathcal{P} $$
-	%%
-	\begin{align*}
-		\ttt{data} \tav tycon \tav \tau_1 \tav \tau_2 \tav \ldots \tav \tau_k 	= & \tav con_1 \tav \alpha_{1,1} \tav \alpha_{1,2} \tav \ldots \tav \alpha_{1,k_1} \tav | &   &   \\
-		                                                                         & \tav con_2 \tav \alpha_{2,1} \tav \alpha_{2,2} \tav \ldots \tav \alpha_{2,k_2} \tav | &   &   \\
-		                                                                         & \tav \ldots \tav                                                                      &   &   \\
-		                                                                         & \tav con_n \tav \alpha_{n,1} \tav \alpha_{n,2} \tav \ldots \tav \alpha_{n,k_n} \tav | &   &   \\
-	\end{align*}
-	$$\SLongdownarrow \Phi$$
-	\begin{align*}
-		\ttt{rule}_{1}^{0}: \tav \_ tycon (N_{1}^{0}, \tav T_1, \tav T_2, \tav \ldots, \tav T_k, \; \_ con_1(X_{1,1}, \tav \ldots, \tav X_{1,k_1})) :-
-		  & \tav base(Z_{1,1}),                                                 &   &   \\
-		  & \tav \ldots                                                         &   &   \\
-		  & \tav base(Z_{1,k_1}),                                               &   &   \\
-		  & \tav pred_{1, 1}(Z_{1,1}, \tav \Omega_{1,1}, \tav X_{1,1}),         &   &   \\
-		  & \tav pred_{1, 2}(Z_{1,2}, \tav \Omega_{1,2}, \tav X_{1,2}),         &   &   \\
-		  & \tav \ldots \tav                                                    &   &   \\
-		  & \tav pred_{1, k_1}(Z_{1,k_1}, \tav \Omega_{1,k_1} \tav X_{1,k_1}).  &   &   \\
-		\\
-		\ttt{rule}_1: \tav \_ tycon (N_1, \tav T_1, \tav T_2, \tav \ldots, \tav T_k, \; \_ con_1(X_{1,1}, \tav \ldots, \tav X_{1,k_1})) :-
-		  & \tav N_1 > N_{1}^{0},                                               &   &   \\
-		  & \tav Nr_1 \tav \ttt{is} \tav N_1 - 1,                               &   &   \\
-		  & \tav states_1(Nr_1, \tav W_{1,1}, \tav \ldots, \tav W_{1,k_1}),     &   &   \\
-		  & \tav pred_{1, 1}(W_{1,1}, \tav \Omega_{1, 1} \tav X_{1,1}),         &   &   \\
-		  & \tav pred_{1, 2}(W_{1,2}, \tav \Omega_{1, 2} \tav X_{1,2}),         &   &   \\
-		  & \tav \ldots \tav                                                    &   &   \\
-		  & \tav pred_{1, k_1}(W_{1,k_1}, \tav \Omega_{1, k_1} \tav X_{1,k_1}). &   &   
-	\end{align*}
-	$$\vdots$$
-	\begin{align*}
-		\ttt{rule}_{n}^{0}: \tav \_ tycon (N_{n}^{0}, \tav T_1, \tav T_2, \tav \ldots, \tav T_k, \; \_ con_n(X_{n,1}, \tav \ldots, \tav X_{n,k_n})) :-
-		  & \tav base(Z_{n,1}),                                                 &   &   \\
-		  & \tav \ldots                                                         &   &   \\
-		  & \tav base(Z_{n,k_n}),                                               &   &   \\
-		  & \tav pred_{n, 1}(Z_{n,1}, \tav \Omega_{n, 1} \tav X_{n,1}),         &   &   \\
-		  & \tav pred_{n, 2}(Z_{n,2}, \tav \Omega_{n, 2} \tav X_{n,2}),         &   &   \\
-		  & \tav \ldots \tav                                                    &   &   \\
-		  & \tav pred_{n, k_n}(Z_{n,k_n}, \tav \Omega_{n, k_n} \tav X_{n,k_n}). &   &   \\
-		\\
-		\ttt{rule}_n: \tav \_ tycon (N_n, \tav T_1, \tav T_2, \tav \ldots, \tav T_k, \; \_ con_n(X_{n,1}, \tav \ldots, \tav X_{n,k_n})) :-
-		  & \tav N_n > N_{n}^{0},                                               &   &   \\
-		  & \tav Nr_n \tav \ttt{is} \tav N_n - 1,                               &   &   \\
-		  & \tav states_n(Nr_n, \tav W_{n,1}, \tav \ldots, \tav W_{n,k_n}),     &   &   \\
-		  & \tav pred_{n, 1}(W_{n,1}, \tav \Omega_{n, 1} \tav X_{n,1}),         &   &   \\
-		  & \tav pred_{n, 2}(W_{n,2}, \tav \Omega_{n, 2} \tav X_{n,2}),         &   &   \\
-		  & \tav \ldots \tav                                                    &   &   \\
-		  & \tav pred_{n, k_n}(W_{n,k_n}, \tav \Omega_{n, k_n} \tav X_{n,k_n}). &   &   \\
-	\end{align*}\\
+	Let $\mathcal{H}$, $\mathcal{P}$ be the set of well-defined expressions in Haskell and Prolog, respectively. We can consider $\mathcal{H}_{\ttt{ADT}}$ and $\mathcal{P}_{\text{Clause}}$, the subset of well-defined algebra data types expressions in Haskell contained in $\mathcal{H}$ and the subset of clauses in $\mathcal{P}$, respectively. Let HSyntax be our syntax-translate mechanism function defined before. We define HBSyntax the refinement of the function HGSyntax $$\text{HGBSyntax} :\tav \mathcal{H}_{\ttt{ADT}} \tav \longrightarrow \tav \mathcal{P}_{\text{Clause}}$$ as an extension of our syntax-translation semantic for polymorphic types with boundaries as mix of ~\ref{subsec:monomorphic-types-boundary-function} and ~\ref{subsec:polymorphic-types-function}.\\\
 	%%
 	\subsection{Examples} \label{ch:polymorphic-types-examples}
-	For the following examples, we will use the polymorphic and bounded approach $\Phi$. Of course, we avoid showing again the auxiliary corresponding function that accompanies the respective Prolog program in order to be briefer.
+	For the following examples, we will use the polymorphic and bounded approach HGBSyntax. Of course, we avoid showing again the auxiliary corresponding function that accompanies the respective Prolog program in order to be briefer.
 	\begin{example}[MyList]
 		Let's consider the polymorphic version of our \ttt{MyListBool} Haskell ADT definition:
 		\lstinputlisting[language=Haskell, label=mylist-haskell-polymorphic]{sections/code/chapter3/polymorphic/haskell/mylist-polymorphic.hs}
-		Using $\phi$, in the las examples \ref{ch:monomorphic-bounded-types-examples} we obtain:
+		Using HBSyntax, in the las examples \ref{ch:monomorphic-bounded-types-examples} we obtain:
 		%%
 		\lstinputlisting[language=Prolog, label=mylistbool-prolog-monotype-boundary]{sections/code/chapter3/monotypes-boundary/mylistbool-boundary-simplify.pl}
 		%%
-		Now, if we use the newer refinement function $\Phi$:
+		Now, if we use the newer refinement function HGBSyntax:
 		\begin{itemize}
 			\item We can see that there exists a $\tau_1$. Therefore there exists a variable, $T_1$.
 			\item Here, $\tau_1 = \ttt{a}$ so we can define $T_1 = \ttt{A}$ and consider the poset $P(\{\ttt{A}\})$.
@@ -891,11 +639,11 @@ where:
 	\begin{example}[Binary Search Tree]
 		Let's consider the polymorphic version of our \ttt{BSTree} Haskell ADT definition:
 		\lstinputlisting[language=Haskell, label=binary-search-tree-haskell-polymorphic]{sections/code/chapter3/polymorphic/haskell/bst-polymorphic.hs}
-		Using $\phi$, in the las examples \ref{ch:monomorphic-bounded-types-examples} we obtain:
+		Using HBSyntax, in the las examples \ref{ch:monomorphic-bounded-types-examples} we obtain:
 		%%
 		\lstinputlisting[language=Prolog, label=binary-search-tree-prolog-monotype-boundary]{sections/code/chapter3/monotypes-boundary/bst-boundary-simplify.pl}
 		%%
-		Now, if we use the newer refinement function $\Phi$:
+		Now, if we use the newer refinement function HGBSyntax:
 		\begin{itemize}
 			\item We can see that there exists a $\tau_1$. Therefore there exists a variable, $T_1$.
 			\item Here, $\tau_1 = \ttt{a}$ so we can define $T_1 = \ttt{A}$ and consider the poset $P(\{\ttt{A}\})$.
@@ -910,11 +658,11 @@ where:
 	\begin{example}[SomeWeird]
 		Let's consider the polymorphic version of our \ttt{SomeWeird} Haskell ADT definition:
 		\lstinputlisting[language=Haskell, label=someweird-haskell-polymorphic]{sections/code/chapter3/polymorphic/haskell/someweird-polymorphic.hs}
-		Using $\phi$, in the las examples \ref{ch:monomorphic-bounded-types-examples} we obtain:
+		Using HBSyntax, in the las examples \ref{ch:monomorphic-bounded-types-examples} we obtain:
 		%%
 		\lstinputlisting[language=Prolog, label=someweird-prolog-monotype-boundary]{sections/code/chapter3/monotypes-boundary/someweird-boundary-simplify.pl}
 		%%
-		Now, if we use the newer refinement function $\Phi$:
+		Now, if we use the newer refinement function HGBSyntax:
 		\begin{itemize}
 			\item We can see that there exists two $\tau_1$ and $\tau_2$. Therefore there exist two variables, $T_1$ and $T_2$.
 			\item Here, $\tau_1 = \ttt{a}$ and $\tau_2 = \ttt{b}$ so we can define $T_1 = \ttt{A}$, $T_2 = \ttt{B}$ and consider the poset $P(\{\ttt{A}, \ttt{B}\})$.
@@ -934,7 +682,7 @@ where:
 	%%
 	Let's suppose the following Haskell ADT definition:
 	\lstinputlisting[language=Haskell, label=rbtree-haskell-polymorphic]{sections/code/chapter3/polymorphic/haskell/rbtree-polymorphic.hs}
-	Using $\Phi$, in the las examples \ref{ch:monomorphic-bounded-types-examples} we obtain:
+	Using HGBSyntax, in the las examples \ref{ch:monomorphic-bounded-types-examples} we obtain:
 	%%
 	\lstinputlisting[language=Prolog, label=rbtree-prolog-monotype]{sections/code/chapter3/polymorphic/prolog/rbtree-polymorphic.pl}
 	And that is! right? right...\\\\

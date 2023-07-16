@@ -115,7 +115,7 @@ Let's suppose we want to formally define an algebraic data type. Regarding \cite
 	simpletype & ::=\tav tycon \tav tyvar_1 \tav \ldots \tav tyvar_k                      &   & \text{($k \geq 0$)}           \\
 	modid      & ::=\tav conid                                                            &   & \text{(modules)}              \\
 	qtycon  &::= \tav [ \; modid \ttt{.} \; ] \tav tycon \\
-	gtycon  &::=\tav gtycon \\
+	gtycon  &::=\tav qtycon \\
 	           & \tab \alt \ttt{()}                                                       &   & \text{(unit type)}            \\
 	           & \tab \alt \ttt{[]}                                                       &   & \text{(list constructor)}     \\
 	           & \tab \alt \ttt{->}                                                       &   & \text{(function constructor)} \\
@@ -322,7 +322,10 @@ connected(N1, N2) <- edge(N1, N), conected(N, N2).
 
 \subsection{Grammar specification}
 
-This section will be short. Prolog is hugely flexible concerning its grammar and the expressions that one can define. This helps do syntax transformation between Haskell to Prolog, and vice versa.\\
-%%
-
+Prolog is hugely flexible concerning its grammar and the expressions that one can define. This helps do syntax transformation between Haskell to Prolog, and vice versa.
+We will works with a subset of Prolog expressions that conforms rules, variables and predicates. That is, expressions like this:
+\begin{align*}
+	rule(Var1, Var2, \ldots, \; VarK) &:-\tav Goal1, Goal2, \ldots, \; GoalN.
+\end{align*}
+% rule(Var1, Var2, ..., VarK) :- Goal1, Goal2, ..., GoalN.
 In the next chapter, we will see step by step how we should define the primitive type generators, then we will talk about how each part of the ADT specification should be translated into Prolog expressions, and finally, we will define a generator for the ADTs.

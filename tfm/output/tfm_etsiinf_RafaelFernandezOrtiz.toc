@@ -6,9 +6,11 @@
 \defcounter {refsection}{0}\relax 
 \select@language {english}
 \defcounter {refsection}{0}\relax 
+\contentsline {chapter}{Acknowledgments}{v}{chapter*.3}
+\defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1.1}Testing}{1}{section.1.1}
+\contentsline {section}{\numberline {1.1}Testing}{2}{section.1.1}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {1.2}Property-Based Testing}{3}{section.1.2}
 \defcounter {refsection}{0}\relax 
@@ -26,7 +28,9 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {1.5.4}Hypothesis: Property-based testing tool for Python}{11}{subsection.1.5.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1.6}State of the Art: Test Cases with Pre-Condition}{11}{section.1.6}
+\contentsline {section}{\numberline {1.6}Test Cases with Pre-Condition(s)}{11}{section.1.6}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {1.7}Thesis Organization}{11}{section.1.7}
 \defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {2}Preliminaries}{13}{chapter.2}
 \defcounter {refsection}{0}\relax 
@@ -54,42 +58,68 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {3.1}Monomorphic Types}{21}{section.3.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.1.1}Primitive Types generators}{23}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.1}Primitive Types generators}{22}{subsection.3.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\texttt {Char} type generator}{23}{section*.11}
+\contentsline {subsubsection}{\texttt {Char} type generator}{22}{section*.11}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\texttt {String} type generator}{23}{section*.12}
+\contentsline {subsubsection}{\texttt {String} type generator}{22}{section*.12}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\texttt {Int} type generator}{24}{section*.13}
+\contentsline {subsubsection}{\texttt {Int} type generator}{22}{section*.13}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\texttt {Integer} type generator}{24}{section*.14}
+\contentsline {subsubsection}{\texttt {Integer} type generator}{22}{section*.14}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\texttt {Bool} type generator}{24}{section*.15}
+\contentsline {subsubsection}{\texttt {Bool} type generator}{23}{section*.15}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\texttt {Unit} type generator}{24}{section*.16}
+\contentsline {subsubsection}{\texttt {Unit} type generator}{23}{section*.16}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\texttt {Double} type generator}{24}{section*.17}
+\contentsline {subsubsection}{\texttt {Double} type generator}{23}{section*.17}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.1.2}Examples}{24}{subsection.3.1.2}
+\contentsline {subsection}{\numberline {3.1.2}Examples}{23}{subsection.3.1.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.2}Monomorphic Types with Boundaries}{29}{section.3.2}
+\contentsline {section}{\numberline {3.2}Monomorphic Types with Boundaries}{25}{section.3.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.2.1}Examples}{34}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.1}Examples}{29}{subsection.3.2.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.3}Polymorfism Types}{41}{section.3.3}
+\contentsline {section}{\numberline {3.3}Polymorfism Types}{36}{section.3.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.3.1}Generic Polymorphic Types Generator}{43}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.1}Generic Polymorphic Types Generator}{38}{subsection.3.3.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.3.2}Polymorfism Types with Boundaries}{44}{subsection.3.3.2}
+\contentsline {subsection}{\numberline {3.3.2}Polymorfism Types with Boundaries}{39}{subsection.3.3.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.3.3}Examples}{45}{subsection.3.3.3}
+\contentsline {subsection}{\numberline {3.3.3}Examples}{40}{subsection.3.3.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.3.4}Red-Black Tree}{48}{subsection.3.3.4}
+\contentsline {subsection}{\numberline {3.3.4}Red-Black Tree}{43}{subsection.3.3.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {4}Future Works}{51}{chapter.4}
+\contentsline {chapter}{\numberline {4}Conclusions and Future Works}{45}{chapter.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{Bibliography}{53}{section*.18}
+\contentsline {chapter}{Bibliography}{47}{section*.18}
 \defcounter {refsection}{0}\relax 
-\contentsline {part}{Appendix}{57}{part*.20}
+\contentsline {part}{Appendix}{51}{part*.20}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {A}Prolog Code}{57}{appendix.A}
+\contentsline {chapter}{\numberline {A}Prolog Code}{51}{appendix.A}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {B}Translations}{53}{appendix.B}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {B.1}Monomorphic Type}{53}{section.B.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {B.1.1}Syntax-Translation Function}{53}{subsection.B.1.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {B.1.2}MaybeInt}{55}{subsection.B.1.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {B.1.3}Either}{56}{subsection.B.1.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {B.1.4}MyListBool}{57}{subsection.B.1.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {B.1.5}BSTree}{58}{subsection.B.1.5}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {B.1.6}SomeWeird}{59}{subsection.B.1.6}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {B.1.7}RSTree}{60}{subsection.B.1.7}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {B.2}Monomorphic Type with Boundaries}{61}{section.B.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {B.2.1}Syntax-Translation Function}{61}{subsection.B.2.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {B.3}Polymorphic Type}{63}{section.B.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {B.3.1}Syntax-Translation Function}{63}{subsection.B.3.1}

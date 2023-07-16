@@ -57,6 +57,8 @@
 \usepackage{courier}
 \usepackage{caption}
 
+\graphicspath{ {./images/} }
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Definition of snippet code
 
@@ -122,6 +124,7 @@
 \newcommand{\updownsquigarrow}{\mathrel{\rotatebox[origin=c]{-90}{$\leftrightsquigarrow$}}}
 \newcommand\nldots{\stackrel{\mathclap{\normalfont\mbox{n}}}{\ldots}}
 \newcommand{\kldots}[1]{\stackrel{\mathclap{\normalfont\mbox{#1}}}{\ldots}}
+\newcommand{\sem}[2]{\text{#1} \; \llbracket #2 \rrbracket}
 
 
 
@@ -140,6 +143,9 @@
 
 %% -----------------------------------------------
 \input{sections/abstract}
+
+%% -----------------------------------------------
+\input{sections/acknowledgments}
 
 %% -----------------------------------------------
 \tableofcontents

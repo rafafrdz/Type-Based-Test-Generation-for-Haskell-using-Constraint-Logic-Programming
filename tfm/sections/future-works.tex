@@ -1,5 +1,9 @@
-\chapter{Future Works}
+\chapter{Conclusions and Future Works}
 
+The work done in this thesis has been quite complex in terms of agreeing on the subset of Haskell expressions for the ADTs and in developing the translation functions. In defining the translations of the subexpressions we have had to limit ourselves to those ADTs with not very complex definitions (avoiding monad declarations, for example).\\\\
+%%
+On the other hand, the initial idea was to go as far as generating complex conditions from Haskell and transfer it to Prolog for the resolution and generations of the values through the translation guided by the syntaxys. However, we had to limit ourselves only to the generation of the ADT structures following the formal Haskell grammar. We leave this explained as future work below.\\\\
+%%
 The result of this master's thesis is subject to further improvements. The first of all is to implement the Prolog-Haskell syntax-translate function. This will allow us to recover all values that are generated in Prolog after applying the syntax-translate mechanism defined in this work, and integrate it in some way with other PBT frameworks like QuickCheck. We also need to automatize it in a complete Haskell library in order to complement QuickCheck without switching either IDE or language. And finally, it could be improved by using some of the generation strategies defined in the recent research which are mentioned at the beginning of this work and/or improving the implementation of the primitive types generators.\\\\
 %%
 Apart from the previous improvements, there is still room for new research. In this work, we did not explore the generation of those algebraic data types that are defined by invariants. We have limited just for generating ADT's structures but some ones are well-defined if and only if they hold complex constraints like red-black trees or sorted-list. For this purpose, I suggest following the Liquid-Haskell syntax as an extension of the Haskell's formal grammar. So, define pre-conditions and post-conditions and translate those sentences in some way to Prolog expressions following the concept worked in this thesis.\\\\
